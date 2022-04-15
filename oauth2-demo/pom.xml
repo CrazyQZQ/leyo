@@ -6,7 +6,7 @@
     <artifactId>oauth2-demo</artifactId>
     <version>0.0.1</version>
     <name>oauth2-demo</name>
-    <description>Demo project for Spring Boot</description>
+    <description>oauth2授权服务</description>
 
     <parent>
         <groupId>com.qq</groupId>

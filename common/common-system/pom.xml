@@ -6,7 +6,7 @@
     <artifactId>common-system</artifactId>
     <version>0.0.1</version>
     <name>common-system</name>
-    <description>Demo project for Spring Boot</description>
+    <description>系统共用模块</description>
 
     <parent>
         <groupId>com.qq</groupId>

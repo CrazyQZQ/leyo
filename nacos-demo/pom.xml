@@ -6,7 +6,7 @@
     <artifactId>nacos-demo</artifactId>
     <version>0.0.1</version>
     <name>nacos-demo</name>
-    <description>Demo project for Spring Boot</description>
+    <description>nacos配置中心测试</description>
 
     <parent>
         <groupId>com.qq</groupId>

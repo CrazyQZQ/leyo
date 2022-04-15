@@ -6,7 +6,7 @@
     <artifactId>nacos-customer</artifactId>
     <version>0.0.1</version>
     <name>nacos-customer</name>
-    <description>Demo project for Spring Boot</description>
+    <description>nacos消费者</description>
     <parent>
         <groupId>com.qq</groupId>
         <artifactId>cloud-demo</artifactId>

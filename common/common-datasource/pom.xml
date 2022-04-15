@@ -6,7 +6,7 @@
     <artifactId>common-datasource</artifactId>
     <version>0.0.1</version>
     <name>common-datasource</name>
-    <description>Demo project for Spring Boot</description>
+    <description>数据源通用模块</description>
     <parent>
         <groupId>com.qq</groupId>
         <artifactId>common</artifactId>

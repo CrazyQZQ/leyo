@@ -6,7 +6,7 @@
     <artifactId>cloud-demo</artifactId>
     <version>0.0.1</version>
     <name>cloud-demo</name>
-    <description>Demo project for Spring Boot</description>
+    <description>配置依赖版本</description>
 
     <packaging>pom</packaging>
     <modules>
@@ -15,7 +15,6 @@
         <module>nacos-customer</module>
         <module>gateway-demo</module>
         <module>common</module>
-        <module>auth-demo</module>
         <module>oauth2-demo</module>
         <module>oauth2-resouce-demo</module>
     </modules>

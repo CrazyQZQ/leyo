@@ -6,7 +6,7 @@
     <artifactId>gateway-demo</artifactId>
     <version>0.0.1</version>
     <name>gateway-demo</name>
-    <description>Demo project for Spring Boot</description>
+    <description>网关模块</description>
 
     <parent>
         <groupId>com.qq</groupId>
