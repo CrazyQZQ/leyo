@@ -1,0 +1,24 @@
+feign:
+    sentinel:
+        enabled: true
+server:
+    port: 8842
+spring:
+    application:
+        name: nacos-customer
+    cloud:
+        nacos:
+            discovery:
+                namespace: public
+                password: nacos
+                server-addr: 1.13.17.66:8848
+                username: nacos
+        sentinel:
+            transport:
+                dashboard: 1.13.17.66:8080
+                port: 8719
+    redis:
+        host: 127.0.0.1
+        port: 6379
+        database: 0
+        password: qq123456

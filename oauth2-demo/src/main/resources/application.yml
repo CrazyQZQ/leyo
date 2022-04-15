@@ -1,0 +1,73 @@
+spring:
+    application:
+        name: oauth2-demo
+    cloud:
+        nacos:
+            discovery:
+                namespace: public
+                password: nacos
+                server-addr: 1.13.17.66:8848
+                username: nacos
+    redis:
+        host: 1.13.17.66
+        port: 6379
+        database: 0
+        password: qq123456
+    datasource:
+        dynamic:
+            druid:
+                # 初始连接数
+                initialSize: 5
+                # 最小连接池数量
+                minIdle: 10
+                # 最大连接池数量
+                maxActive: 20
+                # 配置获取连接等待超时的时间
+                maxWait: 60000
+                # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+                timeBetweenEvictionRunsMillis: 60000
+                # 配置一个连接在池中最小生存的时间，单位是毫秒
+                minEvictableIdleTimeMillis: 300000
+                # 配置一个连接在池中最大生存的时间，单位是毫秒
+                maxEvictableIdleTimeMillis: 900000
+                # 配置检测连接是否有效
+                validationQuery: SELECT 1 FROM DUAL
+                testWhileIdle: true
+                testOnBorrow: false
+                testOnReturn: false
+                webStatFilter:
+                    enabled: true
+                statViewServlet:
+                    enabled: true
+                    # 设置白名单，不填则允许所有访问
+                    allow:
+                    url-pattern: /druid/*
+                    # 控制台管理用户名和密码
+                    login-username:
+                    login-password:
+                filter:
+                    stat:
+                        enabled: true
+                        # 慢SQL记录
+                        log-slow-sql: true
+                        slow-sql-millis: 1000
+                        merge-sql: true
+                    wall:
+                        config:
+                            multi-statement-allow: true
+            primary: master #设置默认的数据源或者数据源组,默认值即为master
+            strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+            datasource:
+                master:
+                    url: jdbc:mysql://1.13.17.66:3306/my_shop
+                    username: root
+                    password: qq123456
+                    driver-class-name: com.mysql.cj.jdbc.Driver # 3.2.0开始支持SPI可省略此配置
+server:
+    port: 8844
+log:
+    path: /home/cloud-demo/oauth-demo
+
+logging:
+    level:
+        com.qq: debug

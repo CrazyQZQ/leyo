@@ -1,0 +1,5 @@
+spring:
+    application:
+        name: oauth2-resouce-demo
+server:
+    port: 8845

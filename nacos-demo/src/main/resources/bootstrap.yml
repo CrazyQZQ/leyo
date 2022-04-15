@@ -1,0 +1,10 @@
+spring:
+    cloud:
+        nacos:
+            config:
+                contextPath: /nacos
+                file-extension: properties
+                password: nacos
+                refresh-enabled: true
+                server-addr: 1.13.17.66:8848
+                username: nacos
