@@ -4,6 +4,8 @@ import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.service.SysRoleService;
 import com.qq.common.system.service.SysUserService;
+import com.qq.common.system.utils.OauthUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("customer/sysUser")
+@Slf4j
 public class SysUserController {
     /**
      * 服务对象
@@ -44,6 +47,8 @@ public class SysUserController {
 
     @GetMapping("list")
     public AjaxResult selectAll(int pageNum, int pageSize) {
+        SysUser currentUser = OauthUtils.getCurrentUser();
+        log.info("currentUser:{}",currentUser);
         return AjaxResult.success(sysUserService.queryAllByLimit(pageNum,pageSize));
     }
 

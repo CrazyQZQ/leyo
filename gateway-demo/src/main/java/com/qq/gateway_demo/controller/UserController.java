@@ -2,6 +2,9 @@ package com.qq.gateway_demo.controller;
 
 import com.qq.common.core.utils.SpringUtils;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.system.pojo.SysUser;
+import com.qq.common.system.utils.OauthUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("user")
+@Slf4j
 public class UserController {
 
     @GetMapping("userInfo")
@@ -28,11 +32,6 @@ public class UserController {
 
     @GetMapping("adminInfo")
     public AjaxResult adminInfo(){
-        Authentication bean = SpringUtils.getBean(Authentication.class);
-        String principal = null;
-        if (bean != null) {
-            principal = (String)bean.getPrincipal();
-        }
-        return AjaxResult.success(principal);
+        return AjaxResult.success("admin info");
     }
 }
