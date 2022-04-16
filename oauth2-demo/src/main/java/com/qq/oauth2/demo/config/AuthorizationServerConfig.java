@@ -39,6 +39,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     ClientDetailsService clientDetailsService;
     @Autowired
     JwtAccessTokenConverter jwtAccessTokenConverter;
+    @Autowired
+    @Qualifier("userDetailsServiceImpl")
+    private UserDetailsService userDetailsService;
 
     /**
      * 客户端配置，id，秘钥等
@@ -107,6 +110,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenServices(authorizationServerTokenServices())
                 // 配置/oauth/token申请令牌的uri只允许POST提交
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST)
+                // 配置令牌转换器
+                .accessTokenConverter(jwtAccessTokenConverter)
+                // 配置获取用户信息的服务，UserDetailsService
+                .userDetailsService(userDetailsService);
 
         ;
     }

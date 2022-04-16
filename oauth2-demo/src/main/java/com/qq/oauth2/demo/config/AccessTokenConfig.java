@@ -28,6 +28,10 @@ public class AccessTokenConfig {
 
     private static final String SIGN_KEY = "lxqq";
 
+    @Autowired
+    @Qualifier("userDetailsServiceImpl")
+    private UserDetailsService userDetailsService;
+
     /**
      * 令牌的存储策略，这里使用的是JwtTokenStore，使用JWT的令牌生成方式，其实还有以下两个比较常用的方式：
      * <p>
@@ -58,7 +62,7 @@ public class AccessTokenConfig {
          * 设置自定义得的令牌转换器，从map中转换身份信息
          * fix(*)：修复刷新令牌无法获取用户详细信息的问题
          */
-        converter.setAccessTokenConverter(new JwtEnhanceAccessTokenConverter());
+        converter.setAccessTokenConverter(new JwtEnhanceAccessTokenConverter(userDetailsService));
         return converter;
     }
 

@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticat
  * 令牌转换器，将身份认证信息转换后存储在令牌内
  */
 public class JwtEnhanceAccessTokenConverter extends DefaultAccessTokenConverter {
-    public JwtEnhanceAccessTokenConverter(){
-        super.setUserTokenConverter(new JwtEnhanceUserAuthenticationConverter());
+    public JwtEnhanceAccessTokenConverter(UserDetailsService userDetailsService){
+        super.setUserTokenConverter(new JwtEnhanceUserAuthenticationConverter(userDetailsService));
     }
 }
