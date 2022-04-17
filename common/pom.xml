@@ -14,6 +14,7 @@
         <module>common-datasource</module>
         <module>common-core</module>
         <module>common-system</module>
+        <module>common-log</module>
     </modules>
     <parent>
         <groupId>com.qq</groupId>
