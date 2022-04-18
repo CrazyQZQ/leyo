@@ -22,7 +22,6 @@ public class InitService {
         redisService.setCacheList("/user/userInfo",Lists.newArrayList("ROLE_admin","ROLE_user"));
         redisService.setCacheList("/user/adminInfo",Lists.newArrayList("ROLE_admin"));
         redisService.setCacheList("/customer/sysUser/list",Lists.newArrayList("ROLE_admin","ROLE_user"));
-        redisService.setCacheList("/oauth/user/loginUser",Lists.newArrayList("ROLE_admin"));
     }
 
 }

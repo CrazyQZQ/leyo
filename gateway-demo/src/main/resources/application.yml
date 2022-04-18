@@ -48,4 +48,3 @@ oauth2:
           - /oauth/authorize
           - /oauth/check_token
           - /login
-          - /logout

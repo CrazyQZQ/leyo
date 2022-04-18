@@ -1,6 +1,7 @@
 package com.qq.nacos_customer.controller;
 
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.service.SysRoleService;
 import com.qq.common.system.service.SysUserService;
@@ -45,6 +46,7 @@ public class SysUserController {
     }
 
 
+    @Log(title = "customer:获取用户列表")
     @GetMapping("list")
     public AjaxResult selectAll(int pageNum, int pageSize) {
         SysUser currentUser = OauthUtils.getCurrentUser();

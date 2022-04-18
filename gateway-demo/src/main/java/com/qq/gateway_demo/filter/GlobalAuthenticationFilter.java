@@ -5,31 +5,45 @@ import com.alibaba.fastjson.JSONObject;
 import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.constant.TokenConstants;
 import com.qq.common.core.enums.AuthResultCode;
+import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.sign.Base64;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common_redis.service.RedisService;
 import com.qq.gateway_demo.config.SysParameterConfig;
+import com.qq.gateway_demo.pojo.RequestLogInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferFactory;
+import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author 公众号：码猿技术专栏
@@ -60,6 +74,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("GlobalAuthenticationFilter filter start: {}", exchange.getRequest().getURI());
         String requestUrl = exchange.getRequest().getPath().value();
         //1、白名单放行，比如授权服务、静态资源.....
         if (checkUrls(sysConfig.getIgnoreUrls(),requestUrl)){
@@ -102,7 +117,9 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             String base64 = Base64.encode(jsonObject.toJSONString().getBytes());
             //放入请求头中
             ServerHttpRequest tokenRequest = exchange.getRequest().mutate().header(TokenConstants.TOKEN_NAME, base64).build();
-            ServerWebExchange build = exchange.mutate().request(tokenRequest).build();
+
+            ServerHttpResponseDecorator serverHttpResponseDecorator = printLog(exchange);
+            ServerWebExchange build = exchange.mutate().request(tokenRequest).response(serverHttpResponseDecorator).build();
             return chain.filter(build);
         } catch (InvalidTokenException e) {
             //解析token异常，直接返回token无效
@@ -114,7 +131,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return -2;
     }
 
     /**
@@ -160,5 +177,69 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         response.getHeaders().add("Content-Type", "application/json;charset:utf-8");
         return response.writeWith(Mono.just(buffer));
+    }
+
+    /**
+     * 打印日志
+     * @param exchange
+     * @return
+     */
+    private ServerHttpResponseDecorator printLog(ServerWebExchange exchange){
+        long start = System.currentTimeMillis();
+
+        RequestLogInfo logInfo = new RequestLogInfo();
+        // 获取请求信息
+        ServerHttpRequest request = exchange.getRequest();
+        InetSocketAddress address = request.getRemoteAddress();
+        String method = request.getMethodValue();
+        URI uri = request.getURI();
+
+        logInfo.setRequestId(request.getId());
+        logInfo.setRequestUrl(uri.getPath());
+        logInfo.setRequestTime(DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS));
+        // 获取请求body
+        if("POST".equals(method)){
+            //获取请求体
+            Flux<DataBuffer> body = request.getBody();
+
+            AtomicReference<String> bodyRef = new AtomicReference<>();
+            body.subscribe(buffer -> {
+                CharBuffer charBuffer = StandardCharsets.UTF_8.decode(buffer.asByteBuffer());
+                DataBufferUtils.release(buffer);
+                bodyRef.set(charBuffer.toString());
+            });
+            //获取request body
+            logInfo.setRequestBody(bodyRef.get());
+        }
+        // 获取请求query
+        logInfo.setRequestParam(JSON.toJSONString(request.getQueryParams()));
+        logInfo.setRemoteAddr(address.getHostName()+address.getPort());
+        logInfo.setRequestMethod(method);
+
+        ServerHttpResponse response = exchange.getResponse();
+        DataBufferFactory bufferFactory = response.bufferFactory();
+        ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
+            @Override
+            public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+                if (body instanceof Flux) {
+                    Flux<? extends DataBuffer> fluxBody = (Flux<? extends DataBuffer>) body;
+                    return super.writeWith(fluxBody.map(dataBuffer -> {
+                        byte[] content = new byte[dataBuffer.readableByteCount()];
+                        dataBuffer.read(content);
+                        String responseResult = new String(content, Charset.forName("UTF-8"));
+                        logInfo.setResponseCode(this.getStatusCode().toString());
+                        logInfo.setResponseBody(responseResult);
+
+                        // 计算请求时间
+                        long end = System.currentTimeMillis();
+                        logInfo.setResponseTime(end - start);
+                        log.info(JSON.toJSONString(logInfo));
+                        return bufferFactory.wrap(content);
+                    }));
+                }
+                return super.writeWith(body);
+            }
+        };
+        return decoratedResponse;
     }
 }

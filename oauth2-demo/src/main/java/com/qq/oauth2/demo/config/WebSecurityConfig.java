@@ -1,5 +1,6 @@
 package com.qq.oauth2.demo.config;
 
+import com.qq.common_redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -33,13 +34,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        System.out.println("pwd:"+bCryptPasswordEncoder.encode("123"));
+        System.out.println("pwd:" + bCryptPasswordEncoder.encode("123"));
         return bCryptPasswordEncoder;
     }
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public RedisService redisService() {
+        return new RedisService();
     }
 
     @Autowired
@@ -51,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
     /**
      * 这里配置全局用户信息
      *
@@ -75,43 +82,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 登录
-        http.authorizeRequests().anyRequest().authenticated().and()
-                .formLogin()
-                 // 登录页
-//                .loginPage("/login.html")
-                // 登录提交url
-//                .loginProcessingUrl("/doLogin")
-//                .usernameParameter("username")// 用户名key
-//                .passwordParameter("password")// 密码key
-//                .successForwardUrl("/index")// 登录成功重定向的url
-//                .failureForwardUrl("/error")// 登录失败重定向的url
-                .permitAll()
-//                .and() // 配置注销
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
-//                .logoutSuccessUrl("/index")
-//                .deleteCookies()
-//                .clearAuthentication(true)
-//                .invalidateHttpSession(true)
-//                .permitAll()
-//                .and()
-//                .requestMatchers()//系统中所有请求
-//                .antMatchers("/**")//SpringSecurity接管的请求/**系统所有请求
-//                .and()
-//                .authorizeRequests()//得到SpringSecurity接管的请求
-//                .antMatchers("/test/*")//给接管的请求(/**)中的/test/*
-////                .hasAnyAuthority("p1")//配置需要p1权限
-//                .hasAnyRole("admin")// 配置需要ADMIN角色
-//                .antMatchers("/user/*")//给接管的请求(/**)中的/mbb/*
-////                .permitAll()
-//                .hasAnyRole("user")
-////                .hasAnyAuthority("p1")
-//                .anyRequest()//其他请求
-//                .authenticated()//都需要认证
+        // http.authorizeRequests()
+        //         // .anyRequest().authenticated()
+        //         .and()
+        //         .formLogin()
+                // 登录页
+                // .loginPage("/login.html")
+                // // 登录提交url
+                // .loginProcessingUrl("/doLogin")
+                // .usernameParameter("username")// 用户名key
+                // .passwordParameter("password")// 密码key
+                // .successForwardUrl("/index")// 登录成功重定向的url
+                // .failureForwardUrl("/error")// 登录失败重定向的url
+                // .permitAll()
+                // .and() // 配置注销
+                // .logout()
+                // .logoutUrl("/oauth/logout")
+                // .logoutRequestMatcher(new AntPathRequestMatcher("/oauth/logout", "POST"))
+                // // .logoutSuccessUrl("/index")
+                // .deleteCookies()
+                // .clearAuthentication(true)
+                // .invalidateHttpSession(true)
+                // .permitAll()
+                // .and()
+                // .csrf().disable();//关闭csrf
+
+        http
+                //注入自定义的授权配置类
+                // .apply(smsCodeSecurityConfig)
+                // .and()
+                .authorizeRequests()
+                //注销的接口需要放行
+                .antMatchers("/oauth/logout").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .csrf().disable()//关闭csrf
-        ;
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .permitAll()
+                .and()
+                .csrf()
+                .disable();
+
     }
 
 

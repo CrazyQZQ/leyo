@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication(scanBasePackages = {"com.qq"},exclude = DruidDataSourceAutoConfigure.class)
+@SpringBootApplication(scanBasePackages = {"com.qq.nacos_customer", "com.qq.common.system"}, exclude = DruidDataSourceAutoConfigure.class)
 @EnableFeignClients
-@MapperScan({"com.qq.nacos_customer.mapper","com.qq.common.system.mapper"})
+@MapperScan({"com.qq.nacos_customer.mapper", "com.qq.common.system.mapper"})
 public class NacosCustomerApplication {
 
 
@@ -19,6 +19,6 @@ public class NacosCustomerApplication {
 
         ConfigurableApplicationContext context = SpringApplication.run(NacosCustomerApplication.class, args);
         String property = context.getEnvironment().getProperty("spring.datasource.druid.master.username");
-        System.out.println("spring.datasource.druid.master.username:"+property);
+        System.out.println("spring.datasource.druid.master.username:" + property);
     }
 }

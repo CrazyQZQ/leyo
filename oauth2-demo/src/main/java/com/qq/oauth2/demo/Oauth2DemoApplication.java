@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@SpringBootApplication(scanBasePackages = {"com.qq"},exclude= {DataSourceAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {"com.qq.oauth2.demo", "com.qq.common.system"},exclude= {DataSourceAutoConfiguration.class})
 @MapperScan({"com.qq.common.system.mapper"})
 @EnableDiscoveryClient
 public class Oauth2DemoApplication {

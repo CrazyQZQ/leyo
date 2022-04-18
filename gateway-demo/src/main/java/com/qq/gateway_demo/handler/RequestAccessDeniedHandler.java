@@ -1,6 +1,7 @@
 package com.qq.gateway_demo.handler;
 
 import com.alibaba.fastjson.JSON;
+import com.qq.common.core.enums.AuthResultCode;
 import com.qq.common.core.web.domain.AjaxResult;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +28,7 @@ public class RequestAccessDeniedHandler implements ServerAccessDeniedHandler {
         ServerHttpResponse response = serverWebExchange.getResponse();
         response.setStatusCode(HttpStatus.OK);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        DataBuffer buffer = response.bufferFactory().wrap(JSON.toJSONString(new AjaxResult(401, "无权限访问")).getBytes(Charset.forName("utf-8")));
+        DataBuffer buffer = response.bufferFactory().wrap(JSON.toJSONString(new AjaxResult(AuthResultCode.NO_PERMISSION.getCode(), AuthResultCode.NO_PERMISSION.getMsg())).getBytes(Charset.forName("utf-8")));
         return response.writeWith(Mono.just(buffer));
     }
 }

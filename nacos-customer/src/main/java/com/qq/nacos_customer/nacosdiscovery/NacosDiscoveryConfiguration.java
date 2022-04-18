@@ -16,6 +16,9 @@
  */
 package com.qq.nacos_customer.nacosdiscovery;
 
+import com.qq.common.log.aspect.LogAspect;
+import com.qq.common.system.interceptor.FeignRequestInterceptor;
+import com.qq.common_redis.service.RedisService;
 import com.qq.nacos_customer.service.CallBackService;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -31,12 +34,22 @@ import org.springframework.web.client.RestTemplate;
 public class NacosDiscoveryConfiguration {
     @Bean
     @LoadBalanced
-    public RestTemplate getRestTemplate(){
+    public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
-//    @Bean
-//    public CallBackService getCallBackService(){
-//        return new CallBackService();
-//    }
+    // @Bean
+    // public CallBackService getCallBackService(){
+    //     return new CallBackService();
+    // }
+    @Bean
+    public LogAspect logAspect() {
+        return new LogAspect();
+    }
+
+    @Bean
+    public RedisService redisService() {
+        return new RedisService();
+    }
+
 }
