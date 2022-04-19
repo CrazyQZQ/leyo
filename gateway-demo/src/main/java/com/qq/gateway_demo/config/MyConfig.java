@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
  * @Date 2022/4/2
  **/
 @RefreshScope
-@ConfigurationProperties(prefix = "user")
 @Component
 @Data
 @ToString

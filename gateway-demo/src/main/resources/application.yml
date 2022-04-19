@@ -31,11 +31,6 @@ spring:
 #      transport:
 #        dashboard: 1.13.17.66:8080
 #        port: 8719
-  redis:
-    host: 1.13.17.66
-    port: 6379
-    database: 0
-    password: qq123456
   main:
     allow-bean-definition-overriding: true
 
