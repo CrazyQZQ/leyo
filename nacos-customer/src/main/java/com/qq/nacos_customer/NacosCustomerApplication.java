@@ -17,8 +17,6 @@ public class NacosCustomerApplication {
 
     public static void main(String[] args) {
 
-        ConfigurableApplicationContext context = SpringApplication.run(NacosCustomerApplication.class, args);
-        String property = context.getEnvironment().getProperty("spring.datasource.druid.master.username");
-        System.out.println("spring.datasource.druid.master.username:" + property);
+        SpringApplication.run(NacosCustomerApplication.class, args);
     }
 }
