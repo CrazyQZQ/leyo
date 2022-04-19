@@ -27,10 +27,10 @@ spring:
         password: nacos
         server-addr: 1.13.17.66:8848
         username: nacos
-#    sentinel:
-#      transport:
-#        dashboard: 1.13.17.66:8080
-#        port: 8719
+    sentinel:
+      transport:
+        dashboard: 1.13.17.66:8080
+        port: 8719
   main:
     allow-bean-definition-overriding: true
 
