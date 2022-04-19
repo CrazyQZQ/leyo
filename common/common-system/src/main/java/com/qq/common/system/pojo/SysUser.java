@@ -1,12 +1,11 @@
 package com.qq.common.system.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -64,10 +63,12 @@ public class SysUser extends JwtInfo implements Serializable {
     /**
      * 密码
      */
+    @JSONField(serialize = false)
     private String password;
     /**
      * 盐加密
      */
+    @JSONField(serialize = false)
     private String salt;
     /**
      * 帐号状态（0正常 1停用）
