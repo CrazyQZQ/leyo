@@ -14,34 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.qq.nacos_customer.nacosdiscovery;
+package com.qq.nacos_customer.config;
 
 import com.qq.common.log.aspect.LogAspect;
-import com.qq.common.system.interceptor.FeignRequestInterceptor;
 import com.qq.common_redis.service.RedisService;
-import com.qq.nacos_customer.service.CallBackService;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
 @EnableDiscoveryClient
 @Configuration
-public class NacosDiscoveryConfiguration {
-    @Bean
-    @LoadBalanced
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
+public class BaseConfig {
 
-    // @Bean
-    // public CallBackService getCallBackService(){
-    //     return new CallBackService();
-    // }
     @Bean
     public LogAspect logAspect() {
         return new LogAspect();
