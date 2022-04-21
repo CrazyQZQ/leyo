@@ -1,6 +1,8 @@
 package com.qq.oauth2.demo.config;
 
 import com.qq.common_redis.service.RedisService;
+import com.qq.oauth2.demo.handler.FebsWebLoginFailureHandler;
+import com.qq.oauth2.demo.handler.FebsWebLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
+    @Autowired
+    private FebsWebLoginSuccessHandler successHandler;
+    @Autowired
+    private FebsWebLoginFailureHandler failureHandler;
 
 
     @Override
@@ -81,43 +87,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // 登录
-        // http.authorizeRequests()
-        //         // .anyRequest().authenticated()
-        //         .and()
-        //         .formLogin()
-                // 登录页
-                // .loginPage("/login.html")
-                // // 登录提交url
-                // .loginProcessingUrl("/doLogin")
-                // .usernameParameter("username")// 用户名key
-                // .passwordParameter("password")// 密码key
-                // .successForwardUrl("/index")// 登录成功重定向的url
-                // .failureForwardUrl("/error")// 登录失败重定向的url
-                // .permitAll()
-                // .and() // 配置注销
-                // .logout()
-                // .logoutUrl("/oauth/logout")
-                // .logoutRequestMatcher(new AntPathRequestMatcher("/oauth/logout", "POST"))
-                // // .logoutSuccessUrl("/index")
-                // .deleteCookies()
-                // .clearAuthentication(true)
-                // .invalidateHttpSession(true)
-                // .permitAll()
-                // .and()
-                // .csrf().disable();//关闭csrf
-
+        // 如果只配置loginPage而不配置loginProcessingUrl的话
+        // 那么loginProcessingUrl默认就是loginPage
+        // 你配置的loginPage("/testpage.html") ,那么loginProcessingUrl就是"/testpage.html"
         http
                 //注入自定义的授权配置类
                 // .apply(smsCodeSecurityConfig)
                 // .and()
                 .authorizeRequests()
+                .antMatchers( "/register", "/captchaImage").anonymous()
                 //注销的接口需要放行
-                .antMatchers("/oauth/logout").permitAll()
+                .antMatchers("/oauth/**",
+                        "/*.html",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/profile/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/login")
+                .loginPage("/oauth/login")
+                // loginProcessingUrl的作用是用来拦截前端页面对/login/doLogin这个的请求的，拦截到了就走它自己的处理流程（例如这个UserDetailsService的loadUserByUsername这个方法
+                .loginProcessingUrl("/oauth/doLogin")
+                // .successForwardUrl("/oauth/index")
+                .successHandler(successHandler)
+                .failureHandler(failureHandler)
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/oauth/logout")
                 .permitAll()
                 .and()
                 .csrf()

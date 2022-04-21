@@ -6,13 +6,13 @@ import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.constant.TokenConstants;
 import com.qq.common.core.enums.AuthResultCode;
 import com.qq.common.core.utils.DateUtils;
+import com.qq.common.core.utils.StringUtils;
 import com.qq.common.core.utils.sign.Base64;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common_redis.service.RedisService;
 import com.qq.gateway_demo.config.SysParameterConfig;
 import com.qq.gateway_demo.pojo.RequestLogInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +77,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
         log.info("GlobalAuthenticationFilter filter start: {}", exchange.getRequest().getURI());
         String requestUrl = exchange.getRequest().getPath().value();
         //1、白名单放行，比如授权服务、静态资源.....
-        if (checkUrls(sysConfig.getIgnoreUrls(),requestUrl)){
+        if (StringUtils.matches(requestUrl,sysConfig.getIgnoreUrls())){
             return chain.filter(exchange);
         }
 
@@ -134,17 +134,17 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
         return -2;
     }
 
-    /**
-     * 对url进行校验匹配
-     */
-    private boolean checkUrls(List<String> urls,String path){
-        AntPathMatcher pathMatcher = new AntPathMatcher();
-        for (String url : urls) {
-            if (pathMatcher.match(url,path))
-                return true;
-        }
-        return false;
-    }
+    // /**
+    //  * 对url进行校验匹配
+    //  */
+    // private boolean checkUrls(List<String> urls,String path){
+    //     AntPathMatcher pathMatcher = new AntPathMatcher();
+    //     for (String url : urls) {
+    //         if (pathMatcher.match(url,path))
+    //             return true;
+    //     }
+    //     return false;
+    // }
 
     /**
      * 从请求头中获取Token

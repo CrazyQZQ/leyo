@@ -39,7 +39,12 @@ oauth2:
     sys:
       parameter:
         ignoreUrls:
-          - /oauth/token
-          - /oauth/authorize
-          - /oauth/check_token
+          - /oauth/**
+#          - /oauth/authorize
+#          - /oauth/check_token
           - /login
+          - /logout
+          - /*.html
+          - /*.js
+          - /*.css
+          - /favicon.ico

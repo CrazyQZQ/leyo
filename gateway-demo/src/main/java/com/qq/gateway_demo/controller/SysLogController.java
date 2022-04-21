@@ -1,13 +1,11 @@
-package com.qq.oauth2.demo.controller;
+package com.qq.gateway_demo.controller;
 
 import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.common_redis.service.RedisService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,19 +16,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Description:
  * @Author QinQiang
- * @Date 2022/4/18
+ * @Date 2022/4/20
  **/
 @Controller
-@RequestMapping("oauth")
-@Slf4j
-public class LogController {
+public class SysLogController {
 
     @Autowired
     private RedisService redisService;
-
-    @Autowired
-    AuthorizationServerTokenServices authorizationServerTokenServices;
-
 
     @RequestMapping("login")
     public String login() {

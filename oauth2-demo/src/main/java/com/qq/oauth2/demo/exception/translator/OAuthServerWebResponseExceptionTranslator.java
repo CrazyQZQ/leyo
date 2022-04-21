@@ -1,6 +1,7 @@
 package com.qq.oauth2.demo.exception.translator;
 
-import com.qq.oauth2.demo.exception.enums.ResultCode;
+import com.qq.common.core.enums.AuthResultCode;
+import com.qq.common.core.web.domain.AjaxResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
@@ -14,17 +15,17 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
  **/
 public class OAuthServerWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
     @Override
-    public ResponseEntity<ResultCode> translate(Exception e) throws Exception {
-        ResultCode resultCode = doTranslate(e);
-        return new ResponseEntity<>(resultCode, HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<AjaxResult> translate(Exception e) {
+        AuthResultCode resultCode = doTranslate(e);
+        return new ResponseEntity<>(AjaxResult.error(resultCode.getCode(), resultCode.getMsg()), HttpStatus.UNAUTHORIZED);
     }
 
-    private ResultCode doTranslate(Exception e){
-        ResultCode resultCode = ResultCode.UNAUTHORIZED;
-        if(e instanceof UnsupportedGrantTypeException){
-            resultCode = ResultCode.UNSUPPORTED_GRANT_TYPE;
-        }else if(e instanceof InvalidGrantException){
-            resultCode = ResultCode.USERNAME_OR_PASSWORD_ERROR;
+    private AuthResultCode doTranslate(Exception e) {
+        AuthResultCode resultCode = AuthResultCode.UNAUTHORIZED;
+        if (e instanceof UnsupportedGrantTypeException) {
+            resultCode = AuthResultCode.UNSUPPORTED_GRANT_TYPE;
+        } else if (e instanceof InvalidGrantException) {
+            resultCode = AuthResultCode.USERNAME_OR_PASSWORD_ERROR;
         }
         return resultCode;
     }

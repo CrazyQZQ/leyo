@@ -26,8 +26,6 @@ import java.util.LinkedHashMap;
 @Configuration
 public class AccessTokenConfig {
 
-    private static final String SIGN_KEY = "lxqq";
-
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
