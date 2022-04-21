@@ -1,4 +1,6 @@
 spring:
+    application:
+        name: oauth2-demo
     cloud:
         nacos:
             config:
@@ -10,9 +12,19 @@ spring:
                 username: nacos
                 # 共享配置
                 shared-configs:
-                    - dataId: share-datasource.yml
-                      group: DEFAULT_GROUP
-                      refresh-enabled: true
-                    - dataId: share-redis.yml
-                      group: DEFAULT_GROUP
-                      refresh-enabled: true
+                    -   dataId: share-datasource.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+                    -   dataId: share-redis.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+                    -   dataId: share-common.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+server:
+    port: 8844
+log:
+    path: /home/cloud-demo/oauth-demo
+    level:
+        org:
+            springframework: DEBUG

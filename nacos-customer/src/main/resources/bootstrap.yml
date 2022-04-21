@@ -1,18 +1,25 @@
+feign:
+    sentinel:
+        enabled: true
+server:
+    port: 8842
 spring:
-  cloud:
-    nacos:
-      config:
-        contextPath: /nacos
-        file-extension: yml
-        password: nacos
-        refresh-enabled: true
-        server-addr: 1.13.17.66:8848
-        username: nacos
-        # 共享配置
-        shared-configs:
-          - dataId: share-datasource.yml
-            group: DEFAULT_GROUP
-            refresh-enabled: true
-          - dataId: share-redis.yml
-            group: DEFAULT_GROUP
-            refresh-enabled: true
+    application:
+        name: nacos-customer
+    cloud:
+        nacos:
+            config:
+                contextPath: /nacos
+                file-extension: yml
+                password: nacos
+                refresh-enabled: true
+                server-addr: 1.13.17.66:8848
+                username: nacos
+                # 共享配置
+                shared-configs:
+                    -   dataId: share-datasource.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+                    -   dataId: share-redis.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
