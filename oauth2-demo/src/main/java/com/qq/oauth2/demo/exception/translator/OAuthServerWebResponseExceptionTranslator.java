@@ -4,6 +4,7 @@ import com.qq.common.core.enums.AuthResultCode;
 import com.qq.common.core.web.domain.AjaxResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.common.exceptions.InvalidClientException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.UnsupportedGrantTypeException;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
@@ -26,6 +27,8 @@ public class OAuthServerWebResponseExceptionTranslator implements WebResponseExc
             resultCode = AuthResultCode.UNSUPPORTED_GRANT_TYPE;
         } else if (e instanceof InvalidGrantException) {
             resultCode = AuthResultCode.USERNAME_OR_PASSWORD_ERROR;
+        } else if (e instanceof InvalidClientException) {
+            resultCode = AuthResultCode.UNSUPPORTED_GRANT_TYPE;
         }
         return resultCode;
     }

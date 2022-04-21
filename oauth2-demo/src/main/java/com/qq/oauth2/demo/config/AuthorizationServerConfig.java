@@ -22,6 +22,9 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import javax.sql.DataSource;
+
+
 /**
  * @Description: 授权服核心配置，授权服务需要
  * https://mp.weixin.qq.com/s?__biz=MzU3MDAzNDg1MA==&mid=2247502682&idx=1&sn=52a15b623ab6135c134b8262bd605946&chksm=fcf71497cb809d81f1d2dbce76b3e00170f085306b2a2a67a807a6d9e2cf03bf1de3b8f203a2&token=404376711&lang=zh_CN&scene=21#wechat_redirect
@@ -43,6 +46,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private DataSource dataSource;
+
     /**
      * 客户端配置，id，秘钥等
      * <p>
@@ -56,17 +62,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //基于内存便于测试
-        clients.inMemory()// 使用in-memory存储
-                .withClient("qq")// client_id
-//                .secret("secret")//未加密
-                .secret(passwordEncoder.encode("111"))//加密
-                .resourceIds("res1")// 资源id列表
-                // 该client允许的授权类型authorization_code,password,refresh_token,implicit,client_credentials
-                .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")
-                .scopes("all", "ROLE_ADMIN", "ROLE_USER")// 允许的授权范围
-                .autoApprove(false)//false跳转到授权页面
-                //加上验证回调地址
-                .redirectUris("http://localhost:8844/test");
+//         clients.inMemory()// 使用in-memory存储
+//                 .withClient("qq")// client_id
+// //                .secret("secret")//未加密
+//                 .secret(passwordEncoder.encode("111"))//加密
+//                 .resourceIds("res1")// 资源id列表
+//                 // 该client允许的授权类型authorization_code,password,refresh_token,implicit,client_credentials
+//                 .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")
+//                 .scopes("all", "ROLE_ADMIN", "ROLE_USER")// 允许的授权范围
+//                 .autoApprove(false)//false跳转到授权页面
+//                 //加上验证回调地址
+//                 .redirectUris("http://localhost:8844/test");
+        // 配置方法1，只需配置DataSource即可，其它交给框架自动配置
+        // 从数据库中读取
+        clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
     }
 
     /**

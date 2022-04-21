@@ -7,15 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
+import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 
 /**
@@ -30,6 +34,12 @@ public class AccessTokenConfig {
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+
     /**
      * 令牌的存储策略，这里使用的是JwtTokenStore，使用JWT的令牌生成方式，其实还有以下两个比较常用的方式：
      * <p>
@@ -40,10 +50,14 @@ public class AccessTokenConfig {
      */
     @Bean
     public TokenStore tokenStore() {
-
-//        return new InMemoryTokenStore();
-        // 使用jwt
-        return new JwtTokenStore(jwtAccessTokenConverter());
+        // 保存在内存中
+        // return new InMemoryTokenStore();
+        // 保存在数据库中
+        // return new JdbcTokenStore(dataSource);
+        // 保存在Redis中
+        return new RedisTokenStore(redisConnectionFactory);
+        // 使用jwt令牌
+        // return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
     /**
