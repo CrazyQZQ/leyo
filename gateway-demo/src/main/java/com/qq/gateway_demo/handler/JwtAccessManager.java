@@ -1,5 +1,6 @@
 package com.qq.gateway_demo.handler;
 
+import com.qq.common.core.constant.CacheConstants;
 import com.qq.common_redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class JwtAccessManager implements ReactiveAuthorizationManager<Authorizat
         URI uri = authorizationContext.getExchange().getRequest().getURI();
         // 这里是直接从Redis中取出资源URI对应的权限集合，因此实际开发中需要维护资源URI和权限的对应关系，
         // 直接在项目启动的时候向Redis中添加了两个资源的权限，
-        List<String> authorities = redisService.getCacheList(uri.getPath());
+        List<String> authorities = redisService.getCacheList(CacheConstants.MENU_ROLES + uri.getPath());
 
         return mono.filter(Authentication::isAuthenticated)
                 // 这处代码就是取出令牌中的权限集合

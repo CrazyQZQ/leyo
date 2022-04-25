@@ -21,4 +21,9 @@ public class CacheConstants
      * 权限缓存前缀
      */
     public final static String LOGIN_TOKEN_KEY = "login_tokens:";
+
+    /**
+     * 权限缓存前缀
+     */
+    public final static String MENU_ROLES = "menu_roles:";
 }
