@@ -1,0 +1,12 @@
+spring:
+    application:
+        name: es-server
+server:
+    port: 8846
+
+elastic:
+    search:
+        host: 1.13.17.66
+        port: 9200
+        username: elastic
+        password: Dsmdd_k-D=PIok_EJaHT

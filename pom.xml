@@ -17,6 +17,7 @@
         <module>common</module>
         <module>oauth2-demo</module>
         <module>oauth2-resouce-demo</module>
+        <module>es-server</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -41,6 +42,7 @@
         <swagger.version>1.6.2</swagger.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <mybatis-plus-join.varsion>1.2.2</mybatis-plus-join.varsion>
+        <elasticsearch-java>8.0.1</elasticsearch-java>
     </properties>
 
     <dependencies>
@@ -49,6 +51,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
             <version>${bootstrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
@@ -147,7 +153,11 @@
                 <artifactId>hutool-all</artifactId>
                 <version>5.7.9</version>
             </dependency>
-
+            <dependency>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
+                <version>${elasticsearch-java}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
