@@ -1,18 +1,20 @@
 package com.qq.common.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 菜单权限表(SysMenu)实体类
  *
  * @author makejava
- * @since 2022-04-18 15:24:11
+ * @since 2022-04-27 14:03:26
  */
+@Data
 public class SysMenu implements Serializable {
-    private static final long serialVersionUID = -66901660498791966L;
+    private static final long serialVersionUID = -21737160929546852L;
     /**
     * 菜单ID
     */
@@ -31,13 +33,25 @@ public class SysMenu implements Serializable {
     */
     private Integer orderNum;
     /**
-    * 请求地址
+    * 路由地址
     */
-    private String url;
+    private String path;
     /**
-    * 打开方式（menuItem页签 menuBlank新窗口）
+    * 组件路径
     */
-    private String target;
+    private String component;
+    /**
+    * 路由参数
+    */
+    private String query;
+    /**
+    * 是否为外链（0是 1否）
+    */
+    private Integer isFrame;
+    /**
+    * 是否缓存（0缓存 1不缓存）
+    */
+    private Integer isCache;
     /**
     * 菜单类型（M目录 C菜单 F按钮）
     */
@@ -47,9 +61,9 @@ public class SysMenu implements Serializable {
     */
     private String visible;
     /**
-    * 是否刷新（0刷新 1不刷新）
+    * 菜单状态（0正常 1停用）
     */
-    private String isRefresh;
+    private String status;
     /**
     * 权限标识
     */
@@ -78,134 +92,4 @@ public class SysMenu implements Serializable {
     * 备注
     */
     private String remark;
-
-
-    public Long getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Integer getOrderNum() {
-        return orderNum;
-    }
-
-    public void setOrderNum(Integer orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public String getMenuType() {
-        return menuType;
-    }
-
-    public void setMenuType(String menuType) {
-        this.menuType = menuType;
-    }
-
-    public String getVisible() {
-        return visible;
-    }
-
-    public void setVisible(String visible) {
-        this.visible = visible;
-    }
-
-    public String getIsRefresh() {
-        return isRefresh;
-    }
-
-    public void setIsRefresh(String isRefresh) {
-        this.isRefresh = isRefresh;
-    }
-
-    public String getPerms() {
-        return perms;
-    }
-
-    public void setPerms(String perms) {
-        this.perms = perms;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
 }

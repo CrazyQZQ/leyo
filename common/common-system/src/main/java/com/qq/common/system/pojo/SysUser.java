@@ -35,11 +35,11 @@ public class SysUser extends JwtInfo implements Serializable {
     /**
      * 登录账号
      */
-    private String loginName;
+    private String userName;
     /**
      * 用户昵称
      */
-    private String userName;
+    private String nickName;
     /**
      * 用户类型（00系统用户 01注册用户）
      */
@@ -66,11 +66,6 @@ public class SysUser extends JwtInfo implements Serializable {
     @JSONField(serialize = false)
     private String password;
     /**
-     * 盐加密
-     */
-    @JSONField(serialize = false)
-    private String salt;
-    /**
      * 帐号状态（0正常 1停用）
      */
     private String status;
@@ -86,10 +81,6 @@ public class SysUser extends JwtInfo implements Serializable {
      * 最后登录时间
      */
     private Date loginDate;
-    /**
-     * 密码最后更新时间
-     */
-    private Date pwdUpdateDate;
     /**
      * 创建者
      */
@@ -116,32 +107,4 @@ public class SysUser extends JwtInfo implements Serializable {
      */
     @TableField(exist = false)
     private String[] authorities;
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .append("userId", userId)
-                .append("deptId", deptId)
-                .append("loginName", loginName)
-                .append("userName", userName)
-                .append("userType", userType)
-                .append("email", email)
-                .append("phonenumber", phonenumber)
-                .append("sex", sex)
-                .append("avatar", avatar)
-                .append("password", password)
-                .append("salt", salt)
-                .append("status", status)
-                .append("delFlag", delFlag)
-                .append("loginIp", loginIp)
-                .append("loginDate", loginDate)
-                .append("pwdUpdateDate", pwdUpdateDate)
-                .append("createBy", createBy)
-                .append("createTime", createTime)
-                .append("updateBy", updateBy)
-                .append("updateTime", updateTime)
-                .append("remark", remark)
-                .append("authorities", authorities)
-                .toString();
-    }
 }

@@ -1,0 +1,59 @@
+server:
+    port: 8088
+spring:
+    application:
+        name: gateway-server
+    main:
+        allow-bean-definition-overriding: true
+    cloud:
+        gateway:
+            discovery:
+                locator:
+                    enabled: true
+            routes:
+                -   id: user_server
+                    uri: lb://user-server
+                    predicates:
+                        - Path=/user/**
+                -   id: account_server
+                    uri: lb://account-server
+                    predicates:
+                        - Path=/account/**
+                -   id: oauth2_server
+                    uri: lb://oauth2-server
+                    predicates:
+                        - Path=/oauth/**
+        nacos:
+            config:
+                contextPath: /nacos
+                file-extension: yml
+                password: nacos
+                refresh-enabled: true
+                server-addr: 1.13.17.66:8848
+                username: nacos
+                # 共享配置
+                shared-configs:
+                    -   dataId: share-redis.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+                    -   dataId: share-common.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+
+oauth2:
+    cloud:
+        sys:
+            parameter:
+                ignoreUrls:
+                    - /oauth/**
+                    - /login
+                    - /logout
+                    - /*.html
+                    - /*.js
+                    - /*.css
+                    - /favicon.ico
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
