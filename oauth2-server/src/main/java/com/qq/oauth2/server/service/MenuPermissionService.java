@@ -8,7 +8,7 @@ import com.qq.common.system.mapper.SysMenuMapper;
 import com.qq.common.system.mapper.SysRoleMapper;
 import com.qq.common.system.pojo.SysMenu;
 import com.qq.common.system.pojo.SysRole;
-import com.qq.common_redis.service.RedisService;
+import com.qq.common.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

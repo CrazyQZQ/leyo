@@ -1,7 +1,7 @@
 package com.qq.gateway.service;
 
 import com.google.common.collect.Lists;
-import com.qq.common_redis.service.RedisService;
+import com.qq.common.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

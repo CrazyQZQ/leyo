@@ -6,10 +6,10 @@ spring:
             config:
                 contextPath: /nacos
                 file-extension: yml
-                password: nacos
+                password: qq123456
                 refresh-enabled: true
                 server-addr: 1.13.17.66:8848
-                username: nacos
+                username: qq
                 # 共享配置
                 shared-configs:
                     -   dataId: share-datasource.yml

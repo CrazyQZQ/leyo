@@ -15,6 +15,7 @@
         <module>common-core</module>
         <module>common-system</module>
         <module>common-log</module>
+        <module>common-es</module>
     </modules>
     <parent>
         <groupId>com.qq</groupId>

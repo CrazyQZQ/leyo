@@ -1,6 +1,5 @@
 package com.qq.oauth2.server.config;
 
-import com.qq.common_redis.service.RedisService;
 import com.qq.oauth2.server.handler.FebsWebLoginFailureHandler;
 import com.qq.oauth2.server.handler.FebsWebLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public RedisService redisService() {
-        return new RedisService();
     }
 
     @Autowired

@@ -10,7 +10,7 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>user-server</module>
+        <module>system-server</module>
         <module>account-server</module>
         <module>gateway-server</module>
         <module>common</module>

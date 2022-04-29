@@ -63,6 +63,8 @@ public class LogAspect {
 
             String title = controllerLog.title();
             logMessage.append("模块: ").append(title).append(",");
+            String funcDesc = controllerLog.funcDesc();
+            logMessage.append("功能描述: ").append(funcDesc).append(",");
             // *========数据库日志=========*//
             // 请求的地址
             String ip = IpUtils.getIpAddr(ServletUtils.getRequest());

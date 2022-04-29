@@ -1,6 +1,5 @@
 package com.qq.gateway.config;
 
-import com.qq.common_redis.service.RedisService;
 import com.qq.gateway.handler.SentinelFallbackHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +17,5 @@ public class GatewayConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SentinelFallbackHandler sentinelGatewayExceptionHandler() {
         return new SentinelFallbackHandler();
-    }
-
-    @Bean
-    public RedisService redisService() {
-        return new RedisService();
     }
 }

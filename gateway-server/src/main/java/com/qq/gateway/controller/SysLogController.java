@@ -4,7 +4,7 @@ import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.utils.OauthUtils;
-import com.qq.common_redis.service.RedisService;
+import com.qq.common.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;

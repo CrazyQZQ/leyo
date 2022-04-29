@@ -11,10 +11,10 @@ spring:
                 locator:
                     enabled: true
             routes:
-                -   id: user_server
-                    uri: lb://user-server
+                -   id: system_server
+                    uri: lb://system-server
                     predicates:
-                        - Path=/user/**
+                        - Path=/system/**
                 -   id: account_server
                     uri: lb://account-server
                     predicates:
@@ -27,10 +27,10 @@ spring:
             config:
                 contextPath: /nacos
                 file-extension: yml
-                password: nacos
+                password: qq123456
                 refresh-enabled: true
                 server-addr: 1.13.17.66:8848
-                username: nacos
+                username: qq
                 # 共享配置
                 shared-configs:
                     -   dataId: share-redis.yml

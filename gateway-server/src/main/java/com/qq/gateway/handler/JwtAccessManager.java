@@ -1,7 +1,7 @@
 package com.qq.gateway.handler;
 
 import com.qq.common.core.constant.CacheConstants;
-import com.qq.common_redis.service.RedisService;
+import com.qq.common.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authorization.AuthorizationDecision;

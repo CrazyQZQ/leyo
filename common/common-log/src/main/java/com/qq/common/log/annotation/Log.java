@@ -23,9 +23,9 @@ public @interface Log
     public String title() default "";
 
     /**
-     * 功能
+     * 功能描述
      */
-//    public BusinessType businessType() default BusinessType.OTHER;
+   public String funcDesc() default "";
 
     /**
      * 操作人类别

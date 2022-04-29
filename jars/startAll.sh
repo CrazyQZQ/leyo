@@ -1,9 +1,10 @@
 #!/bin/sh
 
 export CONFIG=nacos-demo-0.0.1.jar
-export GATEWAY=gateway-demo-0.0.1.jar
-export CUSTOMER=nacos-customer-0.0.1.jar
-export POVIDER=nacos-provider-0.0.1.jar
+export GATEWAY=gateway-server-0.0.1.jar
+export CUSTOMER=account-server-0.0.1.jar
+export POVIDER=system-server-0.0.1.jar
+export OAUTH=oauth2-server-0.0.1.jar
 
 export CONFIG_log=../logs/configserver.log
 export GATEWAY_log=../logs/gateway.log

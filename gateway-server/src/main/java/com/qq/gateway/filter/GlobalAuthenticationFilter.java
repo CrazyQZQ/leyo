@@ -9,7 +9,7 @@ import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.StringUtils;
 import com.qq.common.core.utils.sign.Base64;
 import com.qq.common.core.web.domain.AjaxResult;
-import com.qq.common_redis.service.RedisService;
+import com.qq.common.redis.service.RedisService;
 import com.qq.gateway.config.SysParameterConfig;
 import com.qq.gateway.pojo.RequestLogInfo;
 import lombok.extern.slf4j.Slf4j;

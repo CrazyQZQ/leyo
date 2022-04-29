@@ -1,6 +1,8 @@
 package com.qq.common.system.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,6 +13,7 @@ import java.io.Serializable;
  * @since 2022-04-08 17:12:19
  */
 @TableName("sys_user_role")
+@Data
 public class SysUserRole implements Serializable {
     private static final long serialVersionUID = -89769862856507650L;
     /**
@@ -20,23 +23,7 @@ public class SysUserRole implements Serializable {
     /**
     * 角色ID
     */
+    @TableId
     private Long roleId;
-
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
 
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qq.common.system.mapper.SysAccountMapper">
+
+    <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysAccount">
+            <id property="account_id" column="account_id" jdbcType="BIGINT"/>
+            <result property="account_code" column="account_code" jdbcType="BIGINT"/>
+            <result property="account_name" column="account_name" jdbcType="VARCHAR"/>
+            <result property="amount" column="amount" jdbcType="DECIMAL"/>
+            <result property="create_by" column="create_by" jdbcType="VARCHAR"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="update_by" column="update_by" jdbcType="VARCHAR"/>
+            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        account_id,account_code,account_name,
+        amount,create_by,create_time,
+        update_by,update_time
+    </sql>
+</mapper>
