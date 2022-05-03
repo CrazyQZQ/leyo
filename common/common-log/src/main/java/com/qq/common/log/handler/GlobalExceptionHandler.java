@@ -1,4 +1,4 @@
-package com.qq.common.system.handler;
+package com.qq.common.log.handler;
 
 import com.qq.common.core.constant.HttpStatus;
 import com.qq.common.core.exception.DemoModeException;

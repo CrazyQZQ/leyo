@@ -13,5 +13,7 @@ import java.util.List;
 */
 public interface SysMenuService extends IService<SysMenu> {
 
-    void addMenu(SysMenu sysMenu, List<SysRoleMenu> sysRoleMenus);
+    void addMenu(SysMenu sysMenu);
+
+    void authMenu(Long menuId, List<SysRoleMenu> sysRoleMenus);
 }

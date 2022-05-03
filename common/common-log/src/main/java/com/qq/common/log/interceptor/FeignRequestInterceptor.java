@@ -1,4 +1,4 @@
-package com.qq.common.system.interceptor;
+package com.qq.common.log.interceptor;
 
 import com.qq.common.core.utils.ServletUtils;
 import feign.RequestInterceptor;

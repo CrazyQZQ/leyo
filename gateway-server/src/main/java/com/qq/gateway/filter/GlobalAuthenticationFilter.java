@@ -115,8 +115,9 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             //放入请求头中
             ServerHttpRequest tokenRequest = exchange.getRequest().mutate().header(TokenConstants.TOKEN_NAME, base64).build();
 
-            ServerHttpResponseDecorator serverHttpResponseDecorator = printLog(exchange);
-            ServerWebExchange build = exchange.mutate().request(tokenRequest).response(serverHttpResponseDecorator).build();
+//            ServerHttpResponseDecorator serverHttpResponseDecorator = printLog(exchange);
+//            ServerWebExchange build = exchange.mutate().request(tokenRequest).response(serverHttpResponseDecorator).build();
+            ServerWebExchange build = exchange.mutate().request(tokenRequest).build();
             return chain.filter(build);
         } catch (InvalidTokenException e) {
             //解析token异常，直接返回token无效
