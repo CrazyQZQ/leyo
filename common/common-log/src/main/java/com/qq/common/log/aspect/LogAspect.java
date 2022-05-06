@@ -1,9 +1,12 @@
 package com.qq.common.log.aspect;
 
 import com.alibaba.fastjson.JSON;
+import com.qq.common.core.constant.CacheConstants;
 import com.qq.common.core.utils.ServletUtils;
 import com.qq.common.core.utils.ip.IpUtils;
 import com.qq.common.log.annotation.Log;
+import com.qq.common.log.pojo.LogInfo;
+import com.qq.common.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -12,9 +15,12 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * 操作日志记录处理
@@ -25,6 +31,9 @@ import java.lang.reflect.Method;
 @Component
 @Slf4j
 public class LogAspect {
+
+    @Autowired
+    private RedisService redisService;
 
     // 配置织入点
     @Pointcut("@annotation(com.qq.common.log.annotation.Log)")
@@ -54,33 +63,33 @@ public class LogAspect {
 
     protected void handleLog(final JoinPoint joinPoint, final Exception e, Object jsonResult) {
         try {
-            StringBuffer logMessage = new StringBuffer();
             // 获得注解
             Log controllerLog = getAnnotationLog(joinPoint);
             if (controllerLog == null) {
                 return;
             }
 
-            String title = controllerLog.title();
-            logMessage.append("模块: ").append(title).append(",");
+            String module = controllerLog.title();
             String funcDesc = controllerLog.funcDesc();
-            logMessage.append("功能描述: ").append(funcDesc).append(",");
-            // *========数据库日志=========*//
             // 请求的地址
             String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
-            logMessage.append("请求地址: ").append(ip).append(",");
-
-
             String requestURI = ServletUtils.getRequest().getRequestURI();
-            logMessage.append("请求Uri: ").append(requestURI).append(",");
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
             String classMethod = className + "." + methodName + "()";
-            logMessage.append("请求方法: ").append(classMethod).append(",");
             // 返回参数
-            logMessage.append("返回参数: ").append(JSON.toJSONString(jsonResult));
-            log.info(logMessage.toString());
+            LogInfo logInfo = LogInfo.builder()
+                    .module(module)
+                    .funcDesc(funcDesc)
+                    .ip(ip)
+                    .url(requestURI)
+                    .method(classMethod)
+                    .response(JSON.toJSONString(jsonResult))
+                    .build();
+            // 存到redis通过logstash消费保存到es中
+            redisService.setCacheList(CacheConstants.LOGS_KEY, Arrays.asList(logInfo));
+            log.info(JSON.toJSONString(logInfo));
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("==前置通知异常==");

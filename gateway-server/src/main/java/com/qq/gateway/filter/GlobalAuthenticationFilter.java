@@ -43,13 +43,12 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * @author 公众号：码猿技术专栏
  * 全局过滤器，对token的拦截，解析token放入header中，便于下游微服务获取用户信息
  * 分为如下几步：
- *  1、白名单直接放行
- *  2、校验token
- *  3、读取token中存放的用户信息
- *  4、重新封装用户信息，加密成功json数据放入请求头中传递给下游微服务
+ * 1、白名单直接放行
+ * 2、校验token
+ * 3、读取token中存放的用户信息
+ * 4、重新封装用户信息，加密成功json数据放入请求头中传递给下游微服务
  */
 @Component
 @Slf4j
@@ -74,7 +73,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
         log.info("GlobalAuthenticationFilter filter start: {}", exchange.getRequest().getURI());
         String requestUrl = exchange.getRequest().getPath().value();
         //1、白名单放行，比如授权服务、静态资源.....
-        if (StringUtils.matches(requestUrl,sysConfig.getIgnoreUrls())){
+        if (StringUtils.matches(requestUrl, sysConfig.getIgnoreUrls())) {
             return chain.filter(exchange);
         }
 
@@ -91,7 +90,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             oAuth2AccessToken = tokenStore.readAccessToken(token);
             Map<String, Object> additionalInformation = oAuth2AccessToken.getAdditionalInformation();
             //令牌的唯一ID
-            String jti=additionalInformation.get(TokenConstants.JTI).toString();
+            String jti = additionalInformation.get(TokenConstants.JTI).toString();
             /**查看黑名单中是否存在这个jti，如果存在则这个令牌不能用****/
             Boolean hasKey = redisService.hasKey(AuthConstants.JTI_KEY_PREFIX + jti);
             if (hasKey)
@@ -102,12 +101,12 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             List<String> authorities = (List<String>) additionalInformation.get("authorities");
             //从additionalInformation取出userId
             String userId = additionalInformation.get(TokenConstants.USER_ID).toString();
-            JSONObject jsonObject=new JSONObject();
+            JSONObject jsonObject = new JSONObject();
             jsonObject.put(TokenConstants.PRINCIPAL_NAME, user_name);
-            jsonObject.put(TokenConstants.AUTHORITIES_NAME,authorities);
+            jsonObject.put(TokenConstants.AUTHORITIES_NAME, authorities);
             //过期时间，单位秒
-            jsonObject.put(TokenConstants.EXPR,oAuth2AccessToken.getExpiresIn());
-            jsonObject.put(TokenConstants.JTI,jti);
+            jsonObject.put(TokenConstants.EXPR, oAuth2AccessToken.getExpiresIn());
+            jsonObject.put(TokenConstants.JTI, jti);
             //封装到JSON数据中
             jsonObject.put(TokenConstants.USER_ID, userId);
             //将解析后的token加密放入请求头中，方便下游微服务解析获取用户信息
@@ -123,26 +122,12 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             //解析token异常，直接返回token无效
             return invalidTokenMono(exchange);
         }
-
-
     }
 
     @Override
     public int getOrder() {
         return -2;
     }
-
-    // /**
-    //  * 对url进行校验匹配
-    //  */
-    // private boolean checkUrls(List<String> urls,String path){
-    //     AntPathMatcher pathMatcher = new AntPathMatcher();
-    //     for (String url : urls) {
-    //         if (pathMatcher.match(url,path))
-    //             return true;
-    //     }
-    //     return false;
-    // }
 
     /**
      * 从请求头中获取Token
@@ -163,8 +148,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
      * 无效的token
      */
     private Mono<Void> invalidTokenMono(ServerWebExchange exchange) {
-
-        return buildReturnMono(new AjaxResult(AuthResultCode.INVALID_TOKEN.getCode(),AuthResultCode.INVALID_TOKEN.getMsg()), exchange);
+        return buildReturnMono(new AjaxResult(AuthResultCode.INVALID_TOKEN.getCode(), AuthResultCode.INVALID_TOKEN.getMsg()), exchange);
     }
 
 
@@ -179,10 +163,11 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
 
     /**
      * 打印日志
+     *
      * @param exchange
      * @return
      */
-    private ServerHttpResponseDecorator printLog(ServerWebExchange exchange){
+    private ServerHttpResponseDecorator printLog(ServerWebExchange exchange) {
         long start = System.currentTimeMillis();
 
         RequestLogInfo logInfo = new RequestLogInfo();
@@ -196,7 +181,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
         logInfo.setRequestUrl(uri.getPath());
         logInfo.setRequestTime(DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS));
         // 获取请求body
-        if("POST".equals(method)){
+        if ("POST".equals(method)) {
             //获取请求体
             Flux<DataBuffer> body = request.getBody();
 
@@ -211,7 +196,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
         }
         // 获取请求query
         logInfo.setRequestParam(JSON.toJSONString(request.getQueryParams()));
-        logInfo.setRemoteAddr(address.getHostName()+address.getPort());
+        logInfo.setRemoteAddr(address.getHostName() + address.getPort());
         logInfo.setRequestMethod(method);
 
         ServerHttpResponse response = exchange.getResponse();

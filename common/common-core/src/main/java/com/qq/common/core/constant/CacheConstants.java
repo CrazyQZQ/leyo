@@ -26,4 +26,11 @@ public class CacheConstants
      * 权限缓存前缀
      */
     public final static String MENU_ROLES = "menu_roles:";
+
+    /**
+     * 日志缓存前缀
+     */
+    public final static String LOGS_KEY = "logs";
+
+
 }

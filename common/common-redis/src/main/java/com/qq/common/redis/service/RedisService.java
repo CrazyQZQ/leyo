@@ -139,6 +139,15 @@ public class RedisService {
     }
 
     /**
+     * 向list尾部追加数据
+     * @param key
+     * @param value
+     */
+    public void pushList(final String key, final Object value) {
+        redisTemplate.opsForList().rightPush(key, value);
+    }
+
+    /**
      * 缓存Set
      *
      * @param key     缓存键值

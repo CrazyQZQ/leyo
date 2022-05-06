@@ -6,7 +6,7 @@ server:
 
 elastic:
     search:
-        host: 1.13.17.66
+        host: 124.221.239.207
         port: 9200
         username: elastic
-        password: Dsmdd_k-D=PIok_EJaHT
+        password: qq123456
