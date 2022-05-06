@@ -2,6 +2,7 @@ package com.qq.common.log.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.qq.common.core.constant.CacheConstants;
+import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.ServletUtils;
 import com.qq.common.core.utils.ip.IpUtils;
 import com.qq.common.log.annotation.Log;
@@ -86,6 +87,7 @@ public class LogAspect {
                     .url(requestURI)
                     .method(classMethod)
                     .response(JSON.toJSONString(jsonResult))
+                    .time(DateUtils.getTime())
                     .build();
             // 存到redis通过logstash消费保存到es中
             redisService.setCacheList(CacheConstants.LOGS_KEY, Arrays.asList(logInfo));

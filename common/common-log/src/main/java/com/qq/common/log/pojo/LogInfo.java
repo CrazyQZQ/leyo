@@ -36,4 +36,8 @@ public class LogInfo {
      * 返回参数
      */
     private String response;
+    /**
+     * 时间
+     */
+    private String time;
 }

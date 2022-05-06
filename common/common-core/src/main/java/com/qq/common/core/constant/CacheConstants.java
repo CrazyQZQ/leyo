@@ -32,5 +32,9 @@ public class CacheConstants
      */
     public final static String LOGS_KEY = "logs";
 
+    /**
+     * 错误日志缓存前缀
+     */
+    public final static String ERROR_LOGS_KEY = "error_logs";
 
 }
