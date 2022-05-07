@@ -18,4 +18,9 @@ public class FileVO {
      * 上传时间
      */
     private String uploadTime;
+
+    /**
+     * 图片预览地址
+     */
+    private String previewUrl;
 }

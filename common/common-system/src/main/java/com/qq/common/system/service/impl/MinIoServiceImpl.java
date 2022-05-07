@@ -1,6 +1,8 @@
 package com.qq.common.system.service.impl;
 
 import com.qq.common.core.utils.DateUtils;
+import com.qq.common.core.utils.file.ImageUtils;
+import com.qq.common.core.utils.file.MimeTypeUtils;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.vo.FileVO;
 import io.minio.MinioClient;
@@ -150,7 +152,11 @@ public class MinIoServiceImpl implements MinIoService {
                 FileVO fileVO = new FileVO();
                 fileVO.setObjectName(item.objectName());
                 fileVO.setUploadTime(zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                if(ImageUtils.isImage(item.objectName())) {
+                    fileVO.setPreviewUrl(ENDPOINT + "/" + BUCKET_NAME + "/" + item.objectName());
+                }
                 fileVOS.add(fileVO);
+
             }
         } catch (Exception e) {
             log.error("查询文件列表发生错误: ", e);
