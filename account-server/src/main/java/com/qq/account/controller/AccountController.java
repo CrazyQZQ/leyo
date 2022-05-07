@@ -32,6 +32,9 @@ public class AccountController {
     @GetMapping("/getAccountById")
     @Log(title = "account",funcDesc = "获取账户信息")
     public AjaxResult getAccountById(Long id){
+        if(id == null){
+            return AjaxResult.error("账户id不能为空");
+        }
         return AjaxResult.success(accountService.getById(id));
     }
 

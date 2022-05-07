@@ -2,6 +2,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.qq.common.system.service.impl.SysAccountServiceImpl,\
   com.qq.common.system.service.impl.SysMenuServiceImpl,\
   com.qq.common.system.service.impl.SysRoleServiceImpl,\
-  com.qq.common.system.service.impl.SysUserServiceImpl
+  com.qq.common.system.service.impl.SysUserServiceImpl,\
+  com.qq.common.system.service.impl.MinIoServiceImpl
 
   
