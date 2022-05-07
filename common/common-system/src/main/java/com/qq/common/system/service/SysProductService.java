@@ -1,7 +1,9 @@
 package com.qq.common.system.service;
 
+import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.system.pojo.SysProduct;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
 * @author Administrator
@@ -10,4 +12,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface SysProductService extends IService<SysProduct> {
 
+    /**
+     * @description 新增商品
+     * @param images 商品图片
+     * @param sysProduct 商品信息
+     * @return
+     */
+    AjaxResult addProduct(MultipartFile[] images, SysProduct sysProduct);
 }

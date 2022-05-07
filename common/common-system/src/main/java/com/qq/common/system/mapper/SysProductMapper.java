@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.qq.common.system.pojo.SysProduct
 */
 public interface SysProductMapper extends BaseMapper<SysProduct> {
-
+    int insertImage();
 }
 
 
