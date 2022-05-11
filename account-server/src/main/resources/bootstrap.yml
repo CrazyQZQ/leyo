@@ -2,7 +2,7 @@ feign:
     sentinel:
         enabled: true
 server:
-    port: 8842
+    port: 8703
 spring:
     application:
         name: account-server

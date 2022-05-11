@@ -1,5 +1,5 @@
 server:
-    port: 8088
+    port: 8700
 spring:
     application:
         name: gateway-server
@@ -23,6 +23,14 @@ spring:
                     uri: lb://oauth2-server
                     predicates:
                         - Path=/oauth/**
+                -   id: product_server
+                    uri: lb://product-server
+                    predicates:
+                        - Path=/product/**
+                -   id: es_server
+                    uri: lb://es-server
+                    predicates:
+                        - Path=/search/**
         nacos:
             config:
                 contextPath: /nacos

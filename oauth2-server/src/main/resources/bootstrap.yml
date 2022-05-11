@@ -22,7 +22,7 @@ spring:
                         group: DEFAULT_GROUP
                         refresh-enabled: true
 server:
-    port: 8844
+    port: 8702
 log:
     path: /home/cloud-demo/oauth-demo
     level:
