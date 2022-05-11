@@ -33,6 +33,8 @@
     </select>
     <select id="getProductList" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>,sb.name brand_name from sys_product sp
+        left join sys_product_brand spb on sp.id = spb.product_id
+        left join sys_brand sb on spb.brand_id = sb.id
     </select>
     <select id="selectImagesById" resultType="string">
         select image_url from sys_product_images where product_id=#{id}

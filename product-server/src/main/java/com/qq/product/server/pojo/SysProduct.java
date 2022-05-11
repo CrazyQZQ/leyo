@@ -106,7 +106,7 @@ public class SysProduct implements Serializable {
      * 品牌名称
      */
     @TableField(exist = false)
-    private Long brandName;
+    private String brandName;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

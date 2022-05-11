@@ -2,6 +2,7 @@ package com.qq.product.server.service.impl;
 
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.es.service.EsService;
@@ -87,13 +88,16 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         if(i == 0){
             throw new ServiceException("商品不存在！");
         }
-        esService.updateDoc("product", product.getId().toString(), this.baseMapper.selectById(product.getId()));
         if(ObjectUtils.isNotEmpty(product.getBrandId())){
             SysProductBrand productBrand = new SysProductBrand();
-            productBrand.setBrandId(productBrand.getProductId());
-            productBrand.setProductId(product.getId());
-            sysProductBrandMapper.update(productBrand, new QueryWrapper<SysProductBrand>().eq("product_id", product.getId()));
+            productBrand.setBrandId(product.getBrandId());
+            int rows = sysProductBrandMapper.update(productBrand, new UpdateWrapper<SysProductBrand>().eq("product_id", product.getId()));
+            if(rows < 1){
+                productBrand.setProductId(product.getId());
+                sysProductBrandMapper.insert(productBrand);
+            }
         }
+        esService.updateDoc("product", product.getId().toString(), this.baseMapper.selectById(product.getId()));
         return i;
     }
 
