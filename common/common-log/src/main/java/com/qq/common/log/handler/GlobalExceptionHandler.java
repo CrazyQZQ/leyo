@@ -1,6 +1,5 @@
 package com.qq.common.log.handler;
 
-import com.alibaba.fastjson.JSON;
 import com.qq.common.core.constant.CacheConstants;
 import com.qq.common.core.constant.HttpStatus;
 import com.qq.common.core.exception.DemoModeException;
@@ -12,11 +11,11 @@ import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.StringUtils;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.pojo.LogErrorInfo;
-import com.qq.common.log.pojo.LogInfo;
 import com.qq.common.redis.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,6 +36,9 @@ public class GlobalExceptionHandler {
 
     @Autowired
     private RedisService redisService;
+
+    @Value("${log.sync.es:0}")
+    private String syncLog;
 
     /**
      * 权限码异常
@@ -147,10 +149,14 @@ public class GlobalExceptionHandler {
 
     /**
      * 保存日志
+     *
      * @param requestURI
      * @param message
      */
     private void saveLog(String requestURI, String message) {
+        if (!"1".equals(syncLog)) {
+            return;
+        }
         // 返回参数
         LogErrorInfo logErrorInfo = LogErrorInfo.builder()
                 .url(requestURI)

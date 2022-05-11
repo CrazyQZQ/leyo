@@ -17,6 +17,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -32,6 +33,9 @@ import java.util.*;
 @Component
 @Slf4j
 public class LogAspect {
+
+    @Value("${log.sync.es:0}")
+    private String syncLog;
 
     @Autowired
     private RedisService redisService;
@@ -90,7 +94,9 @@ public class LogAspect {
                     .time(DateUtils.getTime())
                     .build();
             // 存到redis通过logstash消费保存到es中
-            redisService.setCacheList(CacheConstants.LOGS_KEY, Arrays.asList(logInfo));
+            if(syncLog.equals("1")){
+                redisService.setCacheList(CacheConstants.LOGS_KEY, Arrays.asList(logInfo));
+            }
             log.info(JSON.toJSONString(logInfo));
         } catch (Exception exp) {
             // 记录本地异常日志
