@@ -52,4 +52,16 @@ public class OauthUtils {
             return null;
         }
     }
+
+    /**
+     * 获取当前请求登录用户名
+     * @return
+     */
+    public static String getCurrentUserName() {
+        SysUser user = getCurrentUser();
+        if (user != null) {
+            return user.getUserName();
+        }
+        return "admin";
+    }
 }

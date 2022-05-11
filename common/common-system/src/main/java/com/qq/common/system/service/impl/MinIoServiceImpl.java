@@ -130,7 +130,15 @@ public class MinIoServiceImpl implements MinIoService {
     public void deleteFile(List<String> objectNames) {
         try {
             MinioClient minioClient = getMinioClient();
-            Iterable<Result<DeleteError>> results = minioClient.removeObjects(BUCKET_NAME, objectNames);
+            String imagePrefix = ENDPOINT + "/" + BUCKET_NAME + "/";
+            List<String> handledObjectNames = new ArrayList<>(objectNames.size());
+            for (String objectName : objectNames) {
+                if(objectName.startsWith(imagePrefix)) {
+                    objectName = objectName.substring(imagePrefix.length());
+                }
+                handledObjectNames.add(objectName);
+            }
+            Iterable<Result<DeleteError>> results = minioClient.removeObjects(BUCKET_NAME, handledObjectNames);
             for (Result<DeleteError> result : results) {
                 DeleteError deleteError = result.get();
                 log.debug(deleteError.message());

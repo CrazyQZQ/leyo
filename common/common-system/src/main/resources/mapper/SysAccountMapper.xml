@@ -5,14 +5,14 @@
 <mapper namespace="com.qq.common.system.mapper.SysAccountMapper">
 
     <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysAccount">
-            <id property="account_id" column="account_id" jdbcType="BIGINT"/>
-            <result property="account_code" column="account_code" jdbcType="BIGINT"/>
-            <result property="account_name" column="account_name" jdbcType="VARCHAR"/>
+            <id property="accountId" column="account_id" jdbcType="BIGINT"/>
+            <result property="accountCode" column="account_code" jdbcType="BIGINT"/>
+            <result property="accountName" column="account_name" jdbcType="VARCHAR"/>
             <result property="amount" column="amount" jdbcType="DECIMAL"/>
-            <result property="create_by" column="create_by" jdbcType="VARCHAR"/>
-            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="update_by" column="update_by" jdbcType="VARCHAR"/>
-            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

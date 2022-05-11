@@ -5,20 +5,20 @@
 <mapper namespace="com.qq.common.system.mapper.SysDeptMapper">
 
     <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysDept">
-            <id property="dept_id" column="dept_id" jdbcType="BIGINT"/>
-            <result property="parent_id" column="parent_id" jdbcType="BIGINT"/>
+            <id property="deptId" column="dept_id" jdbcType="BIGINT"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
             <result property="ancestors" column="ancestors" jdbcType="VARCHAR"/>
-            <result property="dept_name" column="dept_name" jdbcType="VARCHAR"/>
-            <result property="order_num" column="order_num" jdbcType="INTEGER"/>
+            <result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
+            <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
             <result property="leader" column="leader" jdbcType="VARCHAR"/>
             <result property="phone" column="phone" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="CHAR"/>
-            <result property="del_flag" column="del_flag" jdbcType="CHAR"/>
-            <result property="create_by" column="create_by" jdbcType="VARCHAR"/>
-            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="update_by" column="update_by" jdbcType="VARCHAR"/>
-            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="delFlag" column="del_flag" jdbcType="CHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

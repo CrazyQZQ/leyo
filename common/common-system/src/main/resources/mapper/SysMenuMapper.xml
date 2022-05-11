@@ -5,24 +5,24 @@
 <mapper namespace="com.qq.common.system.mapper.SysMenuMapper">
 
     <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysMenu">
-            <id property="menu_id" column="menu_id" jdbcType="BIGINT"/>
-            <result property="menu_name" column="menu_name" jdbcType="VARCHAR"/>
-            <result property="parent_id" column="parent_id" jdbcType="BIGINT"/>
-            <result property="order_num" column="order_num" jdbcType="INTEGER"/>
+            <id property="menuId" column="menu_id" jdbcType="BIGINT"/>
+            <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
             <result property="path" column="path" jdbcType="VARCHAR"/>
             <result property="component" column="component" jdbcType="VARCHAR"/>
             <result property="query" column="query" jdbcType="VARCHAR"/>
-            <result property="is_frame" column="is_frame" jdbcType="INTEGER"/>
-            <result property="is_cache" column="is_cache" jdbcType="INTEGER"/>
-            <result property="menu_type" column="menu_type" jdbcType="CHAR"/>
+            <result property="isFrame" column="is_frame" jdbcType="INTEGER"/>
+            <result property="isCache" column="is_cache" jdbcType="INTEGER"/>
+            <result property="menuType" column="menu_type" jdbcType="CHAR"/>
             <result property="visible" column="visible" jdbcType="CHAR"/>
             <result property="status" column="status" jdbcType="CHAR"/>
             <result property="perms" column="perms" jdbcType="VARCHAR"/>
             <result property="icon" column="icon" jdbcType="VARCHAR"/>
-            <result property="create_by" column="create_by" jdbcType="VARCHAR"/>
-            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="update_by" column="update_by" jdbcType="VARCHAR"/>
-            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
