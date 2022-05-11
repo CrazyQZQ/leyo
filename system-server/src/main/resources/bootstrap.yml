@@ -2,7 +2,7 @@ feign:
     sentinel:
         enabled: true
 server:
-    port: 8841
+    port: 8701
 spring:
     application:
         name: system-server
