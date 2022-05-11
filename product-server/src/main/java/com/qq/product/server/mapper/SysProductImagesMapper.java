@@ -1,7 +1,7 @@
-package com.qq.common.system.mapper;
+package com.qq.product.server.mapper;
 
-import com.qq.common.system.pojo.SysProductImages;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qq.product.server.pojo.SysProductImages;
 
 /**
 * @author Administrator

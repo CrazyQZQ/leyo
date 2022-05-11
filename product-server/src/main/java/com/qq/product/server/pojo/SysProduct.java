@@ -1,13 +1,18 @@
-package com.qq.common.system.pojo;
+package com.qq.product.server.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
+import java.util.List;
 
 /**
  * 商品表
@@ -47,6 +52,12 @@ public class SysProduct implements Serializable {
     private BigDecimal price;
 
     /**
+     * 库存
+     */
+    @TableField(value = "stock")
+    private Integer stock;
+
+    /**
      * 创建者
      */
     @TableField(value = "create_by")
@@ -56,6 +67,7 @@ public class SysProduct implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -68,7 +80,33 @@ public class SysProduct implements Serializable {
      * 修改时间
      */
     @TableField(value = "update_time")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
+
+    /**
+     * 商品图片
+     */
+    @TableField(exist = false)
+    private List<String> imageUrls;
+
+    /**
+     * 新增时上传的图片
+     */
+    @TableField(exist = false)
+    @JsonIgnore
+    private MultipartFile[] images;
+
+    /**
+     * 品牌id
+     */
+    @TableField(exist = false)
+    private Long brandId;
+
+    /**
+     * 品牌名称
+     */
+    @TableField(exist = false)
+    private Long brandName;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

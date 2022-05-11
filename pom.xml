@@ -17,6 +17,7 @@
         <module>oauth2-server</module>
         <module>oauth2-resouce-demo</module>
         <module>es-server</module>
+        <module>product-server</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

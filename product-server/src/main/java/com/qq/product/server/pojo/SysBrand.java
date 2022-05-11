@@ -1,20 +1,21 @@
-package com.qq.common.system.pojo;
+package com.qq.product.server.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
- * 商品库存表
- * @TableName sys_product_stock
+ * 商品品牌表
+ * @TableName sys_brand
  */
-@TableName(value ="sys_product_stock")
+@TableName(value ="sys_brand")
 @Data
-public class SysProductStock implements Serializable {
+public class SysBrand implements Serializable {
     /**
      * id
      */
@@ -22,16 +23,16 @@ public class SysProductStock implements Serializable {
     private Long id;
 
     /**
-     * 商品id
+     * 父id
      */
-    @TableField(value = "product_id")
-    private Long productId;
+    @TableField(value = "parent_id")
+    private Long parentId;
 
     /**
-     * 库存
+     * 品牌名称
      */
-    @TableField(value = "stock")
-    private Integer stock;
+    @TableField(value = "name")
+    private String name;
 
     /**
      * 创建者
