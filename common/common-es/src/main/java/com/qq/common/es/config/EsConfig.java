@@ -1,4 +1,4 @@
-package com.qq.es.server.config;
+package com.qq.common.es.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
