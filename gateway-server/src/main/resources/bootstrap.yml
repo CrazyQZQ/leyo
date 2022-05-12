@@ -31,6 +31,10 @@ spring:
                     uri: lb://es-server
                     predicates:
                         - Path=/search/**
+                -   id: order_server
+                    uri: lb://order-server
+                    predicates:
+                        - Path=/order/**
         nacos:
             config:
                 contextPath: /nacos
@@ -57,12 +61,12 @@ oauth2:
             parameter:
                 ignoreUrls:
                     - /oauth/**
-                    - /login
-                    - /logout
-                    - /*.html
-                    - /*.js
-                    - /*.css
-                    - /favicon.ico
+                    - /system/login
+                    - /system/logout
+                    - /system/*.html
+                    - /system/*.js
+                    - /system/*.css
+                    - /system/favicon.ico
 management:
     endpoints:
         web:

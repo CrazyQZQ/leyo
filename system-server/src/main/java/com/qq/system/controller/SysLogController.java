@@ -1,10 +1,10 @@
-package com.qq.gateway.controller;
+package com.qq.system.controller;
 
 import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.redis.service.RedisService;
 import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.utils.OauthUtils;
-import com.qq.common.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @Date 2022/4/20
  **/
 @Controller
+@RequestMapping("system")
 public class SysLogController {
 
     @Autowired

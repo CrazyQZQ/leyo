@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
-@MapperScan({"com.qq.common.system.mapper"})
+@MapperScan({"com.qq.**.mapper"})
 @EnableDiscoveryClient
 public class GatewayServerApplication {
 

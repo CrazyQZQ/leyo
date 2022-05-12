@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication(scanBasePackages = {"com.qq.system", "com.qq.common.system"}, exclude = DruidDataSourceAutoConfigure.class)
+@SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
 @EnableFeignClients
 @EnableDiscoveryClient
-@MapperScan({"com.qq.common.system.mapper"})
+@MapperScan({"com.qq.**.mapper"})
 public class SystemServerApplication {
 
     public static void main(String[] args) {
