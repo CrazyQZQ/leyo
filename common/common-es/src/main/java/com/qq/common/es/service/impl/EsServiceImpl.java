@@ -93,41 +93,20 @@ public class EsServiceImpl implements EsService {
                     .size(searchCommonVO.getRows())
                     .from(searchCommonVO.getRows() * (searchCommonVO.getPage() - 1))
                     .index(searchCommonVO.getIndexName())
-                    // .sort(st -> st
-                    //         .field(
-                    //                 FieldSort.of(f -> f
-                    //                         .field(searchCommonVO.getSortIndex())
-                    //                         .order(SortOrder.valueOf(searchCommonVO.getSortOrder()))
-                    //                 )
-                    //         )
-                    // )
-                    .query(q -> q
-                            .bool(b -> b
-                                    // .must(m -> m
-                                    //         .range(r -> r
-                                    //                 .field(searchCommonVO.getSortIndex())
-                                    //                 .gte(JsonData.of(searchCommonVO.getFromMillis()))
-                                    //                 .lte(JsonData.of(searchCommonVO.getToMillis()))
-                                    //         )
-                                    // )
-                                    .must(m -> m.queryString(qs -> qs.query(searchCommonVO.getSearchKeyword())))
-                            )
-                    )
+                    .sort(s -> s.field(FieldSort.of(fs -> fs.field(searchCommonVO.getSortIndex()).order(SortOrder.valueOf(searchCommonVO.getSortOrder())))))
+                    .query(q -> q.bool(b -> b.must(m -> m.range(r -> r
+                                    .field(searchCommonVO.getSortIndex())
+                                    .gte(JsonData.of(searchCommonVO.getFromMillis()))
+                                    .lte(JsonData.of(searchCommonVO.getToMillis()))))
+                            .must(m -> m.queryString(qs -> qs.query(searchCommonVO.getSearchKeyword())))))
                     .highlight(h -> {
                         if (searchCommonVO.isHighlight()) {
                             for (int idx = 0; idx < searchCommonVO.getHighlightField().length; ++idx) {
                                 final String field = searchCommonVO.getHighlightField()[idx];
                                 h.fields(field, HighlightField.of(hf -> hf
-                                                .preTags("<font color='#e75213'>")
-                                                .postTags("</font>")
-                                                .highlightQuery(hq -> hq
-                                                        .term(tq -> tq
-                                                                .field(field)
-                                                                .value(searchCommonVO.getSearchKeyword())
-                                                        )
-                                                )
-                                        ))
-                                        .fragmentSize(1024);
+                                        .preTags("<font color='#e75213'>")
+                                        .postTags("</font>")
+                                        .highlightQuery(hq -> hq.term(tq -> tq.field(field).value(searchCommonVO.getSearchKeyword()))))).fragmentSize(1024);
                             }
                         }
                         return h;
@@ -150,11 +129,11 @@ public class EsServiceImpl implements EsService {
         List<Map> list = new ArrayList<>();
         res.hits().hits().forEach(h -> {
             Map source = h.source();
-            if(source != null) {
-                for(String highlightKey : h.highlight().keySet()) {
+            if (source != null) {
+                for (String highlightKey : h.highlight().keySet()) {
                     StringBuilder highlightedVal = new StringBuilder();
                     h.highlight().get(highlightKey).forEach(highlightedVal::append);
-                    source.put(highlightKey,highlightedVal.toString());
+                    source.put(highlightKey, highlightedVal.toString());
                 }
                 list.add(source);
             }
