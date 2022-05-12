@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.qq.common.system.mapper.SysOrderDetailMapper">
+<mapper namespace="com.qq.order.server.mapper.SysOrderDetailMapper">
 
-    <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysOrderDetail">
+    <resultMap id="BaseResultMap" type="com.qq.order.server.pojo.SysOrderDetail">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="masterId" column="master_id" jdbcType="BIGINT"/>
             <result property="productId" column="product_id" jdbcType="BIGINT"/>

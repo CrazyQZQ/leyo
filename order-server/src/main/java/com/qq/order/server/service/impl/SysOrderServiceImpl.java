@@ -1,9 +1,9 @@
-package com.qq.common.system.service.impl;
+package com.qq.order.server.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.qq.common.system.pojo.SysOrder;
-import com.qq.common.system.service.SysOrderService;
-import com.qq.common.system.mapper.SysOrderMapper;
+import com.qq.order.server.mapper.SysOrderMapper;
+import com.qq.order.server.pojo.SysOrder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
-    implements SysOrderService{
+    implements IService<SysOrder> {
 
 }
 

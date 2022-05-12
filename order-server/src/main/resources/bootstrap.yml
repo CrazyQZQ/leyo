@@ -1,0 +1,29 @@
+feign:
+    sentinel:
+        enabled: true
+server:
+    port: 8707
+spring:
+    application:
+        name: order-server
+    cloud:
+        nacos:
+            config:
+                contextPath: /nacos
+                file-extension: yml
+                password: qq123456
+                refresh-enabled: true
+                server-addr: 1.13.17.66:8848
+                username: qq
+                # 共享配置
+                shared-configs:
+                    -   dataId: share-redis.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+                    -   dataId: share-datasource.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+                    -   dataId: share-common.yml
+                        group: DEFAULT_GROUP
+                        refresh-enabled: true
+                enabled: true

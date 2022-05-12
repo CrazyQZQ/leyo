@@ -1,7 +1,7 @@
-package com.qq.common.system.service;
+package com.qq.order.server.service;
 
-import com.qq.common.system.pojo.SysOrderDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.qq.order.server.pojo.SysOrderDetail;
 
 /**
 * @author Administrator
