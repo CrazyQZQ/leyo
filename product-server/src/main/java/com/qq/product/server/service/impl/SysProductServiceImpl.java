@@ -1,10 +1,13 @@
 package com.qq.product.server.service.impl;
 
 import com.alibaba.nacos.common.utils.CollectionUtils;
+import com.alibaba.nacos.common.utils.JacksonUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
+import com.qq.common.core.utils.bean.BeanUtils;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.es.service.EsService;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
@@ -63,7 +66,8 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
             productBrand.setProductId(sysProduct.getId());
             sysProductBrandMapper.insert(productBrand);
         }
-        esService.addDoc("product", sysProduct.getId().toString(), sysProduct);
+        esService.addDoc("product", sysProduct.getId().toString(),
+                this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", sysProduct.getId())).get(0));
     }
 
     @Override
@@ -72,8 +76,8 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
     }
 
     @Override
-    public List<SysProduct> getProductList() {
-        return this.baseMapper.getProductList();
+    public List<SysProduct> getProductList(BaseQuery query) {
+        return this.baseMapper.getProductList(query);
     }
 
     @Override
@@ -97,7 +101,8 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
                 sysProductBrandMapper.insert(productBrand);
             }
         }
-        esService.updateDoc("product", product.getId().toString(), this.baseMapper.selectById(product.getId()));
+        esService.updateDoc("product", product.getId().toString(),
+                this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", product.getId())).get(0));
         return i;
     }
 
@@ -114,6 +119,22 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         }
         sysProductBrandMapper.delete(new QueryWrapper<SysProductBrand>().eq("product_id", id));
         return this.baseMapper.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void reduceStock(Long id, Integer stock) throws IOException {
+        SysProduct product = this.baseMapper.getProductById(id);
+        if(product == null){
+            throw new ServiceException("商品不存在！");
+        }
+        if(stock > product.getStock()){
+            throw new ServiceException("库存不足！");
+        }
+        product.setStock(product.getStock() - stock);
+        this.baseMapper.updateById(product);
+        esService.updateDoc("product", product.getId().toString(),
+                this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", product.getId())).get(0));
     }
 }
 

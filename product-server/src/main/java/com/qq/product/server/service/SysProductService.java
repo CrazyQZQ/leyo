@@ -2,6 +2,7 @@ package com.qq.product.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.product.server.pojo.SysProduct;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public interface SysProductService extends IService<SysProduct> {
      * @description 分页查询商品
      * @return
      */
-    List<SysProduct> getProductList();
+    List<SysProduct> getProductList(BaseQuery query);
 
     /**
      * @description 更新商品
@@ -47,4 +48,12 @@ public interface SysProductService extends IService<SysProduct> {
      * @return
      */
     int deleteProduct(Long id) throws IOException;
+
+    /**
+     * @description 减库存
+     * @param id
+     * @param stock
+     * @return
+     */
+    void reduceStock(Long id, Integer stock) throws IOException;
 }

@@ -1,6 +1,7 @@
 package com.qq.product.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.product.server.pojo.SysProduct;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface SysProductMapper extends BaseMapper<SysProduct> {
     SysProduct getProductById(Long id);
 
-    List<SysProduct> getProductList();
+    List<SysProduct> getProductList(BaseQuery query);
 }
 
 

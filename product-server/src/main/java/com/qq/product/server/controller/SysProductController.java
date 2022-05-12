@@ -2,6 +2,7 @@ package com.qq.product.server.controller;
 
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.es.service.EsService;
 import com.qq.common.log.annotation.Log;
@@ -29,9 +30,9 @@ public class SysProductController extends BaseController {
 
     @GetMapping("list")
     @Log(title = "product", funcDesc = "查询产品列表")
-    public TableDataInfo getProductList() {
+    public TableDataInfo getProductList(BaseQuery query) {
         startPage();
-        List<SysProduct> productList = sysProductService.getProductList();
+        List<SysProduct> productList = sysProductService.getProductList(query);
         TableDataInfo dataTable = getDataTable(productList);
         clearPage();
         return dataTable;
@@ -43,7 +44,7 @@ public class SysProductController extends BaseController {
         return AjaxResult.success(sysProductService.getProductById(id));
     }
 
-    @PostMapping("add")
+    @PutMapping("add")
     @Log(title = "product", funcDesc = "新增产品")
     public AjaxResult add(SysProduct product) {
         try {
@@ -55,7 +56,7 @@ public class SysProductController extends BaseController {
         return AjaxResult.success();
     }
 
-    @PutMapping("update")
+    @PostMapping("update")
     @Log(title = "product", funcDesc = "修改产品")
     public AjaxResult update(SysProduct product) {
         try {
@@ -67,7 +68,7 @@ public class SysProductController extends BaseController {
         return AjaxResult.success();
     }
 
-    @PutMapping("delete")
+    @DeleteMapping("delete")
     @Log(title = "product", funcDesc = "删除产品")
     public AjaxResult delete(Long id) {
         try {
@@ -75,6 +76,18 @@ public class SysProductController extends BaseController {
         } catch (IOException e) {
             log.error("删除产品失败", e);
             return AjaxResult.error("删除产品失败!");
+        }
+        return AjaxResult.success();
+    }
+
+    @PostMapping("reduceStock")
+    @Log(title = "product", funcDesc = "扣减库存")
+    public AjaxResult reduceStock(@RequestParam Long id, @RequestParam Integer stock) {
+        try {
+            sysProductService.reduceStock(id, stock);
+        } catch (IOException e) {
+            log.error("扣减库存失败", e);
+            return AjaxResult.error("扣减库存失败!");
         }
         return AjaxResult.success();
     }
