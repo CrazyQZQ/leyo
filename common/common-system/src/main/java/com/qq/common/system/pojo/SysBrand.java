@@ -1,23 +1,21 @@
-package com.qq.order.server.pojo;
+package com.qq.common.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 订单表
- * @TableName sys_order
+ * 商品品牌表
+ * @TableName sys_brand
  */
-@TableName(value ="sys_order")
+@TableName(value ="sys_brand")
 @Data
-public class SysOrder implements Serializable {
+public class SysBrand implements Serializable {
     /**
      * id
      */
@@ -25,31 +23,19 @@ public class SysOrder implements Serializable {
     private Long id;
 
     /**
-     * 订单号
+     * 父id
      */
-    @TableField(value = "number")
-    private String number;
+    @TableField(value = "parent_id")
+    private Long parentId;
 
     /**
-     * 总金额
+     * 品牌名称
      */
-    @TableField(value = "total_amount")
-    private BigDecimal totalAmount;
+    @TableField(value = "name")
+    private String name;
 
     /**
-     * 总数量
-     */
-    @TableField(value = "total_count")
-    private Integer totalCount;
-
-    /**
-     * 状态
-     */
-    @TableField(value = "status")
-    private Integer status;
-
-    /**
-     * 创建人
+     * 创建者
      */
     @TableField(value = "create_by")
     private String createBy;
@@ -58,7 +44,6 @@ public class SysOrder implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -71,14 +56,7 @@ public class SysOrder implements Serializable {
      * 更新时间
      */
     @TableField(value = "update_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
-
-    /**
-     * 备注
-     */
-    @TableField(value = "remark")
-    private String remark;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

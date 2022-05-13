@@ -1,4 +1,4 @@
-package com.qq.product.server.pojo;
+package com.qq.common.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

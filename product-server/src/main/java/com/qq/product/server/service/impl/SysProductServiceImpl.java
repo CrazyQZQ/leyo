@@ -1,22 +1,21 @@
 package com.qq.product.server.service.impl;
 
 import com.alibaba.nacos.common.utils.CollectionUtils;
-import com.alibaba.nacos.common.utils.JacksonUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
-import com.qq.common.core.utils.bean.BeanUtils;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.es.service.EsService;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
+import com.qq.product.server.constants.ProductConstants;
 import com.qq.product.server.mapper.SysProductBrandMapper;
 import com.qq.product.server.mapper.SysProductImagesMapper;
 import com.qq.product.server.mapper.SysProductMapper;
-import com.qq.product.server.pojo.SysProduct;
-import com.qq.product.server.pojo.SysProductBrand;
-import com.qq.product.server.pojo.SysProductImages;
+import com.qq.common.system.pojo.SysProduct;
+import com.qq.common.system.pojo.SysProductBrand;
+import com.qq.common.system.pojo.SysProductImages;
 import com.qq.product.server.service.SysProductService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
@@ -46,7 +45,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
 
     @Override
     @Transactional
-    public void addProduct(SysProduct sysProduct) throws IOException {
+    public void addProduct(SysProduct sysProduct) {
         sysProduct.setCreateBy(OauthUtils.getCurrentUserName());
         sysProduct.setCreateTime(new Date());
         this.baseMapper.insert(sysProduct);
@@ -66,8 +65,6 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
             productBrand.setProductId(sysProduct.getId());
             sysProductBrandMapper.insert(productBrand);
         }
-        esService.addDoc("product", sysProduct.getId().toString(),
-                this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", sysProduct.getId())).get(0));
     }
 
     @Override
@@ -101,7 +98,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
                 sysProductBrandMapper.insert(productBrand);
             }
         }
-        esService.updateDoc("product", product.getId().toString(),
+        esService.updateDoc(ProductConstants.PRODUCT_INDEX, product.getId().toString(),
                 this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", product.getId())).get(0));
         return i;
     }
@@ -109,7 +106,6 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
     @Override
     @Transactional
     public int deleteProduct(Long id) throws IOException {
-        esService.deleteDoc("product", id.toString());
         List<String> images = sysProductImagesMapper.selectList(new QueryWrapper<SysProductImages>().eq("product_id", id))
                 .stream().map(SysProductImages::getImageUrl)
                 .collect(Collectors.toList());
@@ -118,6 +114,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
             minIoService.deleteFile(images);
         }
         sysProductBrandMapper.delete(new QueryWrapper<SysProductBrand>().eq("product_id", id));
+        esService.deleteDoc(ProductConstants.PRODUCT_INDEX, id.toString());
         return this.baseMapper.deleteById(id);
     }
 
@@ -133,7 +130,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         }
         product.setStock(product.getStock() - stock);
         this.baseMapper.updateById(product);
-        esService.updateDoc("product", product.getId().toString(),
+        esService.updateDoc(ProductConstants.PRODUCT_INDEX, product.getId().toString(),
                 this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", product.getId())).get(0));
     }
 }

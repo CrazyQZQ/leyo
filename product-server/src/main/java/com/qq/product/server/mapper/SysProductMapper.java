@@ -2,7 +2,7 @@ package com.qq.product.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.qq.common.core.web.page.BaseQuery;
-import com.qq.product.server.pojo.SysProduct;
+import com.qq.common.system.pojo.SysProduct;
 
 import java.util.List;
 

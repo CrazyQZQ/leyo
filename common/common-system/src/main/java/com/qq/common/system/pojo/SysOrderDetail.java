@@ -1,4 +1,4 @@
-package com.qq.order.server.pojo;
+package com.qq.common.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -79,6 +79,9 @@ public class SysOrderDetail implements Serializable {
      */
     @TableField(value = "remark")
     private String remark;
+
+    @TableField(exist = false)
+    private SysProduct product;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

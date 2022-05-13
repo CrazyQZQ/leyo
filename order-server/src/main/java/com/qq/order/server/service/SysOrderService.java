@@ -1,7 +1,8 @@
 package com.qq.order.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.qq.order.server.pojo.SysOrder;
+import com.qq.common.system.pojo.SysOrder;
+import com.qq.order.server.vo.ProductVO;
 
 /**
 * @author Administrator
@@ -10,4 +11,7 @@ import com.qq.order.server.pojo.SysOrder;
 */
 public interface SysOrderService extends IService<SysOrder> {
 
+    Long saveOrder(ProductVO productVO);
+
+    ProductVO getOrderInfo(Long orderId);
 }

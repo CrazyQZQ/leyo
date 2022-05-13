@@ -1,7 +1,7 @@
 package com.qq.order.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.qq.order.server.pojo.SysOrderDetail;
+import com.qq.common.system.pojo.SysOrderDetail;
 
 /**
 * @author Administrator

@@ -1,64 +1,60 @@
-package com.qq.product.server.pojo;
+package com.qq.common.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
- * 商品表
- * @TableName sys_product
+ * 订单表
+ * @TableName sys_order
  */
-@TableName(value ="sys_product")
+@TableName(value ="sys_order")
 @Data
-public class SysProduct implements Serializable {
+public class SysOrder implements Serializable {
     /**
-     * 
+     * id
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 商品编码
+     * 订单号
      */
-    @TableField(value = "code")
-    private String code;
+    @TableField(value = "number")
+    private String number;
 
     /**
-     * 商品名称
+     * 用户id
      */
-    @TableField(value = "name")
-    private String name;
+    @TableField(value = "user_id")
+    private Long userId;
+    /**
+     * 总金额
+     */
+    @TableField(value = "total_amount")
+    private BigDecimal totalAmount;
 
     /**
-     * 单位
+     * 总数量
      */
-    @TableField(value = "unit")
-    private String unit;
+    @TableField(value = "total_count")
+    private Integer totalCount;
 
     /**
-     * 价格
+     * 状态
      */
-    @TableField(value = "price")
-    private BigDecimal price;
+    @TableField(value = "status")
+    private Integer status;
 
     /**
-     * 库存
-     */
-    @TableField(value = "stock")
-    private Integer stock;
-
-    /**
-     * 创建者
+     * 创建人
      */
     @TableField(value = "create_by")
     private String createBy;
@@ -71,42 +67,23 @@ public class SysProduct implements Serializable {
     private Date createTime;
 
     /**
-     * 修改人
+     * 更新者
      */
     @TableField(value = "update_by")
     private String updateBy;
 
     /**
-     * 修改时间
+     * 更新时间
      */
     @TableField(value = "update_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 
     /**
-     * 商品图片
+     * 备注
      */
-    @TableField(exist = false)
-    private List<String> imageUrls;
-
-    /**
-     * 新增时上传的图片
-     */
-    @TableField(exist = false)
-    @JsonIgnore
-    private MultipartFile[] images;
-
-    /**
-     * 品牌id
-     */
-    @TableField(exist = false)
-    private Long brandId;
-
-    /**
-     * 品牌名称
-     */
-    @TableField(exist = false)
-    private String brandName;
+    @TableField(value = "remark")
+    private String remark;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

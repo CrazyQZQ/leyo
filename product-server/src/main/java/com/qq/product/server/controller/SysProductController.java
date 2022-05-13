@@ -6,7 +6,7 @@ import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.es.service.EsService;
 import com.qq.common.log.annotation.Log;
-import com.qq.product.server.pojo.SysProduct;
+import com.qq.common.system.pojo.SysProduct;
 import com.qq.product.server.service.SysProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
