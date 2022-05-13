@@ -46,7 +46,7 @@ public class SysMenuController {
     public AjaxResult addMenu(@RequestBody SysMenu sysMenu) {
         sysMenuService.addMenu(sysMenu);
         log.info("新增菜单：{}", JSON.toJSONString(sysMenu));
-        return AjaxResult.success();
+        return AjaxResult.success(sysMenu.getMenuId());
     }
 
     @Log(title = "system", funcDesc = "分配菜单角色")
