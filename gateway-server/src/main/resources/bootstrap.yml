@@ -63,6 +63,7 @@ oauth2:
                     - /oauth/**
                     - /system/login
                     - /system/logout
+                    - /system/client_login
                     - /system/*.html
                     - /system/*.js
                     - /system/*.css
