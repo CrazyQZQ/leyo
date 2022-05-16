@@ -43,6 +43,7 @@
         <elasticsearch-java>8.0.1</elasticsearch-java>
         <spring-cloud-openfeign.version>2.2.5.RELEASE</spring-cloud-openfeign.version>
         <spring-cloud-netflix.version>2.2.5.RELEASE</spring-cloud-netflix.version>
+        <hutool.version>5.8.0</hutool.version>
     </properties>
 
     <dependencies>
@@ -151,7 +152,7 @@
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>5.7.9</version>
+                <version>${hutool.version}</version>
             </dependency>
             <dependency>
                 <groupId>co.elastic.clients</groupId>
