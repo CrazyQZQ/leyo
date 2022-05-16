@@ -3,14 +3,15 @@ package com.qq.order.server.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
+import com.qq.common.core.utils.SnowFlake;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.core.web.page.TableDataInfo;
+import com.qq.common.system.pojo.SysOrder;
+import com.qq.common.system.pojo.SysOrderDetail;
 import com.qq.common.system.pojo.SysProduct;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.order.server.mapper.SysOrderDetailMapper;
 import com.qq.order.server.mapper.SysOrderMapper;
-import com.qq.common.system.pojo.SysOrder;
-import com.qq.common.system.pojo.SysOrderDetail;
 import com.qq.order.server.service.AccountService;
 import com.qq.order.server.service.ProductService;
 import com.qq.order.server.service.SysOrderService;
@@ -59,10 +60,12 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             throw new ServiceException("结算账户不能为空");
         }
         String currentUserName = OauthUtils.getCurrentUserName();
+        SnowFlake snowFlake = new SnowFlake(2, 3);
         Date now = new Date();
         //保存订单
         order.setCreateBy(currentUserName);
         order.setCreateTime(now);
+        order.setNumber("SO" + snowFlake.nextId());
         this.baseMapper.insert(order);
         //保存订单详情
         for (SysOrderDetail orderDetail : orderDetailList) {
@@ -87,7 +90,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         query.setIds(productIds);
         TableDataInfo tableDataInfo = productService.getProductList(query);
         List<SysProduct> products = (List<SysProduct>) tableDataInfo.getRows();
-        for(SysOrderDetail detail : details){
+        for (SysOrderDetail detail : details) {
             products.stream().filter(p -> p.getId().equals(detail.getProductId())).findFirst().ifPresent(p -> {
                 detail.setProduct(p);
             });
