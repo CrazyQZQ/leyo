@@ -1,9 +1,9 @@
 package com.qq.order.server.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
-import com.qq.common.core.utils.SnowFlake;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.system.pojo.SysOrder;
@@ -60,12 +60,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             throw new ServiceException("结算账户不能为空");
         }
         String currentUserName = OauthUtils.getCurrentUserName();
-        SnowFlake snowFlake = new SnowFlake(2, 3);
         Date now = new Date();
         //保存订单
         order.setCreateBy(currentUserName);
         order.setCreateTime(now);
-        order.setNumber("SO" + snowFlake.nextId());
+        order.setNumber("SO" + IdUtil.getSnowflakeNextId());
         this.baseMapper.insert(order);
         //保存订单详情
         for (SysOrderDetail orderDetail : orderDetailList) {
