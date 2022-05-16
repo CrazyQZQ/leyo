@@ -2,23 +2,19 @@ package com.qq.product.server.service.impl;
 
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.es.service.EsService;
+import com.qq.common.system.pojo.SysProduct;
+import com.qq.common.system.pojo.SysProductImages;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.constants.ProductConstants;
-import com.qq.product.server.mapper.SysProductBrandMapper;
 import com.qq.product.server.mapper.SysProductImagesMapper;
 import com.qq.product.server.mapper.SysProductMapper;
-import com.qq.common.system.pojo.SysProduct;
-import com.qq.common.system.pojo.SysProductBrand;
-import com.qq.common.system.pojo.SysProductImages;
 import com.qq.product.server.service.SysProductService;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,7 +37,6 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
     private final MinIoService minIoService;
     private final SysProductImagesMapper sysProductImagesMapper;
     private final EsService esService;
-    private final SysProductBrandMapper sysProductBrandMapper;
 
     @Override
     @Transactional
@@ -58,12 +53,6 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
                 sysProductImages.setImageUrl(upload);
                 sysProductImagesMapper.insert(sysProductImages);
             }
-        }
-        if(ObjectUtils.isNotEmpty(sysProduct.getBrandId())){
-            SysProductBrand productBrand = new SysProductBrand();
-            productBrand.setBrandId(productBrand.getProductId());
-            productBrand.setProductId(sysProduct.getId());
-            sysProductBrandMapper.insert(productBrand);
         }
     }
 
@@ -89,15 +78,6 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         if(i == 0){
             throw new ServiceException("商品不存在！");
         }
-        if(ObjectUtils.isNotEmpty(product.getBrandId())){
-            SysProductBrand productBrand = new SysProductBrand();
-            productBrand.setBrandId(product.getBrandId());
-            int rows = sysProductBrandMapper.update(productBrand, new UpdateWrapper<SysProductBrand>().eq("product_id", product.getId()));
-            if(rows < 1){
-                productBrand.setProductId(product.getId());
-                sysProductBrandMapper.insert(productBrand);
-            }
-        }
         esService.updateDoc(ProductConstants.PRODUCT_INDEX, product.getId().toString(),
                 this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", product.getId())).get(0));
         return i;
@@ -113,7 +93,6 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
             sysProductImagesMapper.delete(new QueryWrapper<SysProductImages>().eq("product_id", id));
             minIoService.deleteFile(images);
         }
-        sysProductBrandMapper.delete(new QueryWrapper<SysProductBrand>().eq("product_id", id));
         esService.deleteDoc(ProductConstants.PRODUCT_INDEX, id.toString());
         return this.baseMapper.deleteById(id);
     }

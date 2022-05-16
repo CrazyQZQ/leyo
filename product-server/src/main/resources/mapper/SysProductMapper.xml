@@ -35,14 +35,12 @@
     </sql>
     <select id="getProductById" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>,sb.name brand_name from sys_product sp
-        left join sys_product_brand spb on sp.id = spb.product_id
-        left join sys_brand sb on spb.brand_id = sb.id
+        left join sys_brand sb on sp.brand_id = sb.id
         where sp.id = #{id}
     </select>
     <select id="getProductList" resultMap="BaseResultMap" parameterType="com.qq.common.core.web.page.BaseQuery">
         select <include refid="Base_Column_List"/>,sb.name brand_name from sys_product sp
-        left join sys_product_brand spb on sp.id = spb.product_id
-        left join sys_brand sb on spb.brand_id = sb.id
+        left join sys_brand sb on sp.brand_id = sb.id
         where 1=1
         <include refid="query_condition"/>
     </select>

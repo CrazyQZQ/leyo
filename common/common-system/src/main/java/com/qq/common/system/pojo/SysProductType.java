@@ -4,18 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
- * 商品品牌表
- * @TableName sys_brand
+ * 商品品类表
+ * @TableName sys_product_type
  */
-@TableName(value ="sys_brand")
+@TableName(value ="sys_product_type")
 @Data
-public class SysBrand implements Serializable {
+public class SysProductType implements Serializable {
     /**
      * id
      */
@@ -29,16 +28,10 @@ public class SysBrand implements Serializable {
     private Long parentId;
 
     /**
-     * 品牌名称
+     * 品类名称
      */
     @TableField(value = "name")
     private String name;
-
-    /**
-     * 品类id
-     */
-    @TableField(value = "type_id")
-    private Long typeId;
 
     /**
      * 显示顺序
