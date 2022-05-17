@@ -1,5 +1,6 @@
 package com.qq.common.system.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.file.ImageUtils;
 import com.qq.common.core.utils.file.MimeTypeUtils;
@@ -27,6 +28,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -146,6 +148,16 @@ public class MinIoServiceImpl implements MinIoService {
         } catch (Exception e) {
             log.error("删除文件发生错误: ", e);
         }
+    }
+
+    @Override
+    public void deleteFileByFullPath(List<String> urls) {
+        if(CollUtil.isEmpty(urls)) {
+            return;
+        }
+        String prefix = ENDPOINT + "/" + BUCKET_NAME + "/";
+        List<String> objectNames = urls.stream().map(url -> url.substring(prefix.length())).collect(Collectors.toList());
+        deleteFile(objectNames);
     }
 
     @Override

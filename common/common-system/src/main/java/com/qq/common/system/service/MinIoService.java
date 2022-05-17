@@ -33,6 +33,12 @@ public interface MinIoService {
     void deleteFile(List<String> objectNames);
 
     /**
+     * @Description: 删除文件
+     * @param urls 全路径
+     */
+    void deleteFileByFullPath(List<String> urls);
+
+    /**
      * @Description: 获取文件列表
      */
     List<FileVO> listFile();

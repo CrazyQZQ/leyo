@@ -7,7 +7,7 @@ import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.system.domain.LoginVO;
 import com.qq.system.service.AuthService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  **/
 @Controller
 @RequestMapping("system")
-@AllArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysLogController {
 
     private final RedisService redisService;

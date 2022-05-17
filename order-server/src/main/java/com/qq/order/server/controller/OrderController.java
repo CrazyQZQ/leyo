@@ -9,8 +9,9 @@ import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysOrder;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.ProductVO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("order")
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderController extends BaseController {
     private final SysOrderService orderService;
 

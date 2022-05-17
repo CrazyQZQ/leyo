@@ -16,8 +16,9 @@ import com.qq.order.server.service.AccountService;
 import com.qq.order.server.service.ProductService;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.ProductVO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  * @createDate 2022-05-06 16:44:17
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         implements SysOrderService {

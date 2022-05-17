@@ -139,7 +139,7 @@ public class EsServiceImpl implements EsService {
             }
         });
 
-        SearchResultVO<Map> searchResultVO = new SearchResultVO<Map>();
+        SearchResultVO<Map> searchResultVO = new SearchResultVO<>();
         searchResultVO.setList(list);
         searchResultVO.setTotal(res.hits().total().value());
         return searchResultVO;
