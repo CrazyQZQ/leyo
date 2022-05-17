@@ -8,4 +8,10 @@ import java.util.List;
 
 public interface SysBrandService extends IService<SysBrand> {
     List<Tree<Long>> queryTreeList();
+
+    void addBrand(SysBrand sysBrand);
+
+    void updateBrand(SysBrand sysBrand);
+
+    void deleteBrand(Long id);
 }

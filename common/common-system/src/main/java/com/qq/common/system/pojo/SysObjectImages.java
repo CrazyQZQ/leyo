@@ -10,11 +10,11 @@ import java.io.Serializable;
 
 /**
  * 产品图片表
- * @TableName sys_product_images
+ * @TableName sys_object_images
  */
-@TableName(value ="sys_product_images")
+@TableName(value ="sys_object_images")
 @Data
-public class SysProductImages implements Serializable {
+public class SysObjectImages implements Serializable {
     /**
      * id
      */
@@ -24,14 +24,20 @@ public class SysProductImages implements Serializable {
     /**
      * 产品id
      */
-    @TableField(value = "product_id")
-    private Long productId;
+    @TableField(value = "object_id")
+    private Long objectId;
 
     /**
      * 图片url
      */
     @TableField(value = "image_url")
     private String imageUrl;
+
+    /**
+     * 对象类型，1：品类，2：品牌，3：产品
+     */
+    @TableField(value = "object_type")
+    private Integer ObjectType;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

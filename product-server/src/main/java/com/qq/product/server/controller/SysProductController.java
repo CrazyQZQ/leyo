@@ -9,7 +9,9 @@ import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysProduct;
 import com.qq.product.server.service.SysProductService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -23,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("product")
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysProductController extends BaseController {
     private final SysProductService sysProductService;
     private final EsService esService;

@@ -6,15 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.es.service.EsService;
+import com.qq.common.system.pojo.SysObjectImages;
 import com.qq.common.system.pojo.SysProduct;
-import com.qq.common.system.pojo.SysProductImages;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.constants.ProductConstants;
-import com.qq.product.server.mapper.SysProductImagesMapper;
+import com.qq.product.server.mapper.SysObjectImagesMapper;
 import com.qq.product.server.mapper.SysProductMapper;
 import com.qq.product.server.service.SysProductService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,12 +31,12 @@ import java.util.stream.Collectors;
  * @createDate 2022-05-06 16:44:17
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProduct>
         implements SysProductService {
 
     private final MinIoService minIoService;
-    private final SysProductImagesMapper sysProductImagesMapper;
+    private final SysObjectImagesMapper sysObjectImagesMapper;
     private final EsService esService;
 
     @Override
@@ -48,10 +49,11 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         if (images != null && images.length > 0) {
             for (MultipartFile image : images) {
                 String upload = minIoService.upload(image);
-                SysProductImages sysProductImages = new SysProductImages();
-                sysProductImages.setProductId(sysProduct.getId());
-                sysProductImages.setImageUrl(upload);
-                sysProductImagesMapper.insert(sysProductImages);
+                SysObjectImages sysObjectImages = new SysObjectImages();
+                sysObjectImages.setObjectId(sysProduct.getId());
+                sysObjectImages.setImageUrl(upload);
+                sysObjectImages.setObjectType(3);
+                sysObjectImagesMapper.insert(sysObjectImages);
             }
         }
     }
@@ -86,12 +88,12 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
     @Override
     @Transactional
     public int deleteProduct(Long id) throws IOException {
-        List<String> images = sysProductImagesMapper.selectList(new QueryWrapper<SysProductImages>().eq("product_id", id))
-                .stream().map(SysProductImages::getImageUrl)
+        List<String> images = sysObjectImagesMapper.selectList(new QueryWrapper<SysObjectImages>().eq("product_id", id))
+                .stream().map(SysObjectImages::getImageUrl)
                 .collect(Collectors.toList());
         if(CollectionUtils.isNotEmpty(images)){
-            sysProductImagesMapper.delete(new QueryWrapper<SysProductImages>().eq("product_id", id));
-            minIoService.deleteFile(images);
+            sysObjectImagesMapper.delete(new QueryWrapper<SysObjectImages>().eq("object_id", id));
+            minIoService.deleteFileByFullPath(images);
         }
         esService.deleteDoc(ProductConstants.PRODUCT_INDEX, id.toString());
         return this.baseMapper.deleteById(id);

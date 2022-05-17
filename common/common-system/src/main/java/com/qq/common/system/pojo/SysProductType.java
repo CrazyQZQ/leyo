@@ -6,7 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 商品品类表
@@ -62,6 +65,15 @@ public class SysProductType implements Serializable {
      */
     @TableField(value = "update_time")
     private Date updateTime;
+
+    /**
+     * 图片
+     */
+    @TableField(exist = false)
+    private List<String> imageUrls;
+
+    @TableField(exist = false)
+    private MultipartFile image;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

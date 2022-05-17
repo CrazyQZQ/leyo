@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qq.product.server.mapper.SysBrandMapper">
+
+    <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysBrand">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="typeId" column="type_id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <!--pageHelp 只有使用子查询才不会导致total错误-->
+            <collection property="imageUrls" ofType="string" select="selectImagesById" column="id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,parent_id,name,order_num,type_id,
+        create_by,create_time,update_by,update_time
+    </sql>
+    <sql id="query_condition">
+        <if test="ids != null and ids.size > 0">
+            AND id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </sql>
+    <select id="getBrandList" resultMap="BaseResultMap" parameterType="com.qq.common.core.web.page.BaseQuery">
+        select <include refid="Base_Column_List"/> from sys_brand
+        where 1=1
+        <include refid="query_condition"/>
+    </select>
+    <select id="selectImagesById" resultType="string">
+        select image_url from sys_object_images where object_type=2 and object_id=#{id}
+    </select>
+
+
+</mapper>

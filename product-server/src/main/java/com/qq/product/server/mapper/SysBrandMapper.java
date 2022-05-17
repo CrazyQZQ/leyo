@@ -1,7 +1,10 @@
 package com.qq.product.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.system.pojo.SysBrand;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -11,6 +14,7 @@ import com.qq.common.system.pojo.SysBrand;
 */
 public interface SysBrandMapper extends BaseMapper<SysBrand> {
 
+    List<SysBrand> getBrandList(BaseQuery query);
 }
 
 

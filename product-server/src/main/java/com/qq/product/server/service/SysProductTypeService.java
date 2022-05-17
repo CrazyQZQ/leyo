@@ -8,4 +8,10 @@ import java.util.List;
 
 public interface SysProductTypeService extends IService<SysProductType> {
     List<Tree<Long>> queryTreeList();
+
+    void addProductType(SysProductType productType);
+
+    void updateProductType(SysProductType productType);
+
+    void deleteProductType(Long id);
 }

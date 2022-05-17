@@ -45,7 +45,7 @@
         <include refid="query_condition"/>
     </select>
     <select id="selectImagesById" resultType="string">
-        select image_url from sys_product_images where product_id=#{id}
+        select image_url from sys_object_images where object_type=3 and object_id=#{id}
     </select>
 
 
