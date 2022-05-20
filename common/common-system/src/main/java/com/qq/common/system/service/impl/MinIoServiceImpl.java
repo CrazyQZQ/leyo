@@ -3,7 +3,6 @@ package com.qq.common.system.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.file.ImageUtils;
-import com.qq.common.core.utils.file.MimeTypeUtils;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.vo.FileVO;
 import io.minio.MinioClient;

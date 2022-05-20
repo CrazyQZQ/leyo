@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.qq.account.service.impl.MinIoServiceImpl
+  com.qq.common.system.service.impl.MinIoServiceImpl
 
   

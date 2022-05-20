@@ -1,13 +1,20 @@
 package com.qq.system.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
-import com.qq.common.system.mapper.SysObjectImagesMapper;
+import com.qq.common.core.exception.ServiceException;
+import com.qq.common.core.utils.StringUtils;
+import com.qq.common.system.mapper.SysMenuMapper;
+import com.qq.common.system.mapper.SysUserAddressMapper;
 import com.qq.common.system.mapper.SysUserMapper;
-import com.qq.common.system.pojo.SysObjectImages;
+import com.qq.common.system.pojo.SysMenu;
 import com.qq.common.system.pojo.SysUser;
+import com.qq.common.system.pojo.SysUserAddress;
 import com.qq.common.system.service.MinIoService;
+import com.qq.common.system.utils.OauthUtils;
 import com.qq.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,11 +33,11 @@ import java.util.List;
  */
 @Service("sysUserService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class SysUserServiceImpl implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysUserMapper userMapper;
     private final MinIoService minIoService;
-    private final SysObjectImagesMapper sysObjectImagesMapper;
+    private final SysUserAddressMapper userAddressMapper;
 
     /**
      * 通过ID查询单条数据
@@ -100,19 +108,69 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public void modifyAvatar(Long userId, MultipartFile file) {
-        SysObjectImages sysObjectImages = sysObjectImagesMapper.selectOne(new QueryWrapper<SysObjectImages>()
-                .eq("object_id", userId)
-                .eq("object_type", 0));
-        if (sysObjectImages != null) {
-            minIoService.deleteFileByFullPath(Arrays.asList(sysObjectImages.getImageUrl()));
-            sysObjectImagesMapper.delete(new QueryWrapper<SysObjectImages>()
-                    .eq("object_id", userId));
+        SysUser user = userMapper.selectOne(new QueryWrapper<SysUser>().select("user_id", "avatar").eq("user_id", userId));
+        if (user == null) {
+            throw new ServiceException("用户不存在");
+        }
+        if (StringUtils.isNotEmpty(user.getAvatar())) {
+            minIoService.deleteFileByFullPath(Arrays.asList(user.getAvatar()));
         }
         String url = minIoService.upload(file);
-        SysObjectImages objectImages = new SysObjectImages();
-        objectImages.setObjectId(userId);
-        objectImages.setObjectType(0);
-        objectImages.setImageUrl(url);
-        sysObjectImagesMapper.insert(objectImages);
+        user.setAvatar(url);
+        userMapper.updateById(user);
+    }
+
+    /**
+     * 新增用户地址
+     *
+     * @param address
+     */
+    @Override
+    public void addUserAddress(SysUserAddress address) {
+        address.setCreateBy(OauthUtils.getCurrentUserName());
+        address.setCreateTime(new Date());
+        if (ObjectUtil.isNotEmpty(address.getDefaultStatus()) && address.getDefaultStatus() == 1) {
+            SysUserAddress updateAddress = new SysUserAddress();
+            updateAddress.setDefaultStatus(0);
+            userAddressMapper.update(updateAddress, new UpdateWrapper<SysUserAddress>().eq("default_status", 1));
+        }
+        userAddressMapper.insert(address);
+    }
+
+    /**
+     * 修改用户地址
+     *
+     * @param address
+     */
+    @Override
+    public void modifyUserAddress(SysUserAddress address) {
+        address.setUpdateBy(OauthUtils.getCurrentUserName());
+        address.setUpdateTime(new Date());
+        if (ObjectUtil.isNotEmpty(address.getDefaultStatus()) && address.getDefaultStatus() == 1) {
+            SysUserAddress updateAddress = new SysUserAddress();
+            updateAddress.setDefaultStatus(0);
+            userAddressMapper.update(updateAddress, new UpdateWrapper<SysUserAddress>().eq("default_status", 1));
+        }
+        userAddressMapper.updateById(address);
+    }
+
+    /**
+     * 查询用户地址
+     *
+     * @param userId
+     */
+    @Override
+    public List<SysUserAddress> queryUserAddress(Long userId) {
+        return userAddressMapper.selectList(new QueryWrapper<SysUserAddress>().eq("user_id", userId));
+    }
+
+    /**
+     * 删除用户地址
+     *
+     * @param id
+     */
+    @Override
+    public void deleteUserAddress(Long id) {
+        userAddressMapper.deleteById(id);
     }
 }
