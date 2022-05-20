@@ -16,7 +16,7 @@ import com.qq.common.system.pojo.SysProductType;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.mapper.SysBrandMapper;
-import com.qq.product.server.mapper.SysObjectImagesMapper;
+import com.qq.common.system.mapper.SysObjectImagesMapper;
 import com.qq.product.server.mapper.SysProductTypeMapper;
 import com.qq.product.server.service.SysProductTypeService;
 import lombok.RequiredArgsConstructor;

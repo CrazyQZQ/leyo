@@ -3,14 +3,13 @@ package com.qq.system.controller;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysUser;
-import com.qq.common.system.service.SysRoleService;
-import com.qq.common.system.service.SysUserService;
+import com.qq.system.service.SysRoleService;
+import com.qq.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 用户信息表(SysUser)表控制层
@@ -39,9 +38,9 @@ public class SysUserController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("{id}")
+    @GetMapping("getByid")
     @Log(title = "system", funcDesc = "查询单个用户")
-    public AjaxResult selectOne(@PathVariable("id") Long id) {
+    public AjaxResult selectOne(@RequestParam("id") Long id) {
         return AjaxResult.success(sysUserService.queryById(id));
     }
 
@@ -65,8 +64,15 @@ public class SysUserController {
     }
 
     @Log(title = "system", funcDesc = "获取用户角色")
-    @GetMapping("getRolesByUser/{userId}")
-    public AjaxResult getRolesByUser(@PathVariable("userId") Long userId){
+    @GetMapping("getRolesByUser")
+    public AjaxResult getRolesByUser(@RequestParam("userId") Long userId){
         return AjaxResult.success(sysRoleService.getByUser(userId));
+    }
+
+    @Log(title = "system", funcDesc = "修改用户头像")
+    @GetMapping("modifyAvatar")
+    public AjaxResult modifyAvatar(@RequestParam("userId") Long userId,@RequestParam("file") MultipartFile file){
+        sysUserService.modifyAvatar(userId, file);
+        return AjaxResult.success();
     }
 }

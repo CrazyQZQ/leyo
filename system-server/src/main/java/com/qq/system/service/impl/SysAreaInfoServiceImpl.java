@@ -1,8 +1,8 @@
-package com.qq.common.system.service.impl;
+package com.qq.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.system.pojo.SysAreaInfo;
-import com.qq.common.system.service.SysAreaInfoService;
+import com.qq.system.service.SysAreaInfoService;
 import com.qq.common.system.mapper.SysAreaInfoMapper;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
-package com.qq.common.system.service.impl;
+package com.qq.system.service.impl;
 
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.qq.common.system.mapper.SysRoleMapper;
 import com.qq.common.system.pojo.SysRole;
-import com.qq.common.system.service.SysRoleService;
+import com.qq.system.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

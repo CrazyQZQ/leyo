@@ -1,4 +1,4 @@
-package com.qq.common.system.service;
+package com.qq.account.service;
 
 import com.qq.common.system.pojo.SysAccount;
 import com.baomidou.mybatisplus.extension.service.IService;

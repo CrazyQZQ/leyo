@@ -1,10 +1,10 @@
 package com.qq.account.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.qq.account.service.SysAccountService;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysAccount;
-import com.qq.common.system.service.SysAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;

@@ -15,7 +15,7 @@ import com.qq.common.system.pojo.SysObjectImages;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.mapper.SysBrandMapper;
-import com.qq.product.server.mapper.SysObjectImagesMapper;
+import com.qq.common.system.mapper.SysObjectImagesMapper;
 import com.qq.product.server.service.SysBrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.qq.common.system.service.impl;
+package com.qq.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -6,7 +6,7 @@ import com.qq.common.core.exception.ServiceException;
 import com.qq.common.system.mapper.SysRoleMenuMapper;
 import com.qq.common.system.pojo.SysMenu;
 import com.qq.common.system.pojo.SysRoleMenu;
-import com.qq.common.system.service.SysMenuService;
+import com.qq.system.service.SysMenuService;
 import com.qq.common.system.mapper.SysMenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

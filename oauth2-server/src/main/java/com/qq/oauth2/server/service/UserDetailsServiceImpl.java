@@ -1,11 +1,13 @@
 package com.qq.oauth2.server.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.yulichang.query.MPJQueryWrapper;
+import com.qq.common.system.mapper.SysRoleMapper;
 import com.qq.common.system.mapper.SysUserMapper;
 import com.qq.common.system.pojo.SysRole;
 import com.qq.common.system.pojo.SysUser;
-import com.qq.common.system.service.SysRoleService;
 import com.qq.oauth2.server.pojo.SecurityUser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,13 +25,12 @@ import java.util.Set;
  * @Date 2022/4/8
  **/
 @Service("userDetailsServiceImpl")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private SysUserMapper userMapper;
+    private final SysUserMapper userMapper;
 
-    @Autowired
-    private SysRoleService sysRoleService;
+    private final SysRoleMapper roleMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -40,29 +41,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户:" + username + ",不存在!");
         }
         Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
-
-        List<SysRole> roles = sysRoleService.getByUser(sysUser.getUserId());
+        List<SysRole> roles = roleMapper.selectJoinList(SysRole.class,new MPJQueryWrapper<SysRole>()
+                .selectAll(SysRole.class)
+                .leftJoin("sys_user_role sur on t.role_id = sur.role_id")
+                .eq("sur.user_id", sysUser.getUserId()));
         for (SysRole role : roles) {
             // 角色必须是ROLE_开头，可以在数据库中设置
             SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + role.getRoleKey());
             grantedAuthorities.add(grantedAuthority);
-
-            // 获取权限
-//            Wrapper<List<MenuVo>> menuInfo = userProvider.getRolePermission(String.valueOf(role.getId()));
-//            if (menuInfo.getCode() == Constants.SUCCESS) {
-//                List<MenuVo> permissionList = menuInfo.getResult();
-//                for (MenuVo menu : permissionList) {
-//                    if (!StringUtils.isEmpty(menu.getUrl())) {
-//                        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(menu.getUrl());
-//                        grantedAuthorities.add(authority);
-//                    }
-//                }
-//            }
         }
 
-//        AuthUser user = new AuthUser(sysUser.getUserName(), sysUser.getPassword(), grantedAuthorities);
-//        user.setId(sysUser.getUserId());
-//        return user;
         return new SecurityUser(sysUser.getUserId(),sysUser.getUserName(), sysUser.getPassword(), grantedAuthorities);
     }
 }
