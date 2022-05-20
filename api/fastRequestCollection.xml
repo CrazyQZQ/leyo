@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="fastRequestCollection">
+        <option name="detail">
+            <CollectionDetail>
+                <option name="childList">
+                    <list>
+                        <CollectionDetail>
+                            <option name="groupId" value="1"/>
+                            <option name="id" value="1"/>
+                            <option name="name" value="Default Group"/>
+                            <option name="type" value="1"/>
+                        </CollectionDetail>
+                        <CollectionDetail>
+                            <option name="childList">
+                                <list>
+                                    <CollectionDetail>
+                                        <option name="domain" value="http://localhost:8701"/>
+                                        <option name="enableEnv" value="base"/>
+                                        <option name="enableProject" value="qq_cloud"/>
+                                        <option name="id"
+                                                value="id_com.qq.system.controller.SysUserController.queryUserAddress"/>
+                                        <option name="name" value="查询用户地址"/>
+                                        <option name="paramGroup">
+                                            <ParamGroupCollection>
+                                                <option name="bodyKeyValueListJson" value=""/>
+                                                <option name="className"
+                                                        value="com.qq.system.controller.SysUserController"/>
+                                                <option name="method" value="queryUserAddress"/>
+                                                <option name="methodDescription" value="查询用户地址"/>
+                                                <option name="methodType" value="GET"/>
+                                                <option name="multipartKeyValueListJson" value="[]"/>
+                                                <option name="originUrl" value="system/sysUser/queryUserAddress"/>
+                                                <option name="pathParamsKeyValueListJson" value="[]"/>
+                                                <option name="url" value="/system/sysUser/queryUserAddress"/>
+                                                <option name="urlEncodedKeyValueListJson" value="[]"/>
+                                                <option name="urlEncodedKeyValueListText" value=""/>
+                                                <option name="urlParamsKeyValueListJson"
+                                                        value="[{&quot;customFlag&quot;:2,&quot;enabled&quot;:true,&quot;key&quot;:&quot;userId&quot;,&quot;type&quot;:&quot;Number&quot;,&quot;value&quot;:&quot;2&quot;}]"/>
+                                                <option name="urlParamsKeyValueListText" value="userId=2"/>
+                                            </ParamGroupCollection>
+                                        </option>
+                                        <option name="type" value="2"/>
+                                    </CollectionDetail>
+                                    <CollectionDetail>
+                                        <option name="domain" value="http://localhost:8701"/>
+                                        <option name="enableEnv" value="base"/>
+                                        <option name="enableProject" value="qq_cloud"/>
+                                        <option name="id"
+                                                value="id_com.qq.system.controller.SysUserController.addUserAddress"/>
+                                        <option name="name" value="新增用户地址"/>
+                                        <option name="paramGroup">
+                                            <ParamGroupCollection>
+                                                <option name="bodyKeyValueListJson"
+                                                        value="{&#10;  &quot;userId&quot;: 2,&#10;  &quot;receiverName&quot;: &quot;qq&quot;,&#10;  &quot;receiverTel&quot;:  &quot;13111111111&quot;,&#10;  &quot;defaultStatus&quot;: 1,&#10;  &quot;postCode&quot;: &quot;211100&quot;,&#10;  &quot;province&quot;: &quot;江苏省&quot;,&#10;  &quot;city&quot;: &quot;南京市&quot;,&#10;  &quot;region&quot;: &quot;江宁区&quot;,&#10;  &quot;detailAddress&quot;: &quot;市民中心西大门&quot;,&#10;  &quot;fullAddress&quot;: &quot;江苏省南京市江宁区市民中心西大门&quot;&#10;}"/>
+                                                <option name="className"
+                                                        value="com.qq.system.controller.SysUserController"/>
+                                                <option name="method" value="addUserAddress"/>
+                                                <option name="methodDescription" value="新增用户地址"/>
+                                                <option name="methodType" value="PUT"/>
+                                                <option name="multipartKeyValueListJson" value="[]"/>
+                                                <option name="originUrl" value="system/sysUser/addUserAddress"/>
+                                                <option name="pathParamsKeyValueListJson" value="[]"/>
+                                                <option name="url" value="/system/sysUser/addUserAddress"/>
+                                                <option name="urlEncodedKeyValueListJson" value="[]"/>
+                                                <option name="urlEncodedKeyValueListText" value=""/>
+                                                <option name="urlParamsKeyValueListJson" value="[]"/>
+                                                <option name="urlParamsKeyValueListText" value=""/>
+                                            </ParamGroupCollection>
+                                        </option>
+                                        <option name="type" value="2"/>
+                                    </CollectionDetail>
+                                    <CollectionDetail>
+                                        <option name="domain" value="http://localhost:8701"/>
+                                        <option name="enableEnv" value="base"/>
+                                        <option name="enableProject" value="qq_cloud"/>
+                                        <option name="id"
+                                                value="id_com.qq.system.controller.SysUserController.modifyAvatar"/>
+                                        <option name="name" value="修改头像"/>
+                                        <option name="paramGroup">
+                                            <ParamGroupCollection>
+                                                <option name="bodyKeyValueListJson" value=""/>
+                                                <option name="className"
+                                                        value="com.qq.system.controller.SysUserController"/>
+                                                <option name="method" value="modifyAvatar"/>
+                                                <option name="methodDescription" value="New Request"/>
+                                                <option name="methodType" value="POST"/>
+                                                <option name="multipartKeyValueListJson"
+                                                        value="[{&quot;customFlag&quot;:2,&quot;enabled&quot;:true,&quot;key&quot;:&quot;userId&quot;,&quot;type&quot;:&quot;Number&quot;,&quot;value&quot;:&quot;1&quot;},{&quot;customFlag&quot;:2,&quot;enabled&quot;:true,&quot;key&quot;:&quot;file&quot;,&quot;type&quot;:&quot;File&quot;,&quot;value&quot;:&quot;E:/qqWorkspace/upload images/tx.png&quot;}]"/>
+                                                <option name="originUrl" value="system/sysUser/modifyAvatar"/>
+                                                <option name="pathParamsKeyValueListJson" value="[]"/>
+                                                <option name="url" value="/system/sysUser/modifyAvatar"/>
+                                                <option name="urlEncodedKeyValueListJson" value="[]"/>
+                                                <option name="urlEncodedKeyValueListText" value=""/>
+                                                <option name="urlParamsKeyValueListJson" value="[]"/>
+                                                <option name="urlParamsKeyValueListText" value=""/>
+                                            </ParamGroupCollection>
+                                        </option>
+                                        <option name="type" value="2"/>
+                                    </CollectionDetail>
+                                    <CollectionDetail>
+                                        <option name="domain" value="http://localhost:8701"/>
+                                        <option name="enableEnv" value="base"/>
+                                        <option name="enableProject" value="qq_cloud"/>
+                                        <option name="id"
+                                                value="id_com.qq.system.controller.SysUserController.modifyUserAddress"/>
+                                        <option name="name" value="修改用户地址"/>
+                                        <option name="paramGroup">
+                                            <ParamGroupCollection>
+                                                <option name="bodyKeyValueListJson"
+                                                        value="{&#10;  &quot;id&quot;: 2,&#10;  &quot;receiverTel&quot;: &quot;17777777777&quot;,&#10;  &quot;defaultStatus&quot;: 1,&#10;}"/>
+                                                <option name="className"
+                                                        value="com.qq.system.controller.SysUserController"/>
+                                                <option name="method" value="modifyUserAddress"/>
+                                                <option name="methodDescription" value="修改用户地址"/>
+                                                <option name="methodType" value="POST"/>
+                                                <option name="multipartKeyValueListJson" value="[]"/>
+                                                <option name="originUrl" value="system/sysUser/modifyUserAddress"/>
+                                                <option name="pathParamsKeyValueListJson" value="[]"/>
+                                                <option name="url" value="/system/sysUser/modifyUserAddress"/>
+                                                <option name="urlEncodedKeyValueListJson" value="[]"/>
+                                                <option name="urlEncodedKeyValueListText" value=""/>
+                                                <option name="urlParamsKeyValueListJson" value="[]"/>
+                                                <option name="urlParamsKeyValueListText" value=""/>
+                                            </ParamGroupCollection>
+                                        </option>
+                                        <option name="type" value="2"/>
+                                    </CollectionDetail>
+                                </list>
+                            </option>
+                            <option name="id" value="20220520141933291"/>
+                            <option name="name" value="SysUserController"/>
+                            <option name="type" value="1"/>
+                        </CollectionDetail>
+                        <CollectionDetail>
+                            <option name="id" value="20220520153606696"/>
+                            <option name="name" value="system-server"/>
+                            <option name="type" value="1"/>
+                        </CollectionDetail>
+                    </list>
+                </option>
+                <option name="groupId" value="-1"/>
+                <option name="id" value="0"/>
+                <option name="name" value="Root"/>
+                <option name="type" value="1"/>
+            </CollectionDetail>
+        </option>
+    </component>
+</project>
