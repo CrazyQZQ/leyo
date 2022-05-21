@@ -92,4 +92,11 @@ public interface SysUserService extends IService<SysUser> {
      * @param id
      */
     void deleteUserAddress(Long id);
+
+    /**
+     * 根据id查询地址
+     * @param id
+     * @return
+     */
+    SysUserAddress queryAddressById(Long id);
 }

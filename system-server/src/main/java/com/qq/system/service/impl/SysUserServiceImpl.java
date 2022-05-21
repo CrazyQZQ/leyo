@@ -173,4 +173,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void deleteUserAddress(Long id) {
         userAddressMapper.deleteById(id);
     }
+
+    @Override
+    public SysUserAddress queryAddressById(Long id) {
+        return userAddressMapper.selectById(id);
+    }
 }

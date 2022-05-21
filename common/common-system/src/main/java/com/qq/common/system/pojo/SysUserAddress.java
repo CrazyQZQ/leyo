@@ -72,6 +72,12 @@ public class SysUserAddress implements Serializable {
     private String region;
 
     /**
+     * 区域编码，到区级
+     */
+    @TableField(value = "area_code")
+    private String areaCode;
+
+    /**
      * 详细地址
      */
     @TableField(value = "detail_address")

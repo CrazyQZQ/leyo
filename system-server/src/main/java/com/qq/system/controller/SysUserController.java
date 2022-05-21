@@ -140,6 +140,17 @@ public class SysUserController {
     }
 
     /**
+     * 根据id查询地址
+     *
+     * @param id
+     */
+    @Log(title = "system", funcDesc = "根据id查询地址")
+    @GetMapping("queryAddressById")
+    public AjaxResult queryAddressById(@RequestParam("id") Long id) {
+        return AjaxResult.success(sysUserService.queryAddressById(id));
+    }
+
+    /**
      * 删除用户地址
      *
      * @param id
