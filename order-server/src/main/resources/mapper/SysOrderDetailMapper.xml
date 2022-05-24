@@ -7,7 +7,7 @@
     <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysOrderDetail">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="masterId" column="master_id" jdbcType="BIGINT"/>
-            <result property="productId" column="product_id" jdbcType="BIGINT"/>
+            <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
             <result property="count" column="count" jdbcType="INTEGER"/>
             <result property="amount" column="amount" jdbcType="DECIMAL"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>

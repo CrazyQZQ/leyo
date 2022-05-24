@@ -54,6 +54,12 @@ public class SysOrder implements Serializable {
     private Integer status;
 
     /**
+     * 收货地址id
+     */
+    @TableField(value = "user_address_id")
+    private Long userAddressId;
+
+    /**
      * 创建人
      */
     @TableField(value = "create_by")
