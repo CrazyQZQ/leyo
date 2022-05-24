@@ -16,4 +16,5 @@ public class BaseQuery {
     private Date endTime;
     private List<Long> ids;
     private String keyword;
+    private Long parentId;
 }

@@ -48,7 +48,7 @@ public class SysOrder implements Serializable {
     private Integer totalCount;
 
     /**
-     * 状态
+     * 状态 0：待付款，1：代发货，2：待收货，3：待评价，4：退款/售后
      */
     @TableField(value = "status")
     private Integer status;

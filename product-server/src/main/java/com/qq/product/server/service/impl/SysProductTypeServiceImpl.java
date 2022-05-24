@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.system.mapper.SysObjectImagesMapper;
 import com.qq.common.system.pojo.SysBrand;
 import com.qq.common.system.pojo.SysObjectImages;
@@ -124,5 +125,10 @@ public class SysProductTypeServiceImpl extends ServiceImpl<SysProductTypeMapper,
             sysObjectImagesMapper.delete(new QueryWrapper<SysObjectImages>().eq("object_id", id));
             minIoService.deleteFileByFullPath(images);
         }
+    }
+
+    @Override
+    public List<SysProductType> list(BaseQuery query) {
+        return this.baseMapper.getProductTypeList(query);
     }
 }

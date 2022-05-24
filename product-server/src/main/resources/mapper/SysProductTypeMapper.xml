@@ -28,6 +28,9 @@
                 #{id}
             </foreach>
         </if>
+        <if test="parentId != null">
+            AND spt.parent_id = #{parentId}
+        </if>
     </sql>
     <select id="getProductTypeList" resultMap="BaseResultMap" parameterType="com.qq.common.core.web.page.BaseQuery">
         select <include refid="Base_Column_List"/> from sys_product_type spt

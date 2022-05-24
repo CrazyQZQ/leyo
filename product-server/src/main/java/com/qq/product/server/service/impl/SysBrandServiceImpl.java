@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.system.mapper.SysObjectImagesMapper;
 import com.qq.common.system.pojo.SysBrand;
 import com.qq.common.system.pojo.SysObjectImages;
@@ -119,5 +120,8 @@ public class SysBrandServiceImpl extends ServiceImpl<SysBrandMapper, SysBrand>
         }
     }
 
-
+    @Override
+    public List<SysBrand> list(BaseQuery query) {
+        return this.baseMapper.getBrandList(query);
+    }
 }
