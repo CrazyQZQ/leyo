@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "product-server", fallback = ProductServiceCallBackImpl.class)
 public interface ProductService {
 
-    @PostMapping("reduceStock")
+    @PostMapping("sku/reduceStock")
     AjaxResult reduceStock(@RequestParam Long id, @RequestParam Integer stock);
 
     @GetMapping("list")
