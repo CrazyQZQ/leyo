@@ -33,11 +33,11 @@ public class HomeSettingServiceImpl implements HomeSettingService {
     private final RedisService redisService;
 
     @Override
-    public List<String> getBanners() {
+    public List<SysObjectImages> getBanners() {
         List<SysObjectImages> objectImages = Optional
                 .ofNullable(sysObjectImagesMapper.selectList(new QueryWrapper<SysObjectImages>().eq("object_type", 4)))
                 .orElse(Collections.emptyList());
-        return objectImages.stream().map(SysObjectImages::getImageUrl).collect(Collectors.toList());
+        return objectImages;
     }
 
     @Override

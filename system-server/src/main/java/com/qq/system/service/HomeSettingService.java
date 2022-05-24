@@ -1,5 +1,6 @@
 package com.qq.system.service;
 
+import com.qq.common.system.pojo.SysObjectImages;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface HomeSettingService {
      * 获取banners
      * @return
      */
-    List<String> getBanners();
+    List<SysObjectImages> getBanners();
     /**
      * 添加banner
      * @param files
