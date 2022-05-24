@@ -1,5 +1,6 @@
 package com.qq.product.server.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
@@ -8,6 +9,7 @@ import com.qq.product.server.service.SysBrandService;
 import com.qq.product.server.service.SysProductTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +26,16 @@ public class SysProductTypeController extends BaseController {
     private final SysProductTypeService sysProductTypeService;
     private final SysBrandService sysBrandService;
 
+    @GetMapping("tree")
+    @Log(title = "product_type", funcDesc = "查询产品品类数")
+    public AjaxResult getProductTypeTreeList() {
+        return AjaxResult.success(sysProductTypeService.queryTreeList());
+    }
+
     @GetMapping("list")
     @Log(title = "product_type", funcDesc = "查询产品品类列表")
-    public AjaxResult getProductTypeList() {
-        return AjaxResult.success(sysProductTypeService.queryTreeList());
+    public AjaxResult getProductTypeList(@RequestParam("parentId") Long parentId) {
+        return AjaxResult.success(sysProductTypeService.list(new QueryWrapper<SysProductType>().eq("parent_id", parentId)));
     }
 
     @GetMapping("info")

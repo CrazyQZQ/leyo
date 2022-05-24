@@ -3,6 +3,7 @@ package com.qq.product.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.system.pojo.SysProduct;
+import com.qq.common.system.pojo.SysSku;
 
 import java.io.IOException;
 import java.util.List;
@@ -47,12 +48,4 @@ public interface SysProductService extends IService<SysProduct> {
      * @return
      */
     int deleteProduct(Long id) throws IOException;
-
-    /**
-     * @description 减库存
-     * @param id
-     * @param stock
-     * @return
-     */
-    void reduceStock(Long id, Integer stock) throws IOException;
 }

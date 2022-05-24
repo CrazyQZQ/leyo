@@ -108,6 +108,18 @@ public class SysProduct implements Serializable {
     @TableField(exist = false)
     private String brandName;
 
+    /**
+     * sku列表
+     */
+    @TableField(exist = false)
+    private List<SysSku> skus;
+
+    /**
+     * 属性
+     */
+    @TableField(exist = false)
+    private List<SysAttribute> attributes;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

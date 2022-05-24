@@ -1,8 +1,8 @@
 package com.qq.account.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.qq.account.service.SysAccountService;
 import com.qq.common.system.pojo.SysAccount;
-import com.qq.common.system.service.SysAccountService;
 import com.qq.common.system.mapper.SysAccountMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 */
 @Service
 public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAccount>
-    implements SysAccountService{
+    implements SysAccountService {
 
     @Override
     public void operateAccountAmount(Long id, BigDecimal amount) {

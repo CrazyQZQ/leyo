@@ -1,13 +1,16 @@
 package com.qq.product.server.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.es.service.EsService;
-import com.qq.common.system.pojo.SysObjectImages;
-import com.qq.common.system.pojo.SysProduct;
+import com.qq.common.system.pojo.*;
+import com.qq.product.server.mapper.SysAttributeMapper;
+import com.qq.product.server.mapper.SysProductAttributeMapper;
+import com.qq.product.server.mapper.SysSkuMapper;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.constants.ProductConstants;
@@ -37,6 +40,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
 
     private final MinIoService minIoService;
     private final SysObjectImagesMapper sysObjectImagesMapper;
+    private final SysProductAttributeMapper productAttributeMapper;
     private final EsService esService;
 
     @Override
@@ -54,6 +58,15 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
                 sysObjectImages.setImageUrl(upload);
                 sysObjectImages.setObjectType(3);
                 sysObjectImagesMapper.insert(sysObjectImages);
+            }
+        }
+        List<SysAttribute> attributes = sysProduct.getAttributes();
+        if (CollUtil.isNotEmpty(attributes)){
+            for (SysAttribute attribute : attributes) {
+                SysProductAttribute sysProductAttribute = new SysProductAttribute();
+                sysProductAttribute.setProductId(sysProduct.getId());
+                sysProductAttribute.setAttributeId(attribute.getId());
+                productAttributeMapper.insert(sysProductAttribute);
             }
         }
     }
@@ -80,6 +93,16 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         if(i == 0){
             throw new ServiceException("商品不存在！");
         }
+        List<SysAttribute> attributes = product.getAttributes();
+        if (CollUtil.isNotEmpty(attributes)){
+            productAttributeMapper.delete(new QueryWrapper<SysProductAttribute>().eq("product_id", product.getId()));
+            for (SysAttribute attribute : attributes) {
+                SysProductAttribute sysProductAttribute = new SysProductAttribute();
+                sysProductAttribute.setProductId(product.getId());
+                sysProductAttribute.setAttributeId(attribute.getId());
+                productAttributeMapper.insert(sysProductAttribute);
+            }
+        }
         esService.updateDoc(ProductConstants.PRODUCT_INDEX, product.getId().toString(),
                 this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", product.getId())).get(0));
         return i;
@@ -96,23 +119,8 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
             minIoService.deleteFileByFullPath(images);
         }
         esService.deleteDoc(ProductConstants.PRODUCT_INDEX, id.toString());
+        productAttributeMapper.delete(new QueryWrapper<SysProductAttribute>().eq("product_id", id));
         return this.baseMapper.deleteById(id);
-    }
-
-    @Override
-    @Transactional
-    public void reduceStock(Long id, Integer stock) throws IOException {
-        SysProduct product = this.baseMapper.getProductById(id);
-        if(product == null){
-            throw new ServiceException("商品不存在！");
-        }
-        if(stock > product.getStock()){
-            throw new ServiceException("库存不足！");
-        }
-        product.setStock(product.getStock() - stock);
-        this.baseMapper.updateById(product);
-        esService.updateDoc(ProductConstants.PRODUCT_INDEX, product.getId().toString(),
-                this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", product.getId())).get(0));
     }
 }
 

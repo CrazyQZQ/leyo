@@ -20,6 +20,20 @@
             <collection property="imageUrls" ofType="string" select="selectImagesById" column="id" />
     </resultMap>
 
+    <resultMap id="InfoResultMap" extends="BaseResultMap" type="com.qq.common.system.pojo.SysProduct">
+        <collection property="skus" ofType="com.qq.common.system.pojo.SysSku" select="selectSkuById" column="id" />
+        <collection property="attributes" select="selectAttributesById" column="id" />
+    </resultMap>
+
+    <resultMap id="attributeResultMap" type="com.qq.common.system.pojo.SysAttribute">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <collection property="values" ofType="com.qq.common.system.pojo.SysAttributeValue">
+            <id property="id" column="value_id" jdbcType="BIGINT"/>
+            <result property="name" column="value_name" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
     <sql id="Base_Column_List">
         sp.id,sp.code,sp.name,
         sp.unit,sp.price,sp.stock,sp.create_by,
@@ -33,7 +47,7 @@
             </foreach>
         </if>
     </sql>
-    <select id="getProductById" resultMap="BaseResultMap">
+    <select id="getProductById" resultMap="InfoResultMap">
         select <include refid="Base_Column_List"/>,sb.name brand_name from sys_product sp
         left join sys_brand sb on sp.brand_id = sb.id
         where sp.id = #{id}
@@ -46,6 +60,15 @@
     </select>
     <select id="selectImagesById" resultType="string">
         select image_url from sys_object_images where object_type=3 and object_id=#{id}
+    </select>
+    <select id="selectSkuById" resultType="com.qq.common.system.pojo.SysSku">
+        select * from sys_sku where product_id=#{id}
+    </select>
+    <select id="selectAttributesById" resultMap="attributeResultMap">
+        select sa.id,sa.name,sav.id value_id,sav.name value_name from sys_product_attribute spa
+        join sys_attribute sa on sa.id = spa.attribute_id
+        left join sys_attribute_value sav on sa.id = sav.attribute_id
+        where spa.product_id = #{id}
     </select>
 
 
