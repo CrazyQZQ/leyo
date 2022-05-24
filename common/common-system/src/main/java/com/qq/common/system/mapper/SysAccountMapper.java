@@ -1,7 +1,7 @@
 package com.qq.common.system.mapper;
 
-import com.qq.common.system.pojo.SysAccount;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qq.common.system.pojo.SysAccount;
 
 /**
 * @author QinQiang

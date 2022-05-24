@@ -2,8 +2,8 @@ package com.qq.order.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.qq.order.server.mapper.SysOrderDetailMapper;
 import com.qq.common.system.pojo.SysOrderDetail;
+import com.qq.order.server.mapper.SysOrderDetailMapper;
 import org.springframework.stereotype.Service;
 
 /**

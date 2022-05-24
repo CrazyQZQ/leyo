@@ -1,13 +1,10 @@
 package com.qq.product.server.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysAttribute;
-import com.qq.common.system.pojo.SysSku;
 import com.qq.product.server.service.SysAttributeService;
-import com.qq.product.server.service.SysSkuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

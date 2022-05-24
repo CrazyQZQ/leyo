@@ -1,7 +1,7 @@
 package com.qq.system.service;
 
-import com.qq.common.system.pojo.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.qq.common.system.pojo.SysMenu;
 import com.qq.common.system.pojo.SysRoleMenu;
 
 import java.util.List;

@@ -8,8 +8,6 @@ import com.qq.common.es.service.EsService;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysProduct;
 import com.qq.product.server.service.SysProductService;
-import com.qq.product.server.service.SysSkuService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.qq.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.qq.common.system.mapper.SysDeptMapper;
 import com.qq.common.system.pojo.SysDept;
 import com.qq.system.service.SysDeptService;
-import com.qq.common.system.mapper.SysDeptMapper;
 import org.springframework.stereotype.Service;
 
 /**

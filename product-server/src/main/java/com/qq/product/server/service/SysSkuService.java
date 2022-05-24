@@ -1,7 +1,7 @@
 package com.qq.product.server.service;
 
-import com.qq.common.system.pojo.SysSku;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.qq.common.system.pojo.SysSku;
 
 /**
 * @author Administrator

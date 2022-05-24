@@ -1,9 +1,10 @@
 package com.qq.common.core.utils.ip;
 
+import com.qq.common.core.utils.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import javax.servlet.http.HttpServletRequest;
-import com.qq.common.core.utils.StringUtils;
 
 /**
  * 获取IP方法

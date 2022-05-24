@@ -1,8 +1,9 @@
 package com.qq.common.core.utils.uuid;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.StringUtils;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author ruoyi 序列生成类

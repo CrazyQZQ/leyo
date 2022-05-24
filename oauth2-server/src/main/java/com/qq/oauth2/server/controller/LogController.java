@@ -2,9 +2,9 @@ package com.qq.oauth2.server.controller;
 
 import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.redis.service.RedisService;
 import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.utils.OauthUtils;
-import com.qq.common.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;

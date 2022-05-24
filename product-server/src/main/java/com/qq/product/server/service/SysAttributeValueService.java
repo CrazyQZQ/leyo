@@ -1,7 +1,7 @@
 package com.qq.product.server.service;
 
-import com.qq.common.system.pojo.SysAttributeValue;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.qq.common.system.pojo.SysAttributeValue;
 
 /**
 * @author Administrator

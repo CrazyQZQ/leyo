@@ -3,7 +3,6 @@ package com.qq.product.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.system.pojo.SysProduct;
-import com.qq.common.system.pojo.SysSku;
 
 import java.io.IOException;
 import java.util.List;

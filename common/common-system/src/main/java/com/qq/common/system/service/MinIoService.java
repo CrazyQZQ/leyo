@@ -1,7 +1,6 @@
 package com.qq.common.system.service;
 
 import com.qq.common.system.vo.FileVO;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
