@@ -46,6 +46,12 @@ public class SysSku implements Serializable {
     @TableField(value = "stock")
     private Integer stock;
 
+    /**
+     * 销量
+     */
+    @TableField(value = "sales")
+    private Integer sales;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

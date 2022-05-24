@@ -27,7 +27,10 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
         }
         SysSku sku = new SysSku();
         sku.setId(id);
+        // 减库存
         sku.setStock(sysSku.getStock() - stock);
+        // 加销量
+        sku.setSales(sysSku.getSales() + stock);
         this.baseMapper.updateById(sku);
     }
 }
