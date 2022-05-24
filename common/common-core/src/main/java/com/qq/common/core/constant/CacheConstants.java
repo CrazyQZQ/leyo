@@ -28,13 +28,18 @@ public class CacheConstants
     public final static String MENU_ROLES = "menu_roles:";
 
     /**
-     * 日志缓存前缀
+     * 日志缓存
      */
     public final static String LOGS_KEY = "logs";
 
     /**
-     * 错误日志缓存前缀
+     * 错误日志缓存
      */
     public final static String ERROR_LOGS_KEY = "error_logs";
+
+    /**
+     * 公告
+     */
+    public final static String ANNOUNCEMENT_KEY= "announcement";
 
 }
