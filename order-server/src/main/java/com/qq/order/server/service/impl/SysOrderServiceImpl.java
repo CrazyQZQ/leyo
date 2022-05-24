@@ -74,7 +74,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             orderDetail.setCreateTime(now);
             sysOrderDetailMapper.insert(orderDetail);
             //扣减库存
-            productService.reduceStock(orderDetail.getProductId(), orderDetail.getCount());
+            productService.reduceStock(orderDetail.getSkuId(), orderDetail.getCount());
         }
         // 扣减账户余额
         accountService.operateAccountAmount(accountId, order.getTotalAmount().negate());
@@ -85,13 +85,13 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
     public ProductVO getOrderInfo(Long orderId) {
         this.baseMapper.selectById(orderId);
         List<SysOrderDetail> details = sysOrderDetailMapper.selectList(new QueryWrapper<SysOrderDetail>().eq("master_id", orderId));
-        List<Long> productIds = details.stream().map(SysOrderDetail::getProductId).collect(Collectors.toList());
+        List<Long> productIds = details.stream().map(SysOrderDetail::getSkuId).collect(Collectors.toList());
         BaseQuery query = new BaseQuery();
         query.setIds(productIds);
         TableDataInfo tableDataInfo = productService.getProductList(query);
         List<SysProduct> products = (List<SysProduct>) tableDataInfo.getRows();
         for (SysOrderDetail detail : details) {
-            products.stream().filter(p -> p.getId().equals(detail.getProductId())).findFirst().ifPresent(p -> {
+            products.stream().filter(p -> p.getId().equals(detail.getSkuId())).findFirst().ifPresent(p -> {
                 detail.setProduct(p);
             });
         }

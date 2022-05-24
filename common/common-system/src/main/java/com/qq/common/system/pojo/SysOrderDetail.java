@@ -33,8 +33,8 @@ public class SysOrderDetail implements Serializable {
     /**
      * 产品id
      */
-    @TableField(value = "product_id")
-    private Long productId;
+    @TableField(value = "sku_id")
+    private Long skuId;
 
     /**
      * 数量
