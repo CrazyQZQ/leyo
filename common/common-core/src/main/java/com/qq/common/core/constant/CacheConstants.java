@@ -42,4 +42,9 @@ public class CacheConstants
      */
     public final static String ANNOUNCEMENT_KEY= "announcement";
 
+    /**
+     * 重复提交
+     */
+    public final static String REPEAT_COMMIT_KEY_PREFIX= "repeat_commit:";
+
 }

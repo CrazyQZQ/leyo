@@ -1,5 +1,7 @@
 package com.qq.system.controller;
 
+import cn.hutool.core.util.IdUtil;
+import com.qq.common.core.constant.CacheConstants;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
 import com.qq.system.service.HomeSettingService;
@@ -78,5 +80,16 @@ public class HomeSettingController {
     @Log(title = "system_home", funcDesc = "获取公告")
     public AjaxResult getAnnouncement() {
         return AjaxResult.success(homeSettingService.getAnnouncement());
+    }
+
+    /**
+     * 获取重复提交token
+     *
+     * @return
+     */
+    @GetMapping("/repeatCommitToken")
+    @Log(title = "system_home", funcDesc = "获取重复提交token")
+    public AjaxResult getRepeatCommitToken() {
+        return AjaxResult.success(CacheConstants.REPEAT_COMMIT_KEY_PREFIX + IdUtil.getSnowflakeNextId());
     }
 }

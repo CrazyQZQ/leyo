@@ -1,6 +1,7 @@
 package com.qq.order.server.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.qq.common.core.annotation.RepeatCommit;
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.core.web.page.BaseQuery;
@@ -41,6 +42,7 @@ public class OrderController extends BaseController {
 
     @PostMapping("/saveOrder")
     @Log(title = "order", funcDesc = "保存订单")
+    @RepeatCommit
     public AjaxResult saveOrder(@RequestBody ProductVO productVO) {
         log.info("订单服务开始保存订单");
         return AjaxResult.success(orderService.saveOrder(productVO));
