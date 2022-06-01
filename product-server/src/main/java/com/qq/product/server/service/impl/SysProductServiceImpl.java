@@ -1,6 +1,9 @@
 package com.qq.product.server.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -8,13 +11,11 @@ import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.es.service.EsService;
 import com.qq.common.system.mapper.SysObjectImagesMapper;
-import com.qq.common.system.pojo.SysAttribute;
-import com.qq.common.system.pojo.SysObjectImages;
-import com.qq.common.system.pojo.SysProduct;
-import com.qq.common.system.pojo.SysProductAttribute;
+import com.qq.common.system.pojo.*;
 import com.qq.common.system.service.MinIoService;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.constants.ProductConstants;
+import com.qq.product.server.mapper.SysAttributeValueMapper;
 import com.qq.product.server.mapper.SysProductAttributeMapper;
 import com.qq.product.server.mapper.SysProductMapper;
 import com.qq.product.server.service.SysProductService;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +45,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
     private final SysObjectImagesMapper sysObjectImagesMapper;
     private final SysProductAttributeMapper productAttributeMapper;
     private final EsService esService;
+    private final SysAttributeValueMapper sysAttributeValueMapper;
 
     @Override
     @Transactional
@@ -74,7 +77,19 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
 
     @Override
     public SysProduct getProductById(Long id) {
-        return this.baseMapper.getProductById(id);
+        SysProduct product = this.baseMapper.getProductById(id);
+        if(ObjectUtil.isNotEmpty(product)){
+            List<SysSku> skus = product.getSkus();
+            for (SysSku sku : skus) {
+                if (StrUtil.isNotEmpty(sku.getSpec())) {
+                    List<Map> specs = JSON.parseArray(sku.getSpec(), Map.class);
+                    if(CollUtil.isNotEmpty(specs)){
+                        sku.setSkuAttributes(sysAttributeValueMapper.selectSkuAttribute(specs));
+                    }
+                }
+            }
+        }
+        return product;
     }
 
     @Override

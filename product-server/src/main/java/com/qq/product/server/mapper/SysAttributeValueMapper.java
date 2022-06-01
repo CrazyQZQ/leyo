@@ -2,6 +2,10 @@ package com.qq.product.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.qq.common.system.pojo.SysAttributeValue;
+import com.qq.common.system.vo.SkuAttributeVO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -10,6 +14,8 @@ import com.qq.common.system.pojo.SysAttributeValue;
 * @Entity com.qq.common.system.pojo.SysAttributeValue
 */
 public interface SysAttributeValueMapper extends BaseMapper<SysAttributeValue> {
+
+    List<SkuAttributeVO> selectSkuAttribute(List<Map> list);
 
 }
 

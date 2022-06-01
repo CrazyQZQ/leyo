@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.qq.common.system.vo.SkuAttributeVO;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 商品sku表
@@ -51,6 +53,18 @@ public class SysSku implements Serializable {
      */
     @TableField(value = "sales")
     private Integer sales;
+
+    /**
+     * 图片
+     */
+    @TableField(value = "image_url")
+    private String imageUrl;
+
+    /**
+     * 属性
+     */
+    @TableField(exist = false)
+    private List<SkuAttributeVO> skuAttributes;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

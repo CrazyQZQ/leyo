@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Description:
@@ -31,7 +32,7 @@ public class SysSkuController extends BaseController {
     @GetMapping("list")
     @Log(title = "product_sku", funcDesc = "查询产品sku列表")
     public AjaxResult getProductList(@RequestParam Long productId) {
-        return AjaxResult.success(skuService.list(new QueryWrapper<SysSku>().eq("product_id", productId)));
+        return AjaxResult.success(skuService.list(productId));
     }
 
     /**
@@ -80,6 +81,19 @@ public class SysSkuController extends BaseController {
     @Log(title = "product_sku", funcDesc = "扣减库存")
     public AjaxResult reduceStock(@RequestParam Long id, @RequestParam Integer stock) {
         skuService.reduceStock(id, stock);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 保存sku图片
+     * @param id
+     * @param file
+     * @return
+     */
+    @PostMapping("saveImage")
+    @Log(title = "product_sku", funcDesc = "保存sku图片")
+    public AjaxResult saveImage(@RequestParam Long id, @RequestParam MultipartFile file) {
+        skuService.saveImage(id, file);
         return AjaxResult.success();
     }
 }
