@@ -14,6 +14,7 @@ import com.qq.order.server.mapper.SysOrderDetailMapper;
 import com.qq.order.server.mapper.SysOrderMapper;
 import com.qq.order.server.service.AccountService;
 import com.qq.order.server.service.ProductService;
+import com.qq.order.server.service.SkuService;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.ProductVO;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
     private final SysOrderDetailMapper sysOrderDetailMapper;
     private final AccountService accountService;
     private final ProductService productService;
+    private final SkuService skuService;
 
     @Override
     @Transactional
@@ -74,7 +76,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             orderDetail.setCreateTime(now);
             sysOrderDetailMapper.insert(orderDetail);
             //扣减库存
-            productService.reduceStock(orderDetail.getSkuId(), orderDetail.getCount());
+            skuService.reduceStock(orderDetail.getSkuId(), orderDetail.getCount());
         }
         // 扣减账户余额
         accountService.operateAccountAmount(accountId, order.getTotalAmount().negate());

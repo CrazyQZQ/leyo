@@ -18,4 +18,6 @@ public interface SysSkuService extends IService<SysSku> {
     void reduceStock(Long id, Integer stock);
 
     void saveImage(Long id, MultipartFile file);
+
+    SysSku getSkuById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.qq.common.core.web.domain;
 
+import cn.hutool.core.util.NumberUtil;
 import com.qq.common.core.constant.HttpStatus;
 import com.qq.common.core.utils.StringUtils;
 
@@ -148,5 +149,18 @@ public class AjaxResult extends HashMap<String, Object>
     public static AjaxResult error(int code, String msg)
     {
         return new AjaxResult(code, msg, null);
+    }
+
+    /**
+     * 是否成功
+     * @return
+     */
+    public boolean isSuccess()
+    {
+        Object code = this.get(CODE_TAG);
+        if(code == null) {
+            return false;
+        }
+        return HttpStatus.SUCCESS == NumberUtil.parseInt(code.toString());
     }
 }

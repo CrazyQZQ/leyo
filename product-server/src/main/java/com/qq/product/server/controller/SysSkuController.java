@@ -31,8 +31,19 @@ public class SysSkuController extends BaseController {
      */
     @GetMapping("list")
     @Log(title = "product_sku", funcDesc = "查询产品sku列表")
-    public AjaxResult getProductList(@RequestParam Long productId) {
+    public AjaxResult getSkuList(@RequestParam Long productId) {
         return AjaxResult.success(skuService.list(productId));
+    }
+
+    /**
+     * id查询产品sku
+     * @param id
+     * @return
+     */
+    @GetMapping("getById")
+    @Log(title = "product_sku", funcDesc = "id查询产品sku")
+    public AjaxResult getSkuById(@RequestParam Long id) {
+        return AjaxResult.success(skuService.getSkuById(id));
     }
 
     /**

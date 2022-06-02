@@ -27,3 +27,5 @@ spring:
                         group: DEFAULT_GROUP
                         refresh-enabled: true
                 enabled: true
+    main:
+        allow-bean-definition-overriding: true

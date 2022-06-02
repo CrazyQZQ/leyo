@@ -38,12 +38,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
     public List<SysSku> list(Long productId) {
         List<SysSku> skuList = this.baseMapper.selectList(new QueryWrapper<SysSku>().eq("product_id", productId));
         for (SysSku sku : skuList) {
-            if (StrUtil.isNotEmpty(sku.getSpec())) {
-                List<Map> specs = JSON.parseArray(sku.getSpec(), Map.class);
-                if(CollUtil.isNotEmpty(specs)){
-                    sku.setSkuAttributes(sysAttributeValueMapper.selectSkuAttribute(specs));
-                }
-            }
+            setAttributes(sku);
         }
         return skuList;
     }
@@ -81,6 +76,22 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
         sku.setId(id);
         sku.setImageUrl(newImageUrl);
         this.baseMapper.updateById(sku);
+    }
+
+    @Override
+    public SysSku getSkuById(Long id) {
+        SysSku sku = this.baseMapper.selectById(id);
+        setAttributes(sku);
+        return sku;
+    }
+
+    private void setAttributes(SysSku sku){
+        if (StrUtil.isNotEmpty(sku.getSpec())) {
+            List<Map> specs = JSON.parseArray(sku.getSpec(), Map.class);
+            if(CollUtil.isNotEmpty(specs)){
+                sku.setSkuAttributes(sysAttributeValueMapper.selectSkuAttribute(specs));
+            }
+        }
     }
 }
 

@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Slf4j
 public class OauthUtils {
+
+    public static final long DEFAULT_USER_ID = 1l;
+    public static final String DEFAULT_USER_NAME = "admin";
     /**
      * 获取当前请求登录用户的详细信息,GlobalAuthenticationFilter将用户信息放入request中
      * gateway模块无法使用，因为gateway模块使用webflux，而webflux没有request
@@ -62,6 +65,18 @@ public class OauthUtils {
         if (user != null) {
             return user.getUserName();
         }
-        return "admin";
+        return DEFAULT_USER_NAME;
+    }
+
+    /**
+     * 获取当前请求登录用户名
+     * @return
+     */
+    public static Long getCurrentUserId() {
+        SysUser user = getCurrentUser();
+        if (user != null) {
+            return user.getUserId();
+        }
+        return DEFAULT_USER_ID;
     }
 }
