@@ -80,7 +80,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
 
     @Override
     public SysSku getSkuById(Long id) {
-        SysSku sku = this.baseMapper.selectById(id);
+        SysSku sku = this.baseMapper.getById(id);
         setAttributes(sku);
         return sku;
     }

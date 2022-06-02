@@ -9,11 +9,24 @@
             <result property="productId" column="product_id" jdbcType="BIGINT"/>
             <result property="spec" column="spec" jdbcType="VARCHAR"/>
             <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="originalPrice" column="original_price" jdbcType="DECIMAL"/>
             <result property="stock" column="stock" jdbcType="INTEGER"/>
+            <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+            <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+            <result property="brandName" column="brand_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,product_id,spec,
         price,stock
     </sql>
+    <select id="getById" resultMap="BaseResultMap">
+        select
+            sys_sku.*,sys_product.name as product_name,sys_product_type.name as type_name,sys_brand.name as brand_name
+        from sys_sku
+        join sys_product on sys_product.id = sys_sku.product_id
+        left join sys_product_type on sys_product_type.id = sys_product.type_id
+        left join sys_brand on sys_brand.id = sys_product.brand_id
+        where sys_sku.id = #{id}
+    </select>
 </mapper>

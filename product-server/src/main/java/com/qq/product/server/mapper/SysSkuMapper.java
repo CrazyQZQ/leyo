@@ -11,6 +11,7 @@ import com.qq.common.system.pojo.SysSku;
 */
 public interface SysSkuMapper extends BaseMapper<SysSku> {
 
+    SysSku getById(Long id);
 }
 
 

@@ -39,14 +39,14 @@ public class ShoppingCartController extends BaseController {
 
     @DeleteMapping("delete")
     @Log(title = "order_cart", funcDesc = "删除购物车商品")
-    public AjaxResult addCartItem(@RequestParam Long id) {
+    public AjaxResult deleteCartItem(@RequestParam Long id) {
         shoppingCartItemService.removeById(id);
         return AjaxResult.success();
     }
 
     @PostMapping("update")
     @Log(title = "order_cart", funcDesc = "修改购物车商品数量")
-    public AjaxResult addCartItem(@RequestParam Long id, @RequestParam Integer num) {
+    public AjaxResult updateCartItemNum(@RequestParam Long id, @RequestParam Integer num) {
         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
         shoppingCartItem.setId(id);
         shoppingCartItem.setNum(num);

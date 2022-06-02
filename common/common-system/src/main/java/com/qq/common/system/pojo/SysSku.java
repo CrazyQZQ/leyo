@@ -43,6 +43,12 @@ public class SysSku implements Serializable {
     private BigDecimal price;
 
     /**
+     * 原价
+     */
+    @TableField(value = "original_price")
+    private BigDecimal originalPrice;
+
+    /**
      * 库存
      */
     @TableField(value = "stock")
@@ -59,6 +65,24 @@ public class SysSku implements Serializable {
      */
     @TableField(value = "image_url")
     private String imageUrl;
+
+    /**
+     * 商品名称
+     */
+    @TableField(exist = false)
+    private String productName;
+
+    /**
+     * 品牌名称
+     */
+    @TableField(exist = false)
+    private String brandName;
+
+    /**
+     * 品类名称
+     */
+    @TableField(exist = false)
+    private String typeName;
 
     /**
      * 属性
