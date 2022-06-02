@@ -1,9 +1,11 @@
 package com.qq.common.core.web.domain;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import com.qq.common.core.constant.HttpStatus;
 import com.qq.common.core.utils.StringUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -162,5 +164,25 @@ public class AjaxResult extends HashMap<String, Object>
             return false;
         }
         return HttpStatus.SUCCESS == NumberUtil.parseInt(code.toString());
+    }
+
+    /**
+     * 获取数据
+     * @return
+     */
+    public Object getData() {
+        Object o = this.get(DATA_TAG);
+        if(o == null){
+            return Collections.EMPTY_MAP;
+        }
+        return o;
+    }
+
+    /**
+     * 获取数据
+     * @return
+     */
+    public String getMessage() {
+        return StrUtil.toString(this.get(MSG_TAG));
     }
 }

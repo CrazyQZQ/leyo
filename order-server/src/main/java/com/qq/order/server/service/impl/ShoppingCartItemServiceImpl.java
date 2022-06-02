@@ -1,5 +1,6 @@
 package com.qq.order.server.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author Administrator
@@ -33,9 +35,10 @@ public class ShoppingCartItemServiceImpl extends ServiceImpl<ShoppingCartItemMap
         for (ShoppingCartItem cartItem : cartItems) {
             AjaxResult ajaxResult = skuService.getSkuById(cartItem.getSkuId());
             if(ajaxResult.isSuccess()){
-                cartItem.setSku((SysSku) ajaxResult.get("data"));
+                SysSku sku = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysSku.class, true, null);
+                cartItem.setSku(sku);
             }else {
-                throw new ServiceException(ajaxResult.get("msg").toString());
+                throw new ServiceException(ajaxResult.getMessage());
             }
         }
         return cartItems;
