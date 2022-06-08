@@ -81,7 +81,7 @@ public class SysOrderDetail implements Serializable {
     private String remark;
 
     @TableField(exist = false)
-    private SysProduct product;
+    private SysSku sku;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

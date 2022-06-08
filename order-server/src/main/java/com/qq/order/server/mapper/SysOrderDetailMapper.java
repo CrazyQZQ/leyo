@@ -2,6 +2,9 @@ package com.qq.order.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.qq.common.system.pojo.SysOrderDetail;
+import com.qq.common.system.pojo.SysSku;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -10,6 +13,8 @@ import com.qq.common.system.pojo.SysOrderDetail;
 * @Entity com.qq.common.system.pojo.SysOrderDetail
 */
 public interface SysOrderDetailMapper extends BaseMapper<SysOrderDetail> {
+
+    List<Long> selectHostSales();
 
 }
 

@@ -12,7 +12,7 @@ import java.util.List;
  * @Date 2022/5/13
  **/
 @Data
-public class ProductVO {
+public class OrderVO {
 
     private SysOrder order;
 

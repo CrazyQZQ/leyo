@@ -18,9 +18,12 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,master_id,product_id,
+        id,master_id,sku_id,
         count,amount,create_by,
         create_time,update_by,update_time,
         remark
     </sql>
+    <select id="selectHostSales" resultType="Long">
+        select sku_id from sys_order_detail group by sku_id order by sum(count) desc limit 10
+    </select>
 </mapper>

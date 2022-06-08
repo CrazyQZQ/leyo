@@ -15,12 +15,37 @@
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="addressName" column="address_name" jdbcType="VARCHAR"/>
+            <collection property="orderDetailList" select="selectOrderDetailList" column="id"/>
+    </resultMap>
+
+    <resultMap id="DetailResultMap" type="com.qq.common.system.pojo.SysOrderDetail">
+        <id property="id" column="detail_id" jdbcType="BIGINT"/>
+        <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+        <result property="amount" column="amount" jdbcType="DECIMAL"/>
+        <result property="remark" column="detail_remark" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,number,total_amount,
-        total_count,status,create_by,
-        create_time,update_by,update_time,
-        remark
+        so.id,so.number,so.total_amount,
+        so.total_count,so.status,so.create_by,
+        so.create_time,so.update_by,so.update_time,
+        so.remark
     </sql>
+    <select id="list" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />,sys_user_address.full_address address_name from sys_order so
+        left join sys_user_address on sys_user_address.id = so.user_address_id
+        <where>
+            <if test="status != null">
+                AND so.status = #{status}
+            </if>
+            <if test="userId != null">
+                AND so.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    <select id="selectOrderDetailList" resultMap="DetailResultMap" >
+        select id detail_id,sku_id, count,amount,remark detail_remark from sys_order_detail where master_id = #{id}
+    </select>
 </mapper>

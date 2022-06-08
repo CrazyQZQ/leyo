@@ -47,4 +47,9 @@ public class CacheConstants
      */
     public final static String REPEAT_COMMIT_KEY_PREFIX= "repeat_commit:";
 
+    /**
+     * 热卖商品
+     */
+    public final static String HOT_SALE_KEY= "hot_sales";
+
 }

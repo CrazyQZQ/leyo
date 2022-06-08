@@ -2,6 +2,10 @@ package com.qq.order.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.qq.common.system.pojo.SysOrder;
+import com.qq.order.server.pojo.OrderQuery;
+import com.qq.order.server.vo.OrderVO;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -10,7 +14,7 @@ import com.qq.common.system.pojo.SysOrder;
 * @Entity com.qq.common.system.pojo.SysOrder
 */
 public interface SysOrderMapper extends BaseMapper<SysOrder> {
-
+    List<SysOrder> list(OrderQuery query);
 }
 
 

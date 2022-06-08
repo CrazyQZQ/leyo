@@ -2,7 +2,10 @@ package com.qq.order.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qq.common.system.pojo.SysOrder;
-import com.qq.order.server.vo.ProductVO;
+import com.qq.order.server.pojo.OrderQuery;
+import com.qq.order.server.vo.OrderVO;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -11,7 +14,9 @@ import com.qq.order.server.vo.ProductVO;
 */
 public interface SysOrderService extends IService<SysOrder> {
 
-    Long saveOrder(ProductVO productVO);
+    Long saveOrder(OrderVO orderVO);
 
-    ProductVO getOrderInfo(Long orderId);
+    OrderVO getOrderInfo(Long orderId);
+
+    List<SysOrder> list(OrderQuery query);
 }
