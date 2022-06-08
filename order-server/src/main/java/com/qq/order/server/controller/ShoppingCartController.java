@@ -33,7 +33,7 @@ public class ShoppingCartController extends BaseController {
     @Log(title = "order_cart", funcDesc = "添加购物车")
     public AjaxResult addCartItem(@RequestBody ShoppingCartItem shoppingCartItem) {
         shoppingCartItem.setUserId(OauthUtils.getCurrentUserId());
-        shoppingCartItemService.save(shoppingCartItem);
+        shoppingCartItemService.addCartItem(shoppingCartItem);
         return AjaxResult.success();
     }
 

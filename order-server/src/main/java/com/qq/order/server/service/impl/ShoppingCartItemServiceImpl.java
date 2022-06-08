@@ -43,6 +43,25 @@ public class ShoppingCartItemServiceImpl extends ServiceImpl<ShoppingCartItemMap
         }
         return cartItems;
     }
+
+    @Override
+    public void addCartItem(ShoppingCartItem shoppingCartItem) {
+        Long skuId = shoppingCartItem.getSkuId();
+        if(skuId == null){
+            throw new ServiceException("商品不能为空");
+        }
+        QueryWrapper<ShoppingCartItem> queryWrapper = new QueryWrapper<ShoppingCartItem>()
+                .select("id", "num")
+                .eq("user_id", shoppingCartItem.getUserId())
+                .eq("sku_id", skuId);
+        ShoppingCartItem cartItem = this.baseMapper.selectOne(queryWrapper);
+        if(cartItem != null){
+            cartItem.setNum(cartItem.getNum() + shoppingCartItem.getNum());
+            this.baseMapper.updateById(cartItem);
+        }else {
+            this.baseMapper.insert(shoppingCartItem);
+        }
+    }
 }
 
 

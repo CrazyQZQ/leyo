@@ -14,4 +14,5 @@ public interface ShoppingCartItemService extends IService<ShoppingCartItem> {
 
     List<ShoppingCartItem> list(Long userId);
 
+    void addCartItem(ShoppingCartItem shoppingCartItem);
 }
