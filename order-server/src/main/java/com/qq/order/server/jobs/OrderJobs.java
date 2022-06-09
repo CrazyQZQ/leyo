@@ -11,8 +11,10 @@ import com.qq.order.server.service.SkuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +36,16 @@ public class OrderJobs {
 
     private final SkuService skuService;
 
-    @Scheduled(cron = "0 0/15 * * * ?")
+    private final RestTemplate restTemplate;
+
+    @Scheduled(cron = "0/20 * * * * ?")
     public void updateHotSale() {
         log.info("更新热销商品定时任务开始");
         List<Long> hostSalesSkuIds = sysOrderDetailMapper.selectHostSales();
         List<SysSku> hostSales = new ArrayList<>(hostSalesSkuIds.size());
         for (Long skuId : hostSalesSkuIds) {
-            AjaxResult ajaxResult = skuService.getSkuById(skuId);
+            ResponseEntity<AjaxResult> entity = restTemplate.getForEntity("http://product-server/product/sku/getById?id=" + skuId, AjaxResult.class);
+            AjaxResult ajaxResult = entity.getBody();
             if (ajaxResult.isSuccess()) {
                 SysSku sku = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysSku.class, true, null);
                 hostSales.add(sku);
