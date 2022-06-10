@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.qq.common.system.pojo.SysOrder;
 import com.qq.order.server.pojo.OrderQuery;
 import com.qq.order.server.vo.OrderVO;
+import com.qq.order.server.vo.StatusCountVO;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface SysOrderService extends IService<SysOrder> {
     OrderVO getOrderInfo(Long orderId);
 
     List<SysOrder> list(OrderQuery query);
+
+    List<StatusCountVO> getStatusCount(Long userId);
 }

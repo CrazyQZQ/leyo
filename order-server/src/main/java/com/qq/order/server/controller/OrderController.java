@@ -60,4 +60,10 @@ public class OrderController extends BaseController {
     public AjaxResult hotSales() {
         return AjaxResult.success(redisService.getCacheList(CacheConstants.HOT_SALE_KEY));
     }
+
+    @GetMapping("/getStatusCount")
+    @Log(title = "order", funcDesc = "查询订单各种状态数量")
+    public AjaxResult getStatusCount(@RequestParam("userId") Long userId) {
+        return AjaxResult.success(orderService.getStatusCount(userId));
+    }
 }

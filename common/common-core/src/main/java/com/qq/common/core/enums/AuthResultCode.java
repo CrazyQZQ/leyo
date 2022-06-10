@@ -22,7 +22,6 @@ public enum AuthResultCode {
     ;
 
 
-
     private final int code;
 
     private final String msg;

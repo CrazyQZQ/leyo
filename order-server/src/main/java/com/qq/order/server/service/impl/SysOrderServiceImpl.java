@@ -16,6 +16,7 @@ import com.qq.order.server.service.ProductService;
 import com.qq.order.server.service.SkuService;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.OrderVO;
+import com.qq.order.server.vo.StatusCountVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +130,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             }
         }
         return list;
+    }
+
+    @Override
+    public List<StatusCountVO> getStatusCount(Long userId) {
+        return this.baseMapper.getStatusCount(userId);
     }
 }
 

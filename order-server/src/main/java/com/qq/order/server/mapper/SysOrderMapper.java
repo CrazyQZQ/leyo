@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.qq.common.system.pojo.SysOrder;
 import com.qq.order.server.pojo.OrderQuery;
 import com.qq.order.server.vo.OrderVO;
+import com.qq.order.server.vo.StatusCountVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 */
 public interface SysOrderMapper extends BaseMapper<SysOrder> {
     List<SysOrder> list(OrderQuery query);
+
+    List<StatusCountVO> getStatusCount(@Param("userId") Long userId);
 }
 
 

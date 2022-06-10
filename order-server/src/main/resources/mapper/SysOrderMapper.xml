@@ -48,4 +48,7 @@
     <select id="selectOrderDetailList" resultMap="DetailResultMap" >
         select id detail_id,sku_id, count,amount,remark detail_remark from sys_order_detail where master_id = #{id}
     </select>
+    <select id="getStatusCount" resultType="com.qq.order.server.vo.StatusCountVO">
+        select count(*) count,status from sys_order where user_id = #{userId} group by status
+    </select>
 </mapper>
