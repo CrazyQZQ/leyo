@@ -16,6 +16,7 @@
         <module>common-system</module>
         <module>common-log</module>
         <module>common-es</module>
+        <module>common-rabbit</module>
     </modules>
     <parent>
         <groupId>com.qq</groupId>
