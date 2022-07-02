@@ -41,6 +41,11 @@
             <artifactId>common-log</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.qq</groupId>
+            <artifactId>common-rabbit</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>

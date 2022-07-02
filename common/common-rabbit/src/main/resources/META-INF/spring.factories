@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.qq.common.rabbit.config.RabbitConfig
+  com.qq.common.rabbit.config.HotSaleTopicConfig,\
+  com.qq.common.rabbit.handler.PushHandler

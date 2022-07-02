@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.rabbit.config.HotSaleTopicConfig;
+import com.qq.common.rabbit.handler.PushHandler;
+import com.qq.common.rabbit.pojo.PushData;
 import com.qq.common.system.pojo.*;
 import com.qq.common.system.utils.OauthUtils;
 import com.qq.order.server.mapper.SysOrderDetailMapper;
@@ -42,6 +45,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
     private final SysOrderDetailMapper sysOrderDetailMapper;
     private final AccountService accountService;
     private final SkuService skuService;
+    private final PushHandler pushHandler;
 
     @Override
     @Transactional
@@ -89,6 +93,8 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
                 throw new ServiceException(ajaxResult.getMessage());
             }
         }
+        // 更新热卖信息
+        updateHotSale(orderDetailList);
         return order.getId();
     }
 
@@ -135,6 +141,18 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
     @Override
     public List<StatusCountVO> getStatusCount(Long userId) {
         return this.baseMapper.getStatusCount(userId);
+    }
+
+    /**
+     * 更新热卖信息
+     * @param orderDetailList
+     */
+    private void updateHotSale(List<SysOrderDetail> orderDetailList){
+        PushData<List<SysOrderDetail>> pushData = new PushData<>();
+        pushData.setTopicName(HotSaleTopicConfig.TOPIC_NAME);
+        pushData.setRoutingKey(HotSaleTopicConfig.ROUTING_KEY);
+        pushData.setData(orderDetailList);
+        pushHandler.pushData(pushData);
     }
 }
 

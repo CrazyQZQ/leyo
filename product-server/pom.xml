@@ -53,6 +53,11 @@
             <artifactId>common-es</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.qq</groupId>
+            <artifactId>common-rabbit</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!--common-es已经引入了，不知道为啥这里不引入会报错-->
         <dependency>
             <groupId>jakarta.json</groupId>
