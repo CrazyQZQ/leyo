@@ -3,25 +3,31 @@ package com.qq.product.server.receiver;
 import com.alibaba.fastjson.JSON;
 import com.qq.common.system.pojo.SysOrderDetail;
 import com.qq.common.system.pojo.SysProduct;
+import com.qq.product.server.service.SysSkuService;
 import com.rabbitmq.client.Channel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 热卖商品消费者
  * @Author QinQiang
  * @Date 2022/6/16
  **/
 @Service
 @Slf4j
 @RabbitListener(queues = "hotSale")
+@RequiredArgsConstructor(onConstructor = @_(@Autowired))
 public class HotSaleReceiver {
+
+    private final SysSkuService skuService;
 
     @RabbitHandler
     public void handlerMsg(Message message, Channel channel, String msg) {
@@ -35,13 +41,13 @@ public class HotSaleReceiver {
     }
 
     @RabbitHandler
-    public void handlerMsg(Message message, Channel channel, List<SysOrderDetail> orderDetailList) {
-        log.info("hotSale消费者接受消息,内容：{}", JSON.toJSONString(orderDetailList));
-        //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了 否则消息服务器以为这条消息没处理掉 后续还会在发
+    public void handlerMsg(Message message, Channel channel, List<Long> skuIds) {
+        log.info("hotSale消费者接受消息,skuIds：{}", JSON.toJSONString(skuIds));
         try {
+            skuService.updateSkuInEs(skuIds);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {
-            System.out.println("手动ack失败");
+            log.info("修改es热卖数据失败，：{}", e);
         }
     }
 }

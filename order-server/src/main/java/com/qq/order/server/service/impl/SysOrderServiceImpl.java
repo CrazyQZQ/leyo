@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         order.setCreateTime(now);
         order.setNumber("SO" + IdUtil.getSnowflakeNextId());
         this.baseMapper.insert(order);
+        List<Long> skuIds = new ArrayList<>(orderDetailList.size());
         //保存订单详情
         for (SysOrderDetail orderDetail : orderDetailList) {
             orderDetail.setMasterId(order.getId());
@@ -85,6 +87,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             if (!ajaxResult.isSuccess()) {
                 throw new ServiceException(ajaxResult.getMessage());
             }
+            skuIds.add(orderDetail.getSkuId());
         }
         if (accountId != null) {
             // 扣减账户余额
@@ -94,7 +97,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             }
         }
         // 更新热卖信息
-        updateHotSale(orderDetailList);
+        updateHotSale(skuIds);
         return order.getId();
     }
 
@@ -145,13 +148,13 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
 
     /**
      * 更新热卖信息
-     * @param orderDetailList
+     * @param skuIds
      */
-    private void updateHotSale(List<SysOrderDetail> orderDetailList){
-        PushData<List<SysOrderDetail>> pushData = new PushData<>();
+    private void updateHotSale(List<Long> skuIds){
+        PushData<List<Long>> pushData = new PushData<>();
         pushData.setTopicName(HotSaleTopicConfig.TOPIC_NAME);
         pushData.setRoutingKey(HotSaleTopicConfig.ROUTING_KEY);
-        pushData.setData(orderDetailList);
+        pushData.setData(skuIds);
         pushHandler.pushData(pushData);
     }
 }

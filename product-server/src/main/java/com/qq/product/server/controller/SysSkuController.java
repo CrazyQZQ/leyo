@@ -3,14 +3,18 @@ package com.qq.product.server.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.es.service.EsService;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysSku;
+import com.qq.product.server.constants.ProductConstants;
 import com.qq.product.server.service.SysSkuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * @Description:
@@ -23,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysSkuController extends BaseController {
     private final SysSkuService skuService;
+    private final EsService esService;
 
     /**
      * 查询产品sku列表
@@ -54,7 +59,13 @@ public class SysSkuController extends BaseController {
     @PutMapping("add")
     @Log(title = "product_sku", funcDesc = "新增产品sku")
     public AjaxResult add(@RequestBody SysSku sku) {
-        skuService.save(sku);
+        try {
+            skuService.save(sku);
+            esService.addDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), sku);
+        } catch (Exception e) {
+            log.error("新增产品sku异常，", e);
+            return AjaxResult.error("系统繁忙");
+        }
         return AjaxResult.success();
     }
 
@@ -66,7 +77,13 @@ public class SysSkuController extends BaseController {
     @PostMapping("update")
     @Log(title = "product_sku", funcDesc = "修改产品sku")
     public AjaxResult update(@RequestBody SysSku sku) {
-        skuService.updateById(sku);
+        try {
+            skuService.updateById(sku);
+            esService.updateDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), sku);
+        } catch (Exception e) {
+            log.error("修改产品sku异常，", e);
+            return AjaxResult.error("系统繁忙");
+        }
         return AjaxResult.success();
     }
 
@@ -83,7 +100,7 @@ public class SysSkuController extends BaseController {
     }
 
     /**
-     * 批量删除产品
+     * 扣减库存
      * @param id
      * @param stock
      * @return
@@ -91,7 +108,12 @@ public class SysSkuController extends BaseController {
     @PostMapping("reduceStock")
     @Log(title = "product_sku", funcDesc = "扣减库存")
     public AjaxResult reduceStock(@RequestParam Long id, @RequestParam Integer stock) {
-        skuService.reduceStock(id, stock);
+        try {
+            skuService.reduceStock(id, stock);
+        } catch (Exception e) {
+            log.error("扣减库存异常，", e);
+            return AjaxResult.error("系统繁忙");
+        }
         return AjaxResult.success();
     }
 
@@ -104,7 +126,12 @@ public class SysSkuController extends BaseController {
     @PostMapping("saveImage")
     @Log(title = "product_sku", funcDesc = "保存sku图片")
     public AjaxResult saveImage(@RequestParam Long id, @RequestParam MultipartFile file) {
-        skuService.saveImage(id, file);
+        try {
+            skuService.saveImage(id, file);
+        } catch (IOException e) {
+            log.error("保存sku图片异常，", e);
+            return AjaxResult.error("系统繁忙");
+        }
         return AjaxResult.success();
     }
 }

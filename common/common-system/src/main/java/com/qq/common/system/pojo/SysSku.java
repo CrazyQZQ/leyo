@@ -85,6 +85,12 @@ public class SysSku implements Serializable {
     private String typeName;
 
     /**
+     * 属性展平字符串
+     */
+    @TableField(exist = false)
+    private String skuAttributeStr;
+
+    /**
      * 属性
      */
     @TableField(exist = false)

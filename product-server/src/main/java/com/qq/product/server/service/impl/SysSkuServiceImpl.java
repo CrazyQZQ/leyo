@@ -6,8 +6,14 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.qq.common.core.exception.ServiceException;
+import com.qq.common.es.service.EsService;
+import com.qq.common.system.pojo.SysOrderDetail;
+import com.qq.common.system.pojo.SysProduct;
 import com.qq.common.system.pojo.SysSku;
 import com.qq.common.system.service.MinIoService;
+import com.qq.common.system.vo.SkuAttributeVO;
+import com.qq.product.server.constants.ProductConstants;
 import com.qq.product.server.mapper.SysAttributeValueMapper;
 import com.qq.product.server.mapper.SysSkuMapper;
 import com.qq.product.server.service.SysSkuService;
@@ -16,9 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * @author Administrator
@@ -31,9 +39,14 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
     implements SysSkuService {
 
     private final MinIoService minIoService;
-
+    private final EsService esService;
     private final SysAttributeValueMapper sysAttributeValueMapper;
 
+    /**
+     * 根据商品id查询
+     * @param productId
+     * @return
+     */
     @Override
     public List<SysSku> list(Long productId) {
         List<SysSku> skuList = this.baseMapper.selectList(new QueryWrapper<SysSku>().eq("product_id", productId));
@@ -43,8 +56,27 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
         return skuList;
     }
 
+    /**
+     *  根据id集合查询
+     * @param skuIds
+     * @return
+     */
     @Override
-    public void reduceStock(Long id, Integer stock) {
+    public List<SysSku> list(List<Long> skuIds) {
+        List<SysSku> skuList = this.baseMapper.selectList(new QueryWrapper<SysSku>().in("id", skuIds));
+        for (SysSku sku : skuList) {
+            setAttributes(sku);
+        }
+        return skuList;
+    }
+
+    /**
+     * 核减库存
+     * @param id
+     * @param stock
+     */
+    @Override
+    public void reduceStock(Long id, Integer stock) throws IOException {
         SysSku sysSku = this.baseMapper.selectById(id);
         if(ObjectUtil.isEmpty(sysSku)){
             throw new RuntimeException("商品sku不存在");
@@ -52,32 +84,42 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
         if(sysSku.getStock() < stock){
             throw new RuntimeException("商品库存不足");
         }
-        SysSku sku = new SysSku();
-        sku.setId(id);
+        sysSku.setId(id);
         // 减库存
-        sku.setStock(sysSku.getStock() - stock);
+        sysSku.setStock(sysSku.getStock() - stock);
         // 加销量
-        sku.setSales(sysSku.getSales() + stock);
-        this.baseMapper.updateById(sku);
+        sysSku.setSales(sysSku.getSales() + stock);
+        this.baseMapper.updateById(sysSku);
+        esService.updateDoc(ProductConstants.SKU_INDEX, id.toString(), sysSku);
     }
 
+    /**
+     * 上传图片
+     * @param id
+     * @param file
+     */
     @Override
-    public void saveImage(Long id, MultipartFile file) {
+    public void saveImage(Long id, MultipartFile file) throws IOException {
         SysSku sysSku = this.baseMapper.selectById(id);
         if(ObjectUtil.isEmpty(sysSku)){
-            throw new RuntimeException("商品sku不存在");
+            throw new ServiceException("商品sku不存在");
         }
         String imageUrl = sysSku.getImageUrl();
         if(StrUtil.isNotEmpty(imageUrl)){
             minIoService.deleteFileByFullPath(Arrays.asList(imageUrl));
         }
         String newImageUrl = minIoService.upload(file);
-        SysSku sku = new SysSku();
-        sku.setId(id);
-        sku.setImageUrl(newImageUrl);
-        this.baseMapper.updateById(sku);
+        sysSku.setId(id);
+        sysSku.setImageUrl(newImageUrl);
+        this.baseMapper.updateById(sysSku);
+        esService.updateDoc(ProductConstants.SKU_INDEX, id.toString(), sysSku);
     }
 
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
     @Override
     public SysSku getSkuById(Long id) {
         SysSku sku = this.baseMapper.getById(id);
@@ -85,14 +127,35 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
         return sku;
     }
 
+    /**
+     * 修改es数据
+     * @param skuIds
+     * @throws IOException
+     */
+    @Override
+    public void updateSkuInEs(List<Long> skuIds) throws IOException {
+        List<SysSku> skuList = list(skuIds);
+        for (SysSku sku : skuList) {
+            esService.updateDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), sku);
+        }
+    }
+
+    /**
+     * 设置sku属性
+     * @param sku
+     */
     private void setAttributes(SysSku sku){
         if (StrUtil.isNotEmpty(sku.getSpec())) {
             List<Map> specs = JSON.parseArray(sku.getSpec(), Map.class);
             if(CollUtil.isNotEmpty(specs)){
-                sku.setSkuAttributes(sysAttributeValueMapper.selectSkuAttribute(specs));
+                List<SkuAttributeVO> skuAttributeVOS = sysAttributeValueMapper.selectSkuAttribute(specs);
+                sku.setSkuAttributes(skuAttributeVOS);
+                String skuAttributes = skuAttributeVOS.stream().map(SkuAttributeVO::getValue).collect(Collectors.joining(","));
+                sku.setSkuAttributeStr(skuAttributes);
             }
         }
     }
+
 }
 
 

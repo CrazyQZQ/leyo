@@ -7,4 +7,5 @@ package com.qq.product.server.constants;
  **/
 public class ProductConstants {
     public static final String PRODUCT_INDEX = "sys_product";
+    public static final String SKU_INDEX = "sku";
 }
