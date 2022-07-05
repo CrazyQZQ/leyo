@@ -1,6 +1,5 @@
 package com.qq.product.server.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.es.service.EsService;
@@ -61,7 +60,7 @@ public class SysSkuController extends BaseController {
     public AjaxResult add(@RequestBody SysSku sku) {
         try {
             skuService.save(sku);
-            esService.addDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), sku);
+            esService.addDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), skuService.getSkuById(sku.getId()));
         } catch (Exception e) {
             log.error("新增产品sku异常，", e);
             return AjaxResult.error("系统繁忙");
@@ -79,7 +78,7 @@ public class SysSkuController extends BaseController {
     public AjaxResult update(@RequestBody SysSku sku) {
         try {
             skuService.updateById(sku);
-            esService.updateDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), sku);
+            esService.updateDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), skuService.getSkuById(sku.getId()));
         } catch (Exception e) {
             log.error("修改产品sku异常，", e);
             return AjaxResult.error("系统繁忙");
@@ -95,7 +94,13 @@ public class SysSkuController extends BaseController {
     @DeleteMapping("delete")
     @Log(title = "product_sku", funcDesc = "删除产品sku")
     public AjaxResult delete(Long id) {
-        skuService.removeById(id);
+        try {
+            skuService.removeById(id);
+            esService.deleteDoc(ProductConstants.SKU_INDEX, id.toString());
+        } catch (IOException e) {
+            log.error("删除产品sku异常，", e);
+            return AjaxResult.error("系统繁忙");
+        }
         return AjaxResult.success();
     }
 

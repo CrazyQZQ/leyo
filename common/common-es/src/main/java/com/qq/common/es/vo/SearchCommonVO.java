@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author QinQiang
@@ -43,10 +45,6 @@ public class SearchCommonVO {
      */
     private String sortOrder = "Desc";
     /**
-     * 搜索关键字
-     */
-    private String searchKeyword = "";
-    /**
      * 是否聚合
      */
     private boolean aggregation = false;
@@ -74,4 +72,8 @@ public class SearchCommonVO {
      *  高亮属性
      */
     private String[] highlightField = new String[] {};
+    /**
+     * 查询条件
+     */
+    private List<QueryVo> queryVos;
 }

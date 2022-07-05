@@ -30,5 +30,5 @@ public interface EsService {
 
     DeleteResponse deleteDoc(String indexName, String id) throws IOException;
 
-    SearchResultVO<Map> search(SearchCommonVO searchCommonVO);
+    <E> SearchResultVO<E> search(SearchCommonVO searchCommonVO, Class<E> clazz);
 }

@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>com.qq</groupId>
-            <artifactId>common-core</artifactId>
+            <artifactId>common-system</artifactId>
             <version>0.0.1</version>
         </dependency>
     </dependencies>

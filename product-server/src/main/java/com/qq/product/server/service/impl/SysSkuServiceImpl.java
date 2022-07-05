@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.es.service.EsService;
 import com.qq.common.system.pojo.SysOrderDetail;
 import com.qq.common.system.pojo.SysProduct;
@@ -49,7 +50,9 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
      */
     @Override
     public List<SysSku> list(Long productId) {
-        List<SysSku> skuList = this.baseMapper.selectList(new QueryWrapper<SysSku>().eq("product_id", productId));
+        BaseQuery baseQuery = new BaseQuery();
+        baseQuery.setParentId(productId);
+        List<SysSku> skuList = this.baseMapper.list(baseQuery);
         for (SysSku sku : skuList) {
             setAttributes(sku);
         }
@@ -63,7 +66,9 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
      */
     @Override
     public List<SysSku> list(List<Long> skuIds) {
-        List<SysSku> skuList = this.baseMapper.selectList(new QueryWrapper<SysSku>().in("id", skuIds));
+        BaseQuery baseQuery = new BaseQuery();
+        baseQuery.setIds(skuIds);
+        List<SysSku> skuList = this.baseMapper.list(baseQuery);
         for (SysSku sku : skuList) {
             setAttributes(sku);
         }
@@ -77,7 +82,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
      */
     @Override
     public void reduceStock(Long id, Integer stock) throws IOException {
-        SysSku sysSku = this.baseMapper.selectById(id);
+        SysSku sysSku = this.baseMapper.getById(id);
         if(ObjectUtil.isEmpty(sysSku)){
             throw new RuntimeException("商品sku不存在");
         }
@@ -100,7 +105,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
      */
     @Override
     public void saveImage(Long id, MultipartFile file) throws IOException {
-        SysSku sysSku = this.baseMapper.selectById(id);
+        SysSku sysSku = this.baseMapper.getById(id);
         if(ObjectUtil.isEmpty(sysSku)){
             throw new ServiceException("商品sku不存在");
         }

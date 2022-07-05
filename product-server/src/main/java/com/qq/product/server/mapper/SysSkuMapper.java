@@ -1,7 +1,10 @@
 package com.qq.product.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.system.pojo.SysSku;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -12,6 +15,8 @@ import com.qq.common.system.pojo.SysSku;
 public interface SysSkuMapper extends BaseMapper<SysSku> {
 
     SysSku getById(Long id);
+
+    List<SysSku> list(BaseQuery query);
 }
 
 

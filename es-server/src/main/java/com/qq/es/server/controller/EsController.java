@@ -8,11 +8,20 @@ package com.qq.es.server.controller;
 
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.es.service.EsService;
+import com.qq.common.es.vo.SearchCommonVO;
+import com.qq.common.es.vo.SearchResultVO;
+import com.qq.common.log.annotation.Log;
+import com.qq.common.system.pojo.SysSku;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Description:
@@ -26,10 +35,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class EsController {
     private final EsService esService;
 
-    @RequestMapping("list")
-    public AjaxResult list(String keyword, Integer indexName, Integer pageSize) {
+    private static final Map<String, Class> SEARCH_INDEX_CLASS_MAP = new HashMap<>();
 
-        return AjaxResult.success();
+    {
+        SEARCH_INDEX_CLASS_MAP.put("sku", SysSku.class);
+    }
+
+    @PostMapping("list")
+    @Log(title = "product_sku", funcDesc = "搜索列表")
+    public AjaxResult list(@RequestBody SearchCommonVO vo) {
+        Class clazz = SEARCH_INDEX_CLASS_MAP.get(vo.getIndexName());
+        if (clazz == null) {
+            return AjaxResult.error("索引不存在");
+        }
+        SearchResultVO<Class> search = esService.search(vo, clazz);
+        return AjaxResult.success(search);
     }
 
 }

@@ -29,4 +29,23 @@
         left join sys_brand on sys_brand.id = sys_product.brand_id
         where sys_sku.id = #{id}
     </select>
+    <select id="list" resultMap="BaseResultMap">
+        select
+            sys_sku.*,sys_product.name as product_name,sys_product_type.name as type_name,sys_brand.name as brand_name
+        from sys_sku
+        join sys_product on sys_product.id = sys_sku.product_id
+        left join sys_product_type on sys_product_type.id = sys_product.type_id
+        left join sys_brand on sys_brand.id = sys_product.brand_id
+        <where>
+            <if test="parentId != null">
+                sys_sku.product_id = #{parentId}
+            </if>
+            <if test="ids != null and ids.size > 0">
+                AND sys_sku.id IN
+                <foreach collection="ids" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>
