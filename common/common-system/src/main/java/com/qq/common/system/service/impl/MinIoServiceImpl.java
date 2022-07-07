@@ -51,11 +51,12 @@ public class MinIoServiceImpl implements MinIoService {
     private String SECRET_KEY;
 
     public MinioClient getMinioClient() throws InvalidPortException, InvalidEndpointException {
-        if(minioClient == null){
+        if (minioClient == null) {
             minioClient = new MinioClient(ENDPOINT, ACCESS_KEY, SECRET_KEY);
         }
         return minioClient;
     }
+
     @Override
     public String upload(MultipartFile file) {
         try {
@@ -74,7 +75,7 @@ public class MinIoServiceImpl implements MinIoService {
             String objectName = DateUtils.getDate() + "/" + filename;
             // 使用putObject上传一个文件到存储桶中
             InputStream inputStream = file.getInputStream();
-            minioClient.putObject(BUCKET_NAME,objectName, inputStream,new PutObjectOptions(inputStream.available(),-1));
+            minioClient.putObject(BUCKET_NAME, objectName, inputStream, new PutObjectOptions(inputStream.available(), -1));
             log.info("文件上传成功!");
             return ENDPOINT + "/" + BUCKET_NAME + "/" + objectName;
         } catch (Exception e) {
@@ -104,20 +105,20 @@ public class MinIoServiceImpl implements MinIoService {
             bufferedInputStream = new BufferedInputStream(inputStream);
             byte[] bytes = new byte[2048];
             int len;
-            while((len = bufferedInputStream.read(bytes)) != -1) {
+            while ((len = bufferedInputStream.read(bytes)) != -1) {
                 os.write(bytes, 0, len);
             }
         } catch (Exception e) {
             log.error("下载文件发生错误: ", e);
-        }finally {
-            if(bufferedInputStream != null) {
+        } finally {
+            if (bufferedInputStream != null) {
                 try {
                     bufferedInputStream.close();
                 } catch (IOException e) {
                     log.error("下载文件发生错误: ", e);
                 }
             }
-            if(inputStream != null) {
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
@@ -134,7 +135,7 @@ public class MinIoServiceImpl implements MinIoService {
             String imagePrefix = ENDPOINT + "/" + BUCKET_NAME + "/";
             List<String> handledObjectNames = new ArrayList<>(objectNames.size());
             for (String objectName : objectNames) {
-                if(objectName.startsWith(imagePrefix)) {
+                if (objectName.startsWith(imagePrefix)) {
                     objectName = objectName.substring(imagePrefix.length());
                 }
                 handledObjectNames.add(objectName);
@@ -151,7 +152,7 @@ public class MinIoServiceImpl implements MinIoService {
 
     @Override
     public void deleteFileByFullPath(List<String> urls) {
-        if(CollUtil.isEmpty(urls)) {
+        if (CollUtil.isEmpty(urls)) {
             return;
         }
         String prefix = ENDPOINT + "/" + BUCKET_NAME + "/";
@@ -171,7 +172,7 @@ public class MinIoServiceImpl implements MinIoService {
                 FileVO fileVO = new FileVO();
                 fileVO.setObjectName(item.objectName());
                 fileVO.setUploadTime(zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                if(ImageUtils.isImage(item.objectName())) {
+                if (ImageUtils.isImage(item.objectName())) {
                     fileVO.setPreviewUrl(ENDPOINT + "/" + BUCKET_NAME + "/" + item.objectName());
                 }
                 fileVOS.add(fileVO);

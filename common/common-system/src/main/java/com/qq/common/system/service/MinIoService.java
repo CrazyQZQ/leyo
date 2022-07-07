@@ -18,22 +18,22 @@ public interface MinIoService {
     String upload(MultipartFile file);
 
     /**
-     * @Description: 下载文件
-     * @param fileName 文件名
+     * @param fileName   文件名
      * @param objectName 对象名
      * @param response
+     * @Description: 下载文件
      */
     void download(String fileName, String objectName, HttpServletResponse response);
 
     /**
-     * @Description: 删除文件
      * @param objectNames 对象名
+     * @Description: 删除文件
      */
     void deleteFile(List<String> objectNames);
 
     /**
-     * @Description: 删除文件
      * @param urls 全路径
+     * @Description: 删除文件
      */
     void deleteFileByFullPath(List<String> urls);
 

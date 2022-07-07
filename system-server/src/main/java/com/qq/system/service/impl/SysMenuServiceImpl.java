@@ -28,6 +28,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
 
     /**
      * 新增菜单
+     *
      * @param sysMenu
      */
     @Override
@@ -41,6 +42,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>
 
     /**
      * 分配菜单角色
+     *
      * @param menuId
      * @param sysRoleMenus
      */

@@ -20,7 +20,7 @@ public class HotSaleTopicConfig {
 
     @Bean
     TopicExchange topicExchange() {
-        return new TopicExchange(TOPIC_NAME,true,false);
+        return new TopicExchange(TOPIC_NAME, true, false);
     }
 
     @Bean
@@ -30,6 +30,7 @@ public class HotSaleTopicConfig {
 
     /**
      * routingKey以hotSale开头转发到此队列
+     *
      * @return
      */
     @Bean

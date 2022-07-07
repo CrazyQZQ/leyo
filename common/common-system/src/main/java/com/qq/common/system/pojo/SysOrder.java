@@ -14,9 +14,10 @@ import java.util.List;
 
 /**
  * 订单表
+ *
  * @TableName sys_order
  */
-@TableName(value ="sys_order")
+@TableName(value = "sys_order")
 @Data
 public class SysOrder implements Serializable {
     /**
@@ -70,7 +71,7 @@ public class SysOrder implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -83,7 +84,7 @@ public class SysOrder implements Serializable {
      * 更新时间
      */
     @TableField(value = "update_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     /**

@@ -29,6 +29,11 @@ public class AccountController {
 
     private final SysAccountService accountService;
 
+    /**
+     * 获取账户信息
+     * @param id
+     * @return
+     */
     @GetMapping("/getAccountById")
     @Log(title = "account", funcDesc = "获取账户信息")
     public AjaxResult getAccountById(Long id) {
@@ -38,6 +43,12 @@ public class AccountController {
         return AjaxResult.success(accountService.getById(id));
     }
 
+    /**
+     * 添加账户
+     * @param account
+     * @param bindingResult
+     * @return
+     */
     @PostMapping("/addAccount")
     @Log(title = "account", funcDesc = "添加账户")
     public AjaxResult add(@Valid @RequestBody SysAccount account, BindingResult bindingResult) {
@@ -53,6 +64,12 @@ public class AccountController {
         return AjaxResult.success(accountService.save(account));
     }
 
+    /**
+     * 更新账户
+     * @param account
+     * @param bindingResult
+     * @return
+     */
     @PutMapping("/updateAccount")
     @Log(title = "account", funcDesc = "更新账户")
     public AjaxResult update(@Valid @RequestBody SysAccount account, BindingResult bindingResult) {
@@ -68,12 +85,23 @@ public class AccountController {
         return AjaxResult.success(accountService.updateById(account));
     }
 
+    /**
+     * 删除账户
+     * @param id
+     * @return
+     */
     @DeleteMapping("/deleteAccount")
     @Log(title = "account", funcDesc = "删除账户")
     public AjaxResult delete(Long id) {
         return AjaxResult.success(accountService.removeById(id));
     }
 
+    /**
+     * 账户金额操作
+     * @param id
+     * @param amount
+     * @return
+     */
     @PostMapping("/operateAccountAmount")
     @Log(title = "account", funcDesc = "账户金额操作")
     public AjaxResult operateAccountAmount(@RequestParam Long id, @RequestParam BigDecimal amount) {

@@ -30,14 +30,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
-* @author Administrator
-* @description 针对表【sys_sku(商品sku表)】的数据库操作Service实现
-* @createDate 2022-05-23 17:08:20
-*/
+ * @author Administrator
+ * @description 针对表【sys_sku(商品sku表)】的数据库操作Service实现
+ * @createDate 2022-05-23 17:08:20
+ */
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
-    implements SysSkuService {
+        implements SysSkuService {
 
     private final MinIoService minIoService;
     private final EsService esService;
@@ -45,6 +45,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
 
     /**
      * 根据商品id查询
+     *
      * @param productId
      * @return
      */
@@ -60,7 +61,8 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
     }
 
     /**
-     *  根据id集合查询
+     * 根据id集合查询
+     *
      * @param skuIds
      * @return
      */
@@ -77,16 +79,17 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
 
     /**
      * 核减库存
+     *
      * @param id
      * @param stock
      */
     @Override
     public void reduceStock(Long id, Integer stock) throws IOException {
-        SysSku sysSku = this.baseMapper.getById(id);
-        if(ObjectUtil.isEmpty(sysSku)){
+        SysSku sysSku = this.baseMapper.selectById(id);
+        if (ObjectUtil.isEmpty(sysSku)) {
             throw new RuntimeException("商品sku不存在");
         }
-        if(sysSku.getStock() < stock){
+        if (sysSku.getStock() < stock) {
             throw new RuntimeException("商品库存不足");
         }
         sysSku.setId(id);
@@ -100,17 +103,18 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
 
     /**
      * 上传图片
+     *
      * @param id
      * @param file
      */
     @Override
     public void saveImage(Long id, MultipartFile file) throws IOException {
-        SysSku sysSku = this.baseMapper.getById(id);
-        if(ObjectUtil.isEmpty(sysSku)){
+        SysSku sysSku = this.baseMapper.selectById(id);
+        if (ObjectUtil.isEmpty(sysSku)) {
             throw new ServiceException("商品sku不存在");
         }
         String imageUrl = sysSku.getImageUrl();
-        if(StrUtil.isNotEmpty(imageUrl)){
+        if (StrUtil.isNotEmpty(imageUrl)) {
             minIoService.deleteFileByFullPath(Arrays.asList(imageUrl));
         }
         String newImageUrl = minIoService.upload(file);
@@ -122,6 +126,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
 
     /**
      * 根据id查询
+     *
      * @param id
      * @return
      */
@@ -134,6 +139,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
 
     /**
      * 修改es数据
+     *
      * @param skuIds
      * @throws IOException
      */
@@ -147,12 +153,13 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
 
     /**
      * 设置sku属性
+     *
      * @param sku
      */
-    private void setAttributes(SysSku sku){
+    private void setAttributes(SysSku sku) {
         if (StrUtil.isNotEmpty(sku.getSpec())) {
             List<Map> specs = JSON.parseArray(sku.getSpec(), Map.class);
-            if(CollUtil.isNotEmpty(specs)){
+            if (CollUtil.isNotEmpty(specs)) {
                 List<SkuAttributeVO> skuAttributeVOS = sysAttributeValueMapper.selectSkuAttribute(specs);
                 sku.setSkuAttributes(skuAttributeVOS);
                 String skuAttributes = skuAttributeVOS.stream().map(SkuAttributeVO::getValue).collect(Collectors.joining(","));

@@ -14,9 +14,10 @@ import java.util.List;
 
 /**
  * 商品品类表
+ *
  * @TableName sys_product_type
  */
-@TableName(value ="sys_product_type")
+@TableName(value = "sys_product_type")
 @Data
 public class SysProductType implements Serializable {
     /**

@@ -23,12 +23,22 @@ import org.springframework.web.bind.annotation.*;
 public class ShoppingCartController extends BaseController {
     private final ShoppingCartItemService shoppingCartItemService;
 
+    /**
+     * 查询购物车列表
+     * @param userId
+     * @return
+     */
     @GetMapping("list")
     @Log(title = "order_cart", funcDesc = "查询购物车列表")
     public AjaxResult list(@RequestParam Long userId) {
         return AjaxResult.success(shoppingCartItemService.list(userId));
     }
 
+    /**
+     * 添加购物车
+     * @param shoppingCartItem
+     * @return
+     */
     @PutMapping("add")
     @Log(title = "order_cart", funcDesc = "添加购物车")
     public AjaxResult addCartItem(@RequestBody ShoppingCartItem shoppingCartItem) {
@@ -37,6 +47,11 @@ public class ShoppingCartController extends BaseController {
         return AjaxResult.success();
     }
 
+    /**
+     * 删除购物车商品
+     * @param id
+     * @return
+     */
     @DeleteMapping("delete")
     @Log(title = "order_cart", funcDesc = "删除购物车商品")
     public AjaxResult deleteCartItem(@RequestParam Long id) {
@@ -44,6 +59,12 @@ public class ShoppingCartController extends BaseController {
         return AjaxResult.success();
     }
 
+    /**
+     * 修改购物车商品数量
+     * @param id
+     * @param num
+     * @return
+     */
     @PostMapping("update")
     @Log(title = "order_cart", funcDesc = "修改购物车商品数量")
     public AjaxResult updateCartItemNum(@RequestParam Long id, @RequestParam Integer num) {

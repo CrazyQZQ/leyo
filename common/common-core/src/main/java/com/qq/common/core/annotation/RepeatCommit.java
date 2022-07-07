@@ -3,10 +3,10 @@ package com.qq.common.core.annotation;
 import java.lang.annotation.*;
 
 /**
- * 自定义操作日志记录注解
- *
- * @author ruoyi
- */
+ * @Description: 重复提交
+ * @Author QinQiang
+ * @Date 2022/5/12
+ **/
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

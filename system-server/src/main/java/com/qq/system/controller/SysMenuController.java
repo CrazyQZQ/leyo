@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Description:  
+ * @Description:
  * @Author QinQiang
- * @Date 2022/4/29 
-**/
+ * @Date 2022/4/29
+ **/
 @RestController
 @RequestMapping("system/sysMenu")
 @Slf4j

@@ -44,14 +44,19 @@ public class SysProductTypeServiceImpl extends ServiceImpl<SysProductTypeMapper,
     private final MinIoService minIoService;
     private final SysObjectImagesMapper sysObjectImagesMapper;
     private final SysBrandMapper sysBrandMapper;
-    
+
+    /**
+     * 查询品类树
+     *
+     * @return
+     */
     @Override
     public List<Tree<Long>> queryTreeList() {
 
         List<TreeNode<Long>> nodeList = CollUtil.newArrayList();
         List<SysProductType> productTypes = this.baseMapper.getProductTypeList(null);
         for (SysProductType type : productTypes) {
-            TreeNode<Long> node = new TreeNode<>(type.getId(), type.getParentId(),type.getName(),type.getOrderNum());
+            TreeNode<Long> node = new TreeNode<>(type.getId(), type.getParentId(), type.getName(), type.getOrderNum());
             Map<String, Object> extra = MapUtil.newHashMap();
             extra.put("imageUrls", type.getImageUrls());
             node.setExtra(extra);
@@ -61,6 +66,11 @@ public class SysProductTypeServiceImpl extends ServiceImpl<SysProductTypeMapper,
         return TreeUtil.build(nodeList, 0L);
     }
 
+    /**
+     * 新增品类
+     *
+     * @param productType
+     */
     @Override
     @Transactional
     public void addProductType(SysProductType productType) {
@@ -78,6 +88,11 @@ public class SysProductTypeServiceImpl extends ServiceImpl<SysProductTypeMapper,
         }
     }
 
+    /**
+     * 修改品类
+     *
+     * @param productType
+     */
     @Override
     @Transactional
     public void updateProductType(SysProductType productType) {
@@ -100,6 +115,11 @@ public class SysProductTypeServiceImpl extends ServiceImpl<SysProductTypeMapper,
         }
     }
 
+    /**
+     * 删除品类
+     *
+     * @param id
+     */
     @Override
     @Transactional
     public void deleteProductType(Long id) {
@@ -121,12 +141,18 @@ public class SysProductTypeServiceImpl extends ServiceImpl<SysProductTypeMapper,
         List<String> images = sysObjectImagesMapper.selectList(new QueryWrapper<SysObjectImages>().eq("object_id", id))
                 .stream().map(SysObjectImages::getImageUrl)
                 .collect(Collectors.toList());
-        if(CollectionUtils.isNotEmpty(images)){
+        if (CollectionUtils.isNotEmpty(images)) {
             sysObjectImagesMapper.delete(new QueryWrapper<SysObjectImages>().eq("object_id", id));
             minIoService.deleteFileByFullPath(images);
         }
     }
 
+    /**
+     * 查询品类列表
+     *
+     * @param query
+     * @return
+     */
     @Override
     public List<SysProductType> list(BaseQuery query) {
         return this.baseMapper.getProductTypeList(query);

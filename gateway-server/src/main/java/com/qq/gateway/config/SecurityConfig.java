@@ -47,7 +47,7 @@ public class SecurityConfig {
     private SysParameterConfig sysConfig;
 
     @Bean
-    public SecurityWebFilterChain webFluxFilterChain(ServerHttpSecurity http){
+    public SecurityWebFilterChain webFluxFilterChain(ServerHttpSecurity http) {
         AuthenticationWebFilter webFilter = new AuthenticationWebFilter(jwtAuthenticationManager);
         List<String> ignoreUrls = sysConfig.getIgnoreUrls();
         webFilter.setServerAuthenticationConverter(new ServerBearerTokenAuthenticationConverter());

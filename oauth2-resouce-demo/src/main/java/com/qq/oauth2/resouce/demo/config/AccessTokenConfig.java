@@ -14,17 +14,18 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 public class AccessTokenConfig {
 
-    private static final String SIGN_KEY="lxqq";
+    private static final String SIGN_KEY = "lxqq";
 
     /**
      * 令牌的存储策略，这里使用的是JwtTokenStore，使用JWT的令牌生成方式，其实还有以下两个比较常用的方式：
-     *
+     * <p>
      * RedisTokenStore：将令牌存储到Redis中，此种方式相对于内存方式来说性能更好
      * JdbcTokenStore：将令牌存储到数据库中，需要新建从对应的表，有兴趣的可以尝试
+     *
      * @return
      */
     @Bean
-    public TokenStore tokenStore(){
+    public TokenStore tokenStore() {
 
 //        return new InMemoryTokenStore();
         // 使用jwt
@@ -33,10 +34,11 @@ public class AccessTokenConfig {
 
     /**
      * 令牌增强类，用于JWT令牌和OAuth身份进行转换
+     *
      * @return
      */
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
         tokenConverter.setSigningKey(SIGN_KEY);
         return tokenConverter;

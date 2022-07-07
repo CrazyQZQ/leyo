@@ -54,7 +54,7 @@ public class HomeSettingServiceImpl implements HomeSettingService {
     @Override
     public void deleteBanner(Long id) {
         SysObjectImages sysObjectImages = sysObjectImagesMapper.selectById(id);
-        if(sysObjectImages != null){
+        if (sysObjectImages != null) {
             minIoService.deleteFileByFullPath(Arrays.asList(sysObjectImages.getImageUrl()));
             sysObjectImagesMapper.deleteById(id);
         }

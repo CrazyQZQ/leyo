@@ -31,6 +31,7 @@ public class SysProductController extends BaseController {
 
     /**
      * 查询产品列表
+     *
      * @param query
      * @return
      */
@@ -46,6 +47,7 @@ public class SysProductController extends BaseController {
 
     /**
      * 查询产品详情
+     *
      * @param id
      * @return
      */
@@ -57,6 +59,7 @@ public class SysProductController extends BaseController {
 
     /**
      * 新增产品
+     *
      * @param product
      * @return
      */
@@ -74,6 +77,7 @@ public class SysProductController extends BaseController {
 
     /**
      * 修改产品
+     *
      * @param product
      * @return
      */
@@ -91,6 +95,7 @@ public class SysProductController extends BaseController {
 
     /**
      * 删除产品
+     *
      * @param id
      * @return
      */

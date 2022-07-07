@@ -28,6 +28,6 @@ public class FebsWebLoginFailureHandler implements AuthenticationFailureHandler 
         } else {
             message = "认证失败，请联系网站管理员！";
         }
-        ServletUtils.renderString(200, httpServletResponse, JSON.toJSONString(AjaxResult.error(401,message)));
+        ServletUtils.renderString(200, httpServletResponse, JSON.toJSONString(AjaxResult.error(401, message)));
     }
 }

@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- *
- *
  * @author makejava
  * @since 2022-04-07 19:08:25
  */
@@ -33,8 +31,7 @@ public class FileController {
     }
 
     /**
-     *
-     * @param fileName 123.png
+     * @param fileName   123.png
      * @param objectName 20220507/123.png
      * @param response
      */

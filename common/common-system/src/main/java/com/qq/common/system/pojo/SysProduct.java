@@ -16,13 +16,14 @@ import java.util.List;
 
 /**
  * 商品表
+ *
  * @TableName sys_product
  */
-@TableName(value ="sys_product")
+@TableName(value = "sys_product")
 @Data
 public class SysProduct implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -67,7 +68,7 @@ public class SysProduct implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -80,7 +81,7 @@ public class SysProduct implements Serializable {
      * 修改时间
      */
     @TableField(value = "update_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     /**

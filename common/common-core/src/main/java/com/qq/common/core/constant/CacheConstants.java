@@ -2,11 +2,10 @@ package com.qq.common.core.constant;
 
 /**
  * 缓存的key 常量
- * 
+ *
  * @author ruoyi
  */
-public class CacheConstants
-{
+public class CacheConstants {
     /**
      * 缓存有效期，默认720（分钟）
      */
@@ -40,16 +39,16 @@ public class CacheConstants
     /**
      * 公告
      */
-    public final static String ANNOUNCEMENT_KEY= "announcement";
+    public final static String ANNOUNCEMENT_KEY = "announcement";
 
     /**
      * 重复提交
      */
-    public final static String REPEAT_COMMIT_KEY_PREFIX= "repeat_commit:";
+    public final static String REPEAT_COMMIT_KEY_PREFIX = "repeat_commit:";
 
     /**
      * 热卖商品
      */
-    public final static String HOT_SALE_KEY= "hot_sales";
+    public final static String HOT_SALE_KEY = "hot_sales";
 
 }

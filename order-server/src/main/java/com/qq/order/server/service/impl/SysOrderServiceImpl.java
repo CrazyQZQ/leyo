@@ -48,6 +48,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
     private final SkuService skuService;
     private final PushHandler pushHandler;
 
+    /**
+     * 保存订单
+     * @param orderVO
+     * @return
+     */
     @Override
     @Transactional
     public Long saveOrder(OrderVO orderVO) {
@@ -101,6 +106,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         return order.getId();
     }
 
+    /**
+     * 获取订单详情
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderVO getOrderInfo(Long orderId) {
         if (orderId == null) {
@@ -123,6 +133,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         return orderVO;
     }
 
+    /**
+     * 查询订单列表
+     * @param query
+     * @return
+     */
     @Override
     public List<SysOrder> list(OrderQuery query) {
         List<SysOrder> list = this.baseMapper.list(query);
@@ -141,6 +156,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         return list;
     }
 
+    /**
+     * 查询订单各种状态数量
+     * @param userId
+     * @return
+     */
     @Override
     public List<StatusCountVO> getStatusCount(Long userId) {
         return this.baseMapper.getStatusCount(userId);
@@ -148,9 +168,10 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
 
     /**
      * 更新热卖信息
+     *
      * @param skuIds
      */
-    private void updateHotSale(List<Long> skuIds){
+    private void updateHotSale(List<Long> skuIds) {
         PushData<List<Long>> pushData = new PushData<>();
         pushData.setTopicName(HotSaleTopicConfig.TOPIC_NAME);
         pushData.setRoutingKey(HotSaleTopicConfig.ROUTING_KEY);

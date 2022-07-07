@@ -24,6 +24,7 @@ public class JwtEnhanceUserAuthenticationConverter extends DefaultUserAuthentica
     public JwtEnhanceUserAuthenticationConverter(UserDetailsService userDetailsService) {
         super.setUserDetailsService(userDetailsService);
     }
+
     /**
      * 重写抽取用户数据方法,获取token时把用户信息放入token中
      */
@@ -33,8 +34,8 @@ public class JwtEnhanceUserAuthenticationConverter extends DefaultUserAuthentica
             Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
             String username = (String) map.get(USERNAME);
             String userId = map.get(TokenConstants.USER_ID).toString();
-            SecurityUser user =new SecurityUser();
-            user.setUserId(Long.valueOf(com.qq.common.core.utils.StringUtils.nvl(userId,"-1")));
+            SecurityUser user = new SecurityUser();
+            user.setUserId(Long.valueOf(com.qq.common.core.utils.StringUtils.nvl(userId, "-1")));
             user.setUsername(username);
             return new UsernamePasswordAuthenticationToken(user, "", authorities);
         }
@@ -43,6 +44,7 @@ public class JwtEnhanceUserAuthenticationConverter extends DefaultUserAuthentica
 
     /**
      * 刷新token时时把用户信息放入token中
+     *
      * @param authentication
      * @return
      */

@@ -14,9 +14,18 @@ import java.util.List;
 @Data
 public class OrderVO {
 
+    /**
+     * 主表数据
+     */
     private SysOrder order;
 
+    /**
+     * 子表数据
+     */
     private List<SysOrderDetail> orderDetailList;
 
+    /**
+     * 账户id
+     */
     private Long accountId;
 }

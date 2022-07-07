@@ -4,6 +4,7 @@ import com.github.yulichang.query.MPJQueryWrapper;
 import com.qq.common.system.mapper.SysRoleMapper;
 import com.qq.common.system.pojo.SysRole;
 import com.qq.system.service.SysRoleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,11 @@ import java.util.List;
  * @Date 2022/4/8
  **/
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysRoleServiceImpl implements SysRoleService {
 
-    @Autowired
-    private SysRoleMapper roleMapper;
+    private final SysRoleMapper roleMapper;
+
     @Override
     public List<SysRole> getByUser(Long userId) {
 //        leftJoin() 参数说明
@@ -32,7 +34,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 //                        .eq(SysUserRole::getUserId, userId)
 //        );
 
-        List<SysRole> sysRoles = roleMapper.selectJoinList(SysRole.class,new MPJQueryWrapper<SysRole>()
+        List<SysRole> sysRoles = roleMapper.selectJoinList(SysRole.class, new MPJQueryWrapper<SysRole>()
                 .selectAll(SysRole.class)
 //                .select("addr.tel", "addr.address")
                 //行列转换

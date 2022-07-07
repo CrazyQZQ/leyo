@@ -42,7 +42,7 @@ public class EsController {
     }
 
     @PostMapping("list")
-    @Log(title = "product_sku", funcDesc = "搜索列表")
+    @Log(title = "es_search", funcDesc = "搜索列表")
     public AjaxResult list(@RequestBody SearchCommonVO vo) {
         Class clazz = SEARCH_INDEX_CLASS_MAP.get(vo.getIndexName());
         if (clazz == null) {

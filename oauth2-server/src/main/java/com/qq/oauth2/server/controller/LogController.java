@@ -42,7 +42,7 @@ public class LogController {
     public AjaxResult logout() {
         SysUser currentUser = OauthUtils.getCurrentUser();
         // 将当前登录用户的token加入redis黑名单，过期时间与token过期时间一致
-        redisService.setCacheObject(AuthConstants.JTI_KEY_PREFIX+currentUser.getJti(),"",currentUser.getExpireIn(), TimeUnit.SECONDS);
+        redisService.setCacheObject(AuthConstants.JTI_KEY_PREFIX + currentUser.getJti(), "", currentUser.getExpireIn(), TimeUnit.SECONDS);
         return AjaxResult.success("退出成功");
     }
 }

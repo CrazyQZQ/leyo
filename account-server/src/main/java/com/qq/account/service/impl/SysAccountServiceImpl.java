@@ -9,14 +9,19 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 /**
-* @author QinQiang
-* @description 针对表【sys_account(账户表)】的数据库操作Service实现
-* @createDate 2022-04-29 14:43:18
-*/
+ * @author QinQiang
+ * @description 针对表【sys_account(账户表)】的数据库操作Service实现
+ * @createDate 2022-04-29 14:43:18
+ */
 @Service
 public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAccount>
-    implements SysAccountService {
+        implements SysAccountService {
 
+    /**
+     * 账户金额操作
+     * @param id
+     * @param amount
+     */
     @Override
     public void operateAccountAmount(Long id, BigDecimal amount) {
         SysAccount account = this.getById(id);

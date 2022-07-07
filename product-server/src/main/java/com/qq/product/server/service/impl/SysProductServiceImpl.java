@@ -47,6 +47,11 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
     private final EsService esService;
     private final SysAttributeValueMapper sysAttributeValueMapper;
 
+    /**
+     * 新增商品
+     *
+     * @param sysProduct 商品信息
+     */
     @Override
     @Transactional
     public void addProduct(SysProduct sysProduct) {
@@ -64,8 +69,9 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
                 sysObjectImagesMapper.insert(sysObjectImages);
             }
         }
+        // 保存属性
         List<SysAttribute> attributes = sysProduct.getAttributes();
-        if (CollUtil.isNotEmpty(attributes)){
+        if (CollUtil.isNotEmpty(attributes)) {
             for (SysAttribute attribute : attributes) {
                 SysProductAttribute sysProductAttribute = new SysProductAttribute();
                 sysProductAttribute.setProductId(sysProduct.getId());
@@ -75,15 +81,20 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         }
     }
 
+    /**
+     * @param id
+     * @return
+     * @description 根据商品id查询商品
+     */
     @Override
     public SysProduct getProductById(Long id) {
         SysProduct product = this.baseMapper.getProductById(id);
-        if(ObjectUtil.isNotEmpty(product)){
+        if (ObjectUtil.isNotEmpty(product)) {
             List<SysSku> skus = product.getSkus();
             for (SysSku sku : skus) {
                 if (StrUtil.isNotEmpty(sku.getSpec())) {
                     List<Map> specs = JSON.parseArray(sku.getSpec(), Map.class);
-                    if(CollUtil.isNotEmpty(specs)){
+                    if (CollUtil.isNotEmpty(specs)) {
                         sku.setSkuAttributes(sysAttributeValueMapper.selectSkuAttribute(specs));
                     }
                 }
@@ -92,25 +103,34 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         return product;
     }
 
+    /**
+     * @return
+     * @description 分页查询商品
+     */
     @Override
     public List<SysProduct> getProductList(BaseQuery query) {
         return this.baseMapper.getProductList(query);
     }
 
+    /**
+     * @param product
+     * @return
+     * @description 更新商品
+     */
     @Override
     @Transactional
     public int updateProduct(SysProduct product) throws IOException {
-        if(product.getId() == null){
+        if (product.getId() == null) {
             throw new ServiceException("商品id不能为空！");
         }
         product.setUpdateBy(OauthUtils.getCurrentUserName());
         product.setUpdateTime(new Date());
         int i = this.baseMapper.updateById(product);
-        if(i == 0){
+        if (i == 0) {
             throw new ServiceException("商品不存在！");
         }
         List<SysAttribute> attributes = product.getAttributes();
-        if (CollUtil.isNotEmpty(attributes)){
+        if (CollUtil.isNotEmpty(attributes)) {
             productAttributeMapper.delete(new QueryWrapper<SysProductAttribute>().eq("product_id", product.getId()));
             for (SysAttribute attribute : attributes) {
                 SysProductAttribute sysProductAttribute = new SysProductAttribute();
@@ -124,13 +144,18 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         return i;
     }
 
+    /**
+     * @param id
+     * @return
+     * @description 删除商品
+     */
     @Override
     @Transactional
     public int deleteProduct(Long id) throws IOException {
         List<String> images = sysObjectImagesMapper.selectList(new QueryWrapper<SysObjectImages>().eq("product_id", id))
                 .stream().map(SysObjectImages::getImageUrl)
                 .collect(Collectors.toList());
-        if(CollectionUtils.isNotEmpty(images)){
+        if (CollectionUtils.isNotEmpty(images)) {
             sysObjectImagesMapper.delete(new QueryWrapper<SysObjectImages>().eq("object_id", id));
             minIoService.deleteFileByFullPath(images);
         }

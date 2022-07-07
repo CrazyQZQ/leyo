@@ -11,13 +11,14 @@ import java.util.List;
 
 /**
  * 属性表
+ *
  * @TableName sys_attribute
  */
-@TableName(value ="sys_attribute")
+@TableName(value = "sys_attribute")
 @Data
 public class SysAttribute implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

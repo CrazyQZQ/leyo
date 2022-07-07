@@ -24,6 +24,7 @@ public class SysAttributeController extends BaseController {
 
     /**
      * 查询产品属性列表
+     *
      * @return
      */
     @GetMapping("list")
@@ -34,6 +35,7 @@ public class SysAttributeController extends BaseController {
 
     /**
      * 新增产品sku
+     *
      * @param attribute
      * @return
      */
@@ -46,6 +48,7 @@ public class SysAttributeController extends BaseController {
 
     /**
      * 修改产品属性
+     *
      * @param attribute
      * @return
      */
@@ -58,6 +61,7 @@ public class SysAttributeController extends BaseController {
 
     /**
      * 删除产品属性
+     *
      * @param id
      * @return
      */

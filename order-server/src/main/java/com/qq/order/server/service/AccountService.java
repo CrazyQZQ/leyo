@@ -12,6 +12,12 @@ import java.math.BigDecimal;
 @FeignClient(name = "account-server")
 public interface AccountService {
 
+    /**
+     * 扣减账户余额
+     * @param id
+     * @param amount
+     * @return
+     */
     @PostMapping("/account/operateAccountAmount")
     AjaxResult operateAccountAmount(@RequestParam("id") Long id, @RequestParam("amount") BigDecimal amount);
 

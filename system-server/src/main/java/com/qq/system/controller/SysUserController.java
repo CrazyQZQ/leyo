@@ -60,6 +60,7 @@ public class SysUserController {
 
     /**
      * 修改用户信息
+     *
      * @param user
      * @return
      */
@@ -71,6 +72,7 @@ public class SysUserController {
 
     /**
      * 新增用户
+     *
      * @param user
      * @return
      */
@@ -82,6 +84,7 @@ public class SysUserController {
 
     /**
      * 获取用户角色
+     *
      * @param userId
      * @return
      */
@@ -93,6 +96,7 @@ public class SysUserController {
 
     /**
      * 修改用户头像
+     *
      * @param userId
      * @param file
      * @return

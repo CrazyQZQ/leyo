@@ -30,6 +30,7 @@ public class SysProductBrandController extends BaseController {
 
     /**
      * 查询品牌树
+     *
      * @return
      */
     @GetMapping("tree")
@@ -40,6 +41,7 @@ public class SysProductBrandController extends BaseController {
 
     /**
      * 查询品牌列表
+     *
      * @param query
      * @return
      */
@@ -55,6 +57,7 @@ public class SysProductBrandController extends BaseController {
 
     /**
      * 查询品牌详情
+     *
      * @param id
      * @return
      */
@@ -66,6 +69,7 @@ public class SysProductBrandController extends BaseController {
 
     /**
      * 新增品牌
+     *
      * @param brand
      * @return
      */
@@ -83,6 +87,7 @@ public class SysProductBrandController extends BaseController {
 
     /**
      * 修改品牌
+     *
      * @param brand
      * @return
      */
@@ -100,6 +105,7 @@ public class SysProductBrandController extends BaseController {
 
     /**
      * 删除品牌
+     *
      * @param id
      * @return
      */

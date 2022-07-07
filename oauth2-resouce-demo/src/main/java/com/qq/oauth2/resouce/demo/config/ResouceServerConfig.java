@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
  **/
 @Configuration
 @EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true,securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
 public class ResouceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
@@ -49,9 +49,10 @@ public class ResouceServerConfig extends ResourceServerConfigurerAdapter {
     /**
      * 由于认证中心使用的令牌存储策略是在内存中的，因此服务端必须远程调用认证中心的校验令牌端点"/oauth/check_token"进行校验。
      * 远程校验令牌存在性能问题，但是后续使用JWT令牌则本地即可进行校验，不必远程校验了
+     *
      * @return
      */
-    public RemoteTokenServices remoteTokenServices(){
+    public RemoteTokenServices remoteTokenServices() {
         RemoteTokenServices tokenServices = new RemoteTokenServices();
         tokenServices.setCheckTokenEndpointUrl("http://localhost:8844/oauth/check_token");
         // 客户端唯一id
@@ -63,10 +64,11 @@ public class ResouceServerConfig extends ResourceServerConfigurerAdapter {
 
     /**
      * 生成的ResourceServerTokenServices对象，其中使用JWT令牌增强
+     *
      * @return
      */
     @Bean
-    public ResourceServerTokenServices tokenServices(){
+    public ResourceServerTokenServices tokenServices() {
         DefaultTokenServices services = new DefaultTokenServices();
         services.setTokenStore(tokenStore);
         services.setTokenEnhancer(jwtAccessTokenConverter);

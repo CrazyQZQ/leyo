@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConv
  * @Date 2022/4/12
  **/
 public class JwtEnhanceAccessTokenConverter extends DefaultAccessTokenConverter {
-    public JwtEnhanceAccessTokenConverter(UserDetailsService userDetailsService){
+    public JwtEnhanceAccessTokenConverter(UserDetailsService userDetailsService) {
         super.setUserTokenConverter(new JwtEnhanceUserAuthenticationConverter(userDetailsService));
     }
 }

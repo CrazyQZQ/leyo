@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * 购物车清单
+ *
  * @TableName shopping_cart_item
  */
-@TableName(value ="shopping_cart_item")
+@TableName(value = "shopping_cart_item")
 @Data
 public class ShoppingCartItem implements Serializable {
     /**

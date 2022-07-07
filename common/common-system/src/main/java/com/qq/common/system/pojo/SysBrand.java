@@ -13,9 +13,10 @@ import java.util.List;
 
 /**
  * 商品品牌表
+ *
  * @TableName sys_brand
  */
-@TableName(value ="sys_brand")
+@TableName(value = "sys_brand")
 @Data
 public class SysBrand implements Serializable {
     /**

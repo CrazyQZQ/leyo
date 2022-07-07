@@ -42,6 +42,11 @@ public class SysBrandServiceImpl extends ServiceImpl<SysBrandMapper, SysBrand>
     private final MinIoService minIoService;
     private final SysObjectImagesMapper sysObjectImagesMapper;
 
+    /**
+     * 查询品牌树
+     *
+     * @return
+     */
     @Override
     public List<Tree<Long>> queryTreeList() {
         List<TreeNode<Long>> nodeList = CollUtil.newArrayList();
@@ -57,6 +62,11 @@ public class SysBrandServiceImpl extends ServiceImpl<SysBrandMapper, SysBrand>
         return TreeUtil.build(nodeList, 0L);
     }
 
+    /**
+     * 新增品牌
+     *
+     * @param sysBrand
+     */
     @Override
     @Transactional
     public void addBrand(SysBrand sysBrand) {
@@ -75,6 +85,11 @@ public class SysBrandServiceImpl extends ServiceImpl<SysBrandMapper, SysBrand>
         }
     }
 
+    /**
+     * 修改品牌
+     *
+     * @param sysBrand
+     */
     @Override
     @Transactional
     public void updateBrand(SysBrand sysBrand) {
@@ -97,6 +112,11 @@ public class SysBrandServiceImpl extends ServiceImpl<SysBrandMapper, SysBrand>
         }
     }
 
+    /**
+     * 删除品牌
+     *
+     * @param id
+     */
     @Override
     @Transactional
     public void deleteBrand(Long id) {
@@ -114,12 +134,18 @@ public class SysBrandServiceImpl extends ServiceImpl<SysBrandMapper, SysBrand>
         List<String> images = sysObjectImagesMapper.selectList(new QueryWrapper<SysObjectImages>().eq("object_id", id))
                 .stream().map(SysObjectImages::getImageUrl)
                 .collect(Collectors.toList());
-        if(CollectionUtils.isNotEmpty(images)){
+        if (CollectionUtils.isNotEmpty(images)) {
             sysObjectImagesMapper.delete(new QueryWrapper<SysObjectImages>().eq("object_id", id));
             minIoService.deleteFileByFullPath(images);
         }
     }
 
+    /**
+     * 查询品牌列表
+     *
+     * @param query
+     * @return
+     */
     @Override
     public List<SysBrand> list(BaseQuery query) {
         return this.baseMapper.getBrandList(query);

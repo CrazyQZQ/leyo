@@ -41,7 +41,7 @@ public class RepeatCommitAspect {
     }
 
     @Before("logPointCut()")
-    public void before(JoinPoint joinPoint){
+    public void before(JoinPoint joinPoint) {
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
@@ -50,13 +50,13 @@ public class RepeatCommitAspect {
             ServletUtils.getParameterToInt(REPEAT_COMMIT_KEY);
             String token = ServletUtils.getParameter(REPEAT_COMMIT_KEY);
             long intervals = repeatCommit.Intervals();
-            if(StrUtil.isNotEmpty(token)){
+            if (StrUtil.isNotEmpty(token)) {
                 String key = CacheConstants.REPEAT_COMMIT_KEY_PREFIX + token;
                 Boolean hasKey = redisService.hasKey(key);
-                if(hasKey){
-                    log.info("重复提交，key：{}",key);
+                if (hasKey) {
+                    log.info("重复提交，key：{}", key);
                     throw new ServiceException("数据已提交，请勿重复提交");
-                }else{
+                } else {
                     redisService.setCacheObject(key, "1", intervals, TimeUnit.MILLISECONDS);
                 }
             }

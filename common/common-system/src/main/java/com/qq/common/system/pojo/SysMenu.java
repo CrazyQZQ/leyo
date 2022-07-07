@@ -12,9 +12,10 @@ import java.util.Date;
 
 /**
  * 菜单权限表
+ *
  * @TableName sys_menu
  */
-@TableName(value ="sys_menu")
+@TableName(value = "sys_menu")
 @Data
 public class SysMenu implements Serializable {
     /**
@@ -111,7 +112,7 @@ public class SysMenu implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -124,7 +125,7 @@ public class SysMenu implements Serializable {
      * 更新时间
      */
     @TableField(value = "update_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     /**

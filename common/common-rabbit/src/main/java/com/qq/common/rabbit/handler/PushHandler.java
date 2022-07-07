@@ -47,7 +47,5 @@ public class PushHandler {
         } else {
             rabbitTemplate.convertAndSend(data.getTopicName(), data.getRoutingKey(), data.getData());
         }
-
-
     }
 }

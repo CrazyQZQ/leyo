@@ -86,7 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // .apply(smsCodeSecurityConfig)
                 // .and()
                 .authorizeRequests()
-                .antMatchers( "/register", "/captchaImage").anonymous()
+                .antMatchers("/register", "/captchaImage").anonymous()
                 //注销的接口需要放行
                 .antMatchers("/oauth/**",
                         "/*.html",

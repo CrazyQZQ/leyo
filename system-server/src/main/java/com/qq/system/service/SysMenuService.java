@@ -7,10 +7,10 @@ import com.qq.common.system.pojo.SysRoleMenu;
 import java.util.List;
 
 /**
-* @author QinQiang
-* @description 针对表【sys_menu(菜单权限表)】的数据库操作Service
-* @createDate 2022-04-29 14:43:18
-*/
+ * @author QinQiang
+ * @description 针对表【sys_menu(菜单权限表)】的数据库操作Service
+ * @createDate 2022-04-29 14:43:18
+ */
 public interface SysMenuService extends IService<SysMenu> {
 
     void addMenu(SysMenu sysMenu);

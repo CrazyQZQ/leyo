@@ -1,5 +1,6 @@
 package com.qq.gateway.handler;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -19,13 +20,14 @@ import reactor.core.publisher.Mono;
  **/
 @Component
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
 
-    @Autowired
-    private TokenStore tokenStore;
+    private final TokenStore tokenStore;
 
     /**
      * 通过JWT令牌服务解析客户端传递的令牌，并对其进行校验，比如上传三处校验失败，抛出令牌无效的异常。
+     *
      * @param authentication
      * @return
      */

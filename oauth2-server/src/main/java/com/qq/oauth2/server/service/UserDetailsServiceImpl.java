@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户:" + username + ",不存在!");
         }
         Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
-        List<SysRole> roles = roleMapper.selectJoinList(SysRole.class,new MPJQueryWrapper<SysRole>()
+        List<SysRole> roles = roleMapper.selectJoinList(SysRole.class, new MPJQueryWrapper<SysRole>()
                 .selectAll(SysRole.class)
                 .leftJoin("sys_user_role sur on t.role_id = sur.role_id")
                 .eq("sur.user_id", sysUser.getUserId()));
@@ -51,6 +51,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             grantedAuthorities.add(grantedAuthority);
         }
 
-        return new SecurityUser(sysUser.getUserId(),sysUser.getUserName(), sysUser.getPassword(), grantedAuthorities);
+        return new SecurityUser(sysUser.getUserId(), sysUser.getUserName(), sysUser.getPassword(), grantedAuthorities);
     }
 }

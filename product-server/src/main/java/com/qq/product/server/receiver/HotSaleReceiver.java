@@ -24,11 +24,18 @@ import java.util.List;
 @Service
 @Slf4j
 @RabbitListener(queues = "hotSale")
-@RequiredArgsConstructor(onConstructor = @_(@Autowired))
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class HotSaleReceiver {
 
     private final SysSkuService skuService;
 
+    /**
+     * 消费String类型
+     *
+     * @param message
+     * @param channel
+     * @param msg
+     */
     @RabbitHandler
     public void handlerMsg(Message message, Channel channel, String msg) {
         log.info("hotSale消费者接受消息,内容：{}", msg);
@@ -40,6 +47,13 @@ public class HotSaleReceiver {
         }
     }
 
+    /**
+     * 消费List<Long>类型
+     *
+     * @param message
+     * @param channel
+     * @param skuIds
+     */
     @RabbitHandler
     public void handlerMsg(Message message, Channel channel, List<Long> skuIds) {
         log.info("hotSale消费者接受消息,skuIds：{}", JSON.toJSONString(skuIds));

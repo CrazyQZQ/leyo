@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @MapperScan({"com.qq.**.mapper"})
 @EnableDiscoveryClient
 public class Oauth2ServerApplication {

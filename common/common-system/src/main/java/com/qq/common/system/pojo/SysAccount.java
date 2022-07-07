@@ -13,9 +13,10 @@ import java.util.Date;
 
 /**
  * 账户表
+ *
  * @TableName sys_account
  */
-@TableName(value ="sys_account")
+@TableName(value = "sys_account")
 @Data
 public class SysAccount implements Serializable {
     /**
@@ -52,7 +53,7 @@ public class SysAccount implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -65,7 +66,7 @@ public class SysAccount implements Serializable {
      * 更新时间
      */
     @TableField(value = "update_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     @TableField(exist = false)

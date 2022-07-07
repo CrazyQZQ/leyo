@@ -18,36 +18,45 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author Administrator
-* @description 针对表【shopping_cart_item(购物车清单)】的数据库操作Service实现
-* @createDate 2022-06-02 09:32:58
-*/
+ * @author Administrator
+ * @description 针对表【shopping_cart_item(购物车清单)】的数据库操作Service实现
+ * @createDate 2022-06-02 09:32:58
+ */
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ShoppingCartItemServiceImpl extends ServiceImpl<ShoppingCartItemMapper, ShoppingCartItem>
-    implements ShoppingCartItemService{
+        implements ShoppingCartItemService {
 
     private final SkuService skuService;
 
+    /**
+     * 查询购物车列表
+     * @param userId
+     * @return
+     */
     @Override
     public List<ShoppingCartItem> list(Long userId) {
         List<ShoppingCartItem> cartItems = this.baseMapper.selectList(new QueryWrapper<ShoppingCartItem>().eq("user_id", userId));
         for (ShoppingCartItem cartItem : cartItems) {
             AjaxResult ajaxResult = skuService.getSkuById(cartItem.getSkuId());
-            if(ajaxResult.isSuccess()){
+            if (ajaxResult.isSuccess()) {
                 SysSku sku = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysSku.class, true, null);
                 cartItem.setSku(sku);
-            }else {
+            } else {
                 throw new ServiceException(ajaxResult.getMessage());
             }
         }
         return cartItems;
     }
 
+    /**
+     * 添加购物车
+     * @param shoppingCartItem
+     */
     @Override
     public void addCartItem(ShoppingCartItem shoppingCartItem) {
         Long skuId = shoppingCartItem.getSkuId();
-        if(skuId == null){
+        if (skuId == null) {
             throw new ServiceException("商品不能为空");
         }
         QueryWrapper<ShoppingCartItem> queryWrapper = new QueryWrapper<ShoppingCartItem>()
@@ -55,10 +64,10 @@ public class ShoppingCartItemServiceImpl extends ServiceImpl<ShoppingCartItemMap
                 .eq("user_id", shoppingCartItem.getUserId())
                 .eq("sku_id", skuId);
         ShoppingCartItem cartItem = this.baseMapper.selectOne(queryWrapper);
-        if(cartItem != null){
+        if (cartItem != null) {
             cartItem.setNum(cartItem.getNum() + shoppingCartItem.getNum());
             this.baseMapper.updateById(cartItem);
-        }else {
+        } else {
             this.baseMapper.insert(shoppingCartItem);
         }
     }

@@ -114,6 +114,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             //放入请求头中
             ServerHttpRequest tokenRequest = exchange.getRequest().mutate().header(TokenConstants.TOKEN_NAME, base64).build();
 
+            // 请求body只能被消费一次，此处打印之后，下游服务无法获取requestBody
 //            ServerHttpResponseDecorator serverHttpResponseDecorator = printLog(exchange);
 //            ServerWebExchange build = exchange.mutate().request(tokenRequest).response(serverHttpResponseDecorator).build();
             ServerWebExchange build = exchange.mutate().request(tokenRequest).build();

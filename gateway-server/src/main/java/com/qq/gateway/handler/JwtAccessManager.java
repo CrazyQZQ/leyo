@@ -2,6 +2,7 @@ package com.qq.gateway.handler;
 
 import com.qq.common.core.constant.CacheConstants;
 import com.qq.common.redis.service.RedisService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authorization.AuthorizationDecision;
@@ -23,10 +24,11 @@ import java.util.List;
  **/
 @Component
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JwtAccessManager implements ReactiveAuthorizationManager<AuthorizationContext> {
 
-    @Autowired
-    private RedisService redisService;
+    private final RedisService redisService;
+
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
         URI uri = authorizationContext.getExchange().getRequest().getURI();

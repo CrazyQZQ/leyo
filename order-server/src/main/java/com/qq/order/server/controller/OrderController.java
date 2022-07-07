@@ -1,15 +1,12 @@
 package com.qq.order.server.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qq.common.core.annotation.RepeatCommit;
 import com.qq.common.core.constant.CacheConstants;
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
-import com.qq.common.core.web.page.BaseQuery;
 import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.redis.service.RedisService;
-import com.qq.common.system.pojo.SysOrder;
 import com.qq.order.server.pojo.OrderQuery;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.OrderVO;
@@ -19,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @Description:
+ * @Description: 订单
  * @Author QinQiang
  * @Date 2022/5/9
  **/
@@ -32,6 +29,11 @@ public class OrderController extends BaseController {
 
     private final RedisService redisService;
 
+    /**
+     * 查询订单列表
+     * @param query
+     * @return
+     */
     @GetMapping("list")
     @Log(title = "order", funcDesc = "查询订单列表")
     public TableDataInfo list(OrderQuery query) {
@@ -41,6 +43,11 @@ public class OrderController extends BaseController {
         return dataTable;
     }
 
+    /**
+     * 保存订单
+     * @param orderVO
+     * @return
+     */
     @PostMapping("/saveOrder")
     @Log(title = "order", funcDesc = "保存订单")
     @RepeatCommit
@@ -49,18 +56,32 @@ public class OrderController extends BaseController {
         return AjaxResult.success(orderService.saveOrder(orderVO));
     }
 
+    /**
+     * 订单详情
+     * @param orderId
+     * @return
+     */
     @GetMapping("/detail")
     @Log(title = "order", funcDesc = "订单详情")
     public AjaxResult orderDetailInfo(Long orderId) {
         return AjaxResult.success(orderService.getOrderInfo(orderId));
     }
 
+    /**
+     * 查询热卖商品
+     * @return
+     */
     @GetMapping("/hotSales")
     @Log(title = "order", funcDesc = "查询热卖商品")
     public AjaxResult hotSales() {
         return AjaxResult.success(redisService.getCacheList(CacheConstants.HOT_SALE_KEY));
     }
 
+    /**
+     * 查询订单各种状态数量
+     * @param userId
+     * @return
+     */
     @GetMapping("/getStatusCount")
     @Log(title = "order", funcDesc = "查询订单各种状态数量")
     public AjaxResult getStatusCount(@RequestParam("userId") Long userId) {

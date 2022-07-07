@@ -9,22 +9,28 @@ public interface HomeSettingService {
 
     /**
      * 获取banners
+     *
      * @return
      */
     List<SysObjectImages> getBanners();
+
     /**
      * 添加banner
+     *
      * @param files
      */
     void addBanner(MultipartFile[] files);
+
     /**
      * 删除
+     *
      * @param id
      */
     void deleteBanner(Long id);
 
     /**
      * 发布公告
+     *
      * @param content
      */
     void createAnnouncement(String content);

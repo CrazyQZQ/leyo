@@ -9,9 +9,10 @@ import java.io.Serializable;
 
 /**
  * 地区信息
+ *
  * @TableName sys_area_info
  */
-@TableName(value ="sys_area_info")
+@TableName(value = "sys_area_info")
 @Data
 public class SysAreaInfo implements Serializable {
     /**

@@ -3,7 +3,7 @@ package com.qq.gateway.nacosdiscovery;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @Description:
+ * @Description: 路由配置
  * @Author QinQiang
  * @Date 2022/4/6
  **/

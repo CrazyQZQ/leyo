@@ -12,13 +12,14 @@ import java.util.Date;
 
 /**
  * 用户地址表
+ *
  * @TableName sys_user_address
  */
-@TableName(value ="sys_user_address")
+@TableName(value = "sys_user_address")
 @Data
 public class SysUserAddress implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

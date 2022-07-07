@@ -30,6 +30,7 @@ public class SysSkuController extends BaseController {
 
     /**
      * 查询产品sku列表
+     *
      * @param productId
      * @return
      */
@@ -41,6 +42,7 @@ public class SysSkuController extends BaseController {
 
     /**
      * id查询产品sku
+     *
      * @param id
      * @return
      */
@@ -52,6 +54,7 @@ public class SysSkuController extends BaseController {
 
     /**
      * 新增产品sku
+     *
      * @param sku
      * @return
      */
@@ -70,6 +73,7 @@ public class SysSkuController extends BaseController {
 
     /**
      * 修改产品sku
+     *
      * @param sku
      * @return
      */
@@ -88,6 +92,7 @@ public class SysSkuController extends BaseController {
 
     /**
      * 删除产品sku
+     *
      * @param id
      * @return
      */
@@ -106,6 +111,7 @@ public class SysSkuController extends BaseController {
 
     /**
      * 扣减库存
+     *
      * @param id
      * @param stock
      * @return
@@ -124,6 +130,7 @@ public class SysSkuController extends BaseController {
 
     /**
      * 保存sku图片
+     *
      * @param id
      * @param file
      * @return

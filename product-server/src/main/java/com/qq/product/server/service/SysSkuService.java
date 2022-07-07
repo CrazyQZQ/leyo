@@ -9,21 +9,23 @@ import java.io.IOException;
 import java.util.List;
 
 /**
-* @author Administrator
-* @description 针对表【sys_sku(商品sku表)】的数据库操作Service
-* @createDate 2022-05-23 17:08:20
-*/
+ * @author Administrator
+ * @description 针对表【sys_sku(商品sku表)】的数据库操作Service
+ * @createDate 2022-05-23 17:08:20
+ */
 public interface SysSkuService extends IService<SysSku> {
 
     /**
      * 根据商品id查询
+     *
      * @param productId
      * @return
      */
     List<SysSku> list(Long productId);
 
     /**
-     *  根据id集合查询
+     * 根据id集合查询
+     *
      * @param skuIds
      * @return
      */
@@ -31,6 +33,7 @@ public interface SysSkuService extends IService<SysSku> {
 
     /**
      * 核减库存
+     *
      * @param id
      * @param stock
      */
@@ -38,6 +41,7 @@ public interface SysSkuService extends IService<SysSku> {
 
     /**
      * 上传图片
+     *
      * @param id
      * @param file
      */
@@ -45,6 +49,7 @@ public interface SysSkuService extends IService<SysSku> {
 
     /**
      * 根据id查询
+     *
      * @param id
      * @return
      */
@@ -52,6 +57,7 @@ public interface SysSkuService extends IService<SysSku> {
 
     /**
      * 修改es数据
+     *
      * @param skuIds
      * @throws IOException
      */

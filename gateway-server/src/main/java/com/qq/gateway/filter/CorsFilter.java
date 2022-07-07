@@ -13,7 +13,7 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 /**
- * @Description:
+ * @Description: 跨域过滤器
  * @Author QinQiang
  * @Date 2022/4/14
  **/

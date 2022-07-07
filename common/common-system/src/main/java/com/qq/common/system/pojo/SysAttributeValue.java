@@ -10,13 +10,14 @@ import java.io.Serializable;
 
 /**
  * 商品属性值表
+ *
  * @TableName sys_attribute_value
  */
-@TableName(value ="sys_attribute_value")
+@TableName(value = "sys_attribute_value")
 @Data
 public class SysAttributeValue implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

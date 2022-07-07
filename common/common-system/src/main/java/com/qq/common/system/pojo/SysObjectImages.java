@@ -10,9 +10,10 @@ import java.io.Serializable;
 
 /**
  * 产品图片表
+ *
  * @TableName sys_object_images
  */
-@TableName(value ="sys_object_images")
+@TableName(value = "sys_object_images")
 @Data
 public class SysObjectImages implements Serializable {
     /**

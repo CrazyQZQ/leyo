@@ -13,13 +13,14 @@ import java.util.List;
 
 /**
  * 商品sku表
+ *
  * @TableName sys_sku
  */
-@TableName(value ="sys_sku")
+@TableName(value = "sys_sku")
 @Data
 public class SysSku implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

@@ -31,6 +31,7 @@ public class SysProductTypeController extends BaseController {
 
     /**
      * 查询产品品类树
+     *
      * @return
      */
     @GetMapping("tree")
@@ -41,6 +42,7 @@ public class SysProductTypeController extends BaseController {
 
     /**
      * 查询产品品类列表
+     *
      * @param query
      * @return
      */
@@ -56,6 +58,7 @@ public class SysProductTypeController extends BaseController {
 
     /**
      * 查询产品品类详情
+     *
      * @param id
      * @return
      */
@@ -67,6 +70,7 @@ public class SysProductTypeController extends BaseController {
 
     /**
      * 新增产品品类
+     *
      * @param productType
      * @return
      */
@@ -84,6 +88,7 @@ public class SysProductTypeController extends BaseController {
 
     /**
      * 修改产品品类
+     *
      * @param productType
      * @return
      */
@@ -101,6 +106,7 @@ public class SysProductTypeController extends BaseController {
 
     /**
      * 删除产品品类
+     *
      * @param id
      * @return
      */
