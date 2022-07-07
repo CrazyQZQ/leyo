@@ -16,8 +16,19 @@ import java.util.List;
  * @Entity com.qq.common.system.pojo.SysOrder
  */
 public interface SysOrderMapper extends BaseMapper<SysOrder> {
+
+    /**
+     * 查询订单列表
+     * @param query
+     * @return
+     */
     List<SysOrder> list(OrderQuery query);
 
+    /**
+     * 查询各状态数量
+     * @param userId
+     * @return
+     */
     List<StatusCountVO> getStatusCount(@Param("userId") Long userId);
 }
 

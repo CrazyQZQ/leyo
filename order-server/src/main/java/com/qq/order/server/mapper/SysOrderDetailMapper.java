@@ -14,6 +14,10 @@ import java.util.List;
  */
 public interface SysOrderDetailMapper extends BaseMapper<SysOrderDetail> {
 
+    /**
+     * 查询热卖商品
+     * @return
+     */
     List<Long> selectHostSales();
 
 }

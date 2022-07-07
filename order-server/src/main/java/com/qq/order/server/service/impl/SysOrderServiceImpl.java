@@ -54,7 +54,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long saveOrder(OrderVO orderVO) {
         SysOrder order = orderVO.getOrder();
         if (order == null) {

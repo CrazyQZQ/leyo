@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @Date 2022/4/2
  **/
 @Service
-public class CallBackService implements TestService {
+public class CallBackServiceImpl implements TestService {
     @Override
     public String echo(@PathVariable("str") String str) {
         return "callBack" + str;

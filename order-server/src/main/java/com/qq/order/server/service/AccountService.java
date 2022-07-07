@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 
+/**
+ * @Description: 账户service
+ * @Author QinQiang
+ * @Date 2022/4/28
+ **/
 @Service
 @FeignClient(name = "account-server")
 public interface AccountService {

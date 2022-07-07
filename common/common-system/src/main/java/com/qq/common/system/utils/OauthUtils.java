@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class OauthUtils {
 
-    public static final long DEFAULT_USER_ID = 1l;
+    public static final long DEFAULT_USER_ID = 1L;
     public static final String DEFAULT_USER_NAME = "admin";
 
     /**

@@ -93,7 +93,7 @@ public class LogAspect {
                     .time(DateUtils.getTime())
                     .build();
             // 存到redis通过logstash消费保存到es中
-            if (syncLog.equals("1")) {
+            if ("1".equals(syncLog)) {
                 redisService.setCacheList(CacheConstants.LOGS_KEY, Arrays.asList(logInfo));
             }
             log.info(JSON.toJSONString(logInfo));

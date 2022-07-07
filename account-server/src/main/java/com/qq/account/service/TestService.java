@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @Date 2022/4/2
  **/
 @Service
-@FeignClient(name = "system-server", fallback = CallBackService.class)
+@FeignClient(name = "system-server", fallback = CallBackServiceImpl.class)
 public interface TestService {
+    /**
+     * 测试
+     * @param str
+     * @return
+     */
     @GetMapping("provide/echo/{str}")
     String echo(@PathVariable("str") String str);
 }
