@@ -15,7 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class SearchCommonVO {
-    public SearchCommonVO() {};
+    public SearchCommonVO() {
+    }
+
+    ;
     /**
      * 索引名
      */
@@ -51,27 +54,27 @@ public class SearchCommonVO {
     /**
      * 聚合类型
      */
-    private String[] aggregationType = new String[] { "term" };
+    private String[] aggregationType = new String[]{"term"};
     /**
      * 聚合属性
      */
-    private String[] aggregationField = new String[] {};
+    private String[] aggregationField = new String[]{};
     /**
      * 聚合区间
      */
-    private int[] aggregationTopN = new int[] { 10 };
+    private int[] aggregationTopN = new int[]{10};
     /**
-     *  聚合区间
+     * 聚合区间
      */
-    private String[] aggregationInterval = new String[] {};
+    private String[] aggregationInterval = new String[]{};
     /**
      * 是否高亮
      */
     private boolean highlight = false;
     /**
-     *  高亮属性
+     * 高亮属性
      */
-    private String[] highlightField = new String[] {};
+    private String[] highlightField = new String[]{};
     /**
      * 查询条件
      */

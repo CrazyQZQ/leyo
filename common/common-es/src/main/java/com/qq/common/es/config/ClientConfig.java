@@ -31,6 +31,7 @@ public class ClientConfig {
      * es客户端
      * 官方文档：https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/8.0/connecting.html
      * 官方实例：https://github.com/elastic/elasticsearch-java/
+     *
      * @return
      */
     @Bean

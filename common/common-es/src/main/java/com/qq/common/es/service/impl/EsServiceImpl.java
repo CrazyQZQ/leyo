@@ -14,6 +14,7 @@ import co.elastic.clients.elasticsearch.core.search.HighlightField;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.json.JsonData;
+import com.alibaba.fastjson.JSON;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.utils.StringUtils;
 import com.qq.common.es.service.EsService;
@@ -40,24 +41,55 @@ public class EsServiceImpl implements EsService {
 
     final ElasticsearchClient esClient;
 
+    /**
+     * 创建索引
+     *
+     * @param indexName
+     * @return
+     * @throws IOException
+     */
     @Override
     public boolean createIndex(String indexName) throws IOException {
         //创建索引并返回状态
         return esClient.indices().create(c -> c.index(indexName)).acknowledged();
     }
 
+    /**
+     * 获取索引信息
+     *
+     * @param indexName
+     * @return
+     * @throws IOException
+     */
     @Override
     public GetIndexResponse getIndex(String indexName) throws IOException {
         return esClient.indices().get(c -> c.index(indexName));
     }
 
+    /**
+     * 删除索引
+     *
+     * @param indexName
+     * @return
+     * @throws IOException
+     */
     @Override
     public DeleteIndexResponse deleteIndex(String indexName) throws IOException {
         return esClient.indices().delete(c -> c.index(indexName));
     }
 
+    /**
+     * 新增
+     *
+     * @param indexName
+     * @param id
+     * @param document
+     * @return
+     * @throws IOException
+     */
     @Override
     public IndexResponse addDoc(String indexName, String id, Object document) throws IOException {
+        log.info("addDoc --> index:{}, id:{}, document:{}", indexName, id, JSON.toJSONString(document));
         IndexResponse indexResponse = esClient.index(IndexRequest.of(x -> {
             x.id(id);
             x.index(indexName);
@@ -67,21 +99,49 @@ public class EsServiceImpl implements EsService {
         return indexResponse;
     }
 
+    /**
+     * 修改
+     *
+     * @param indexName
+     * @param id
+     * @param document
+     * @return
+     * @throws IOException
+     */
     @Override
     public UpdateResponse updateDoc(String indexName, String id, Object document) throws IOException {
+        log.info("updateDoc --> index:{}, id:{}, document:{}", indexName, id, JSON.toJSONString(document));
         UpdateRequest<Object, Object> req = UpdateRequest.of(x -> x.index(indexName).id(id).doc(document));
         UpdateResponse<Object> update = esClient.update(req, Object.class);
         return update;
     }
 
+    /**
+     * 删除
+     *
+     * @param indexName
+     * @param id
+     * @return
+     * @throws IOException
+     */
     @Override
     public DeleteResponse deleteDoc(String indexName, String id) throws IOException {
+        log.info("deleteDoc --> index:{}, id:{}", indexName, id);
         DeleteResponse deleteResponse = esClient.delete(c -> c.index(indexName).id(id));
         return deleteResponse;
     }
 
+    /**
+     * 搜索
+     *
+     * @param searchCommonVO
+     * @param clazz
+     * @param <E>
+     * @return
+     */
     @Override
     public <E> SearchResultVO<E> search(SearchCommonVO searchCommonVO, Class<E> clazz) {
+        log.info("search --> searchCommonVO:{}", JSON.toJSONString(searchCommonVO));
         if (StringUtils.isEmpty(searchCommonVO.getIndexName())) {
             throw new ServiceException("索引不能为空!");
         }
@@ -150,6 +210,12 @@ public class EsServiceImpl implements EsService {
         return queries;
     }
 
+    /**
+     * 聚合
+     *
+     * @param searchCommonVO
+     * @return
+     */
     private Map<String, Aggregation> parseAggregation(SearchCommonVO searchCommonVO) {
         return new HashMap<>();
     }
@@ -175,7 +241,6 @@ public class EsServiceImpl implements EsService {
                 list.add(source);
             }
         });
-
         SearchResultVO<E> searchResultVO = new SearchResultVO<>();
         searchResultVO.setList(list);
         searchResultVO.setTotal(res.hits().total().value());
