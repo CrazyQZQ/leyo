@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class FebsWebLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private final RequestCache requestCache = new HttpSessionRequestCache();
 

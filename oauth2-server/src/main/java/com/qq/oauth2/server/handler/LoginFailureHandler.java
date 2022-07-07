@@ -17,7 +17,7 @@ import java.io.IOException;
  * @author MrBird
  */
 @Component
-public class FebsWebLoginFailureHandler implements AuthenticationFailureHandler {
+public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException exception) throws IOException {
         String message;

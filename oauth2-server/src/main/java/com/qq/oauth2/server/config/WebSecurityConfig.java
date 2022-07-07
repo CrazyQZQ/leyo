@@ -1,7 +1,7 @@
 package com.qq.oauth2.server.config;
 
-import com.qq.oauth2.server.handler.FebsWebLoginFailureHandler;
-import com.qq.oauth2.server.handler.FebsWebLoginSuccessHandler;
+import com.qq.oauth2.server.handler.LoginFailureHandler;
+import com.qq.oauth2.server.handler.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -45,9 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
     @Autowired
-    private FebsWebLoginSuccessHandler successHandler;
+    private LoginSuccessHandler successHandler;
     @Autowired
-    private FebsWebLoginFailureHandler failureHandler;
+    private LoginFailureHandler failureHandler;
 
 
     @Override

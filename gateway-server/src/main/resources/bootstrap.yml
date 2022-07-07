@@ -62,7 +62,6 @@ oauth2:
                 ignoreUrls:
                     - /oauth/**
                     - /system/login
-                    - /system/logout
                     - /system/client_login
                     - /system/*.html
                     - /system/*.js
