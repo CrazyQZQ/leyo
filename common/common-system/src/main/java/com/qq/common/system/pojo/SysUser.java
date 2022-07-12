@@ -8,6 +8,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,6 +38,7 @@ public class SysUser extends JwtInfo implements Serializable {
     /**
      * 登录账号
      */
+    @NotEmpty(message = "用户名不能为空！")
     private String userName;
     /**
      * 用户昵称
@@ -46,10 +51,12 @@ public class SysUser extends JwtInfo implements Serializable {
     /**
      * 用户邮箱
      */
+    @Email
     private String email;
     /**
      * 手机号码
      */
+    @Pattern(regexp = "^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\\d{8}$", message = "手机号格式错误！")
     private String phoneNumber;
     /**
      * 用户性别（0男 1女 2未知）
@@ -63,6 +70,7 @@ public class SysUser extends JwtInfo implements Serializable {
      * 密码
      */
     @JSONField(serialize = false)
+    @NotEmpty(message = "密码不能为空！")
     private String password;
     /**
      * 帐号状态（0正常 1停用）

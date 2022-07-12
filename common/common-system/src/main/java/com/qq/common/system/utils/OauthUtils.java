@@ -7,6 +7,7 @@ import com.qq.common.core.constant.TokenConstants;
 import com.qq.common.core.utils.ServletUtils;
 import com.qq.common.core.utils.StringUtils;
 import com.qq.common.core.utils.sign.Base64;
+import com.qq.common.system.mapper.SysUserMapper;
 import com.qq.common.system.pojo.SysUser;
 import lombok.extern.slf4j.Slf4j;
 
