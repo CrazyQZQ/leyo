@@ -2,6 +2,8 @@ package com.qq.common.es.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldSort;
 import co.elastic.clients.elasticsearch._types.SortOrder;
@@ -149,6 +151,12 @@ public class EsServiceImpl implements EsService {
         if (CollUtil.isEmpty(queryVos)) {
             throw new ServiceException("查询条件不能为空!");
         }
+        if(StrUtil.isEmpty(searchCommonVO.getSortIndex())){
+            searchCommonVO.setSortIndex("id");
+        }
+        if(StrUtil.isEmpty(searchCommonVO.getSortOrder())){
+            searchCommonVO.setSortOrder("Asc");
+        }
         // 处理查询条件
         List<Query> queries = processQuery(queryVos);
         try {
@@ -166,7 +174,7 @@ public class EsServiceImpl implements EsService {
                             for (int idx = 0; idx < searchCommonVO.getHighlightField().length; ++idx) {
                                 final String field = searchCommonVO.getHighlightField()[idx];
                                 h.fields(field, HighlightField.of(hf -> hf
-                                        .preTags("<font color='#e75213'>")
+                                        .preTags("<font style='font-weight:600;background-color: #e75213;color: yellow;'>")
                                         .postTags("</font>"))).fragmentSize(1024);
                             }
                         } else {
@@ -193,17 +201,23 @@ public class EsServiceImpl implements EsService {
         List<Query> queries = new ArrayList<>();
         for (QueryVo queryVo : queryVos) {
             if ("0".equals(queryVo.getQueryType())) {
-                Query query = MatchQuery.of(m -> m
-                        .field(queryVo.getField())
-                        .query(queryVo.getKeyword())
-                )._toQuery();
+                if (StrUtil.isEmpty(queryVo.getKeyword()))
+                    continue;
+                Query query = MatchQuery.of(m -> m.field(queryVo.getField()).query(queryVo.getKeyword()))._toQuery();
                 queries.add(query);
             } else if ("1".equals(queryVo.getQueryType())) {
-                Query query = RangeQuery.of(r -> r
-                        .field(queryVo.getField())
-                        .gte(JsonData.of(queryVo.getGte()))
-                        .lte(JsonData.of(queryVo.getLte()))
-                )._toQuery();
+                if (StrUtil.isEmpty(queryVo.getField()))
+                    continue;
+                Query query = RangeQuery.of(r -> {
+                    r.field(queryVo.getField());
+                    if (ObjectUtil.isNotEmpty(queryVo.getGte())) {
+                        r.gte(JsonData.of(queryVo.getGte()));
+                    }
+                    if (ObjectUtil.isNotEmpty(queryVo.getLte())) {
+                        r.lte(JsonData.of(queryVo.getLte()));
+                    }
+                    return r;
+                })._toQuery();
                 queries.add(query);
             }
         }
