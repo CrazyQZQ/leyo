@@ -38,7 +38,7 @@ public class OrderJobs {
 
     private final RestTemplate restTemplate;
 
-    @Scheduled(cron = "0/20 * * * * ?")
+    @Scheduled(cron = "0 0 0/1 * * ? ")
     public void updateHotSale() {
         log.info("更新热销商品定时任务开始");
         List<Long> hostSalesSkuIds = sysOrderDetailMapper.selectHostSales();
