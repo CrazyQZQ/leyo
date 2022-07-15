@@ -1,14 +1,19 @@
 package com.qq.system.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
+import com.github.yulichang.query.MPJQueryWrapper;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.utils.StringUtils;
+import com.qq.common.system.mapper.SysRoleMapper;
 import com.qq.common.system.mapper.SysUserAddressMapper;
 import com.qq.common.system.mapper.SysUserMapper;
+import com.qq.common.system.pojo.SysRole;
 import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.pojo.SysUserAddress;
 import com.qq.common.system.service.MinIoService;
@@ -19,9 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息表(SysUser)表服务实现类
@@ -36,6 +40,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final SysUserMapper userMapper;
     private final MinIoService minIoService;
     private final SysUserAddressMapper userAddressMapper;
+    private final SysRoleMapper roleMapper;
 
     /**
      * 通过ID查询单条数据
@@ -46,6 +51,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser queryById(Long userId) {
         return userMapper.selectById(userId);
+    }
+
+    /**
+     * 通过用户名查询单条数据
+     *
+     * @param userName 用户名
+     * @return 实例对象
+     */
+    @Override
+    public SysUser queryByUserName(String userName) {
+        SysUser user = userMapper.selectOne(new QueryWrapper<SysUser>().eq("user_name", userName));
+        List<SysRole> roles = Optional.ofNullable(roleMapper.selectJoinList(SysRole.class, new MPJQueryWrapper<SysRole>()
+                .selectAll(SysRole.class)
+                .leftJoin("sys_user_role sur on t.role_id = sur.role_id")
+                .eq("sur.user_id", user.getUserId()))).orElse(new ArrayList<>());
+        List<String> roleList = roles.stream().map(SysRole::getRoleKey).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(roleList)) {
+            user.setAuthorities(ArrayUtil.toArray(roleList, String.class));
+        }
+        return user;
     }
 
     /**
@@ -163,6 +188,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     /**
+     * 查询用户默认地址
+     *
+     * @param userId
+     */
+    @Override
+    public SysUserAddress queryUserDefaultAddress(Long userId) {
+        return userAddressMapper.selectOne(new QueryWrapper<SysUserAddress>().eq("default_status", 1).eq("user_id", userId));
+    }
+
+    /**
      * 删除用户地址
      *
      * @param id
@@ -172,6 +207,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         userAddressMapper.deleteById(id);
     }
 
+    /**
+     * 根据id查询地址
+     *
+     * @param id
+     * @return
+     */
     @Override
     public SysUserAddress queryAddressById(Long id) {
         return userAddressMapper.selectById(id);

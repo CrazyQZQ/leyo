@@ -144,6 +144,17 @@ public class SysUserController {
     }
 
     /**
+     * 查询用户默认地址
+     *
+     * @param userId
+     */
+    @Log(title = "system", funcDesc = "查询用户默认地址")
+    @GetMapping("userDefaultAddress")
+    public AjaxResult userDefaultAddress(@RequestParam("userId") Long userId) {
+        return AjaxResult.success(sysUserService.queryUserDefaultAddress(userId));
+    }
+
+    /**
      * 根据id查询地址
      *
      * @param id

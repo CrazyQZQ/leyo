@@ -79,7 +79,7 @@ public class SysLogController {
         Object token = authService.postAccessToken(body);
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);
-        result.put("user", sysUserService.getOne(new QueryWrapper<SysUser>().eq("user_name", loginVO.getUsername())));
+        result.put("user", sysUserService.queryByUserName(loginVO.getUsername()));
         return AjaxResult.success(result);
     }
 

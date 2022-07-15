@@ -25,6 +25,14 @@ public interface SysUserService extends IService<SysUser> {
     SysUser queryById(Long userId);
 
     /**
+     * 通过用户名查询单条数据
+     *
+     * @param userName 用户名
+     * @return 实例对象
+     */
+    SysUser queryByUserName(String userName);
+
+    /**
      * 查询多条数据
      *
      * @param pageNum  查询起始位置
@@ -85,6 +93,13 @@ public interface SysUserService extends IService<SysUser> {
      * @param userId
      */
     List<SysUserAddress> queryUserAddress(Long userId);
+
+    /**
+     * 查询用户默认地址
+     *
+     * @param userId
+     */
+    SysUserAddress queryUserDefaultAddress(Long userId);
 
     /**
      * 删除用户地址
