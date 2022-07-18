@@ -12,6 +12,7 @@ import com.qq.common.core.utils.StringUtils;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.pojo.LogErrorInfo;
 import com.qq.common.redis.service.RedisService;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,15 +137,6 @@ public class GlobalExceptionHandler {
     public AjaxResult handleInnerAuthException(InnerAuthException e) {
         saveLog("", e.getMessage());
         return AjaxResult.error(e.getMessage());
-    }
-
-    /**
-     * 演示模式异常
-     */
-    @ExceptionHandler(DemoModeException.class)
-    public AjaxResult handleDemoModeException(DemoModeException e) {
-        saveLog("", "演示模式，不允许操作");
-        return AjaxResult.error("演示模式，不允许操作");
     }
 
     /**

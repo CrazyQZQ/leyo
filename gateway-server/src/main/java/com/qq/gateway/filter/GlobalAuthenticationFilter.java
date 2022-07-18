@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.constant.TokenConstants;
-import com.qq.common.core.enums.AuthResultCode;
+import com.qq.common.core.enums.ExceptionCode;
 import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.StringUtils;
 import com.qq.common.core.utils.sign.Base64;
@@ -149,7 +149,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
      * 无效的token
      */
     private Mono<Void> invalidTokenMono(ServerWebExchange exchange) {
-        return buildReturnMono(new AjaxResult(AuthResultCode.INVALID_TOKEN.getCode(), AuthResultCode.INVALID_TOKEN.getMsg()), exchange);
+        return buildReturnMono(new AjaxResult(ExceptionCode.INVALID_TOKEN.getCode(), ExceptionCode.INVALID_TOKEN.getMsg()), exchange);
     }
 
 

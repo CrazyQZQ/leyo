@@ -39,7 +39,7 @@ public class SysUserController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("getByid")
+    @GetMapping("getById")
     @Log(title = "system", funcDesc = "查询单个用户")
     public AjaxResult selectOne(@RequestParam("id") Long id) {
         return AjaxResult.success(sysUserService.queryById(id));

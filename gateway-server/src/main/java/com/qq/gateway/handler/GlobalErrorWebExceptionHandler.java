@@ -2,7 +2,8 @@ package com.qq.gateway.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qq.common.core.enums.AuthResultCode;
+import com.qq.common.core.enums.ExceptionCode;
+import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.domain.AjaxResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,8 +52,9 @@ public class GlobalErrorWebExceptionHandler implements ErrorWebExceptionHandler 
             DataBufferFactory bufferFactory = response.bufferFactory();
             try {
                 log.debug("gateway异常信息：", ex);
+                ServiceException serviceException = doTranslate(ex);
                 //返回响应结果
-                return bufferFactory.wrap(objectMapper.writeValueAsBytes(AjaxResult.error(doTranslate(ex).getCode(), ex.getMessage())));
+                return bufferFactory.wrap(objectMapper.writeValueAsBytes(AjaxResult.error(serviceException.getCode(), serviceException.getMessage())));
             } catch (JsonProcessingException e) {
                 log.error("Error writing response", ex);
                 return bufferFactory.wrap(new byte[0]);
@@ -60,17 +62,19 @@ public class GlobalErrorWebExceptionHandler implements ErrorWebExceptionHandler 
         }));
     }
 
-    private AuthResultCode doTranslate(Throwable e) {
-        AuthResultCode resultCode = AuthResultCode.UNAUTHORIZED;
+    private ServiceException doTranslate(Throwable e) {
+        ServiceException serviceException;
         if (e instanceof UnsupportedGrantTypeException) {
-            resultCode = AuthResultCode.UNSUPPORTED_GRANT_TYPE;
+            serviceException = new ServiceException(ExceptionCode.UNSUPPORTED_GRANT_TYPE.getMsg(), ExceptionCode.UNSUPPORTED_GRANT_TYPE.getCode());
         } else if (e instanceof InvalidGrantException) {
-            resultCode = AuthResultCode.USERNAME_OR_PASSWORD_ERROR;
+            serviceException = new ServiceException(ExceptionCode.USERNAME_OR_PASSWORD_ERROR.getMsg(), ExceptionCode.USERNAME_OR_PASSWORD_ERROR.getCode());
         } else if (e instanceof InvalidClientException) {
-            resultCode = AuthResultCode.UNSUPPORTED_GRANT_TYPE;
+            serviceException = new ServiceException(ExceptionCode.UNSUPPORTED_GRANT_TYPE.getMsg(), ExceptionCode.UNSUPPORTED_GRANT_TYPE.getCode());
         } else if (e instanceof InvalidTokenException) {
-            resultCode = AuthResultCode.INVALID_TOKEN;
+            serviceException = new ServiceException(ExceptionCode.INVALID_TOKEN.getMsg(), ExceptionCode.INVALID_TOKEN.getCode());
+        } else {
+            serviceException = new ServiceException(e.getMessage(), ExceptionCode.BUSINESS_ERROR.getCode());
         }
-        return resultCode;
+        return serviceException;
     }
 }

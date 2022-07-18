@@ -1,11 +1,14 @@
 package com.qq.gateway.config;
 
 import com.qq.common.core.constant.TokenConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * @Description: token存储策略
@@ -14,6 +17,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
  **/
 @Configuration
 public class AccessTokenConfig {
+
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
 
     /**
      * 令牌的存储策略，这里使用的是JwtTokenStore，使用JWT的令牌生成方式，其实还有以下两个比较常用的方式：
@@ -29,6 +35,8 @@ public class AccessTokenConfig {
 //        return new InMemoryTokenStore();
         // 使用jwt
         return new JwtTokenStore(jwtAccessTokenConverter());
+        // 保存在Redis中
+        // return new RedisTokenStore(redisConnectionFactory);
     }
 
     /**

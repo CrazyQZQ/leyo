@@ -5,7 +5,9 @@ package com.qq.common.core.enums;
  * @Author QinQiang
  * @Date 2022/4/14
  **/
-public enum AuthResultCode {
+public enum ExceptionCode {
+
+    BUSINESS_ERROR(1000, "业务异常"),
 
     CLIENT_AUTHENTICATION_FAILED(1001, "客户端认证失败"),
 
@@ -13,11 +15,11 @@ public enum AuthResultCode {
 
     UNSUPPORTED_GRANT_TYPE(1003, "不支持的认证模式"),
 
+    INVALID_TOKEN(1004, "无效的token"),
+
     NO_PERMISSION(1005, "无权限访问！"),
 
-    UNAUTHORIZED(401, "系统错误"),
-
-    INVALID_TOKEN(1004, "无效的token"),
+    UNAUTHORIZED(1006, "用户未授权"),
 
     ;
 
@@ -26,7 +28,7 @@ public enum AuthResultCode {
 
     private final String msg;
 
-    AuthResultCode(int code, String msg) {
+    ExceptionCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
