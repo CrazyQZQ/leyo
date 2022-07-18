@@ -48,12 +48,12 @@ public class SysProductTypeController extends BaseController {
      */
     @GetMapping("list")
     @Log(title = "product_type", funcDesc = "查询产品品类列表")
-    public TableDataInfo getProductTypeList(BaseQuery query) {
+    public AjaxResult getProductTypeList(BaseQuery query) {
         startPage();
         List<SysProductType> types = sysProductTypeService.list(query);
-        TableDataInfo dataTable = getDataTable(types);
+        TableDataInfo dataTable = getDataTable(types, null);
         clearPage();
-        return dataTable;
+        return AjaxResult.success(dataTable);
     }
 
     /**

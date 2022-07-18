@@ -36,11 +36,11 @@ public class OrderController extends BaseController {
      */
     @GetMapping("list")
     @Log(title = "order", funcDesc = "查询订单列表")
-    public TableDataInfo list(OrderQuery query) {
+    public AjaxResult list(OrderQuery query) {
         startPage();
-        TableDataInfo dataTable = getDataTable(orderService.list(query));
+        TableDataInfo dataTable = getDataTable(orderService.list(query), null);
         clearPage();
-        return dataTable;
+        return AjaxResult.success(dataTable);
     }
 
     /**

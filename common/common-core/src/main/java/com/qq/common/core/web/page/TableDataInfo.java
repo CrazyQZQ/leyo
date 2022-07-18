@@ -1,5 +1,7 @@
 package com.qq.common.core.web.page;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,7 +10,8 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public class TableDataInfo implements Serializable {
+@Data
+public class TableDataInfo<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -19,17 +22,12 @@ public class TableDataInfo implements Serializable {
     /**
      * 列表数据
      */
-    private List<?> rows;
+    private List<T> rows;
 
     /**
-     * 消息状态码
+     * 合计行数据
      */
-    private int code;
-
-    /**
-     * 消息内容
-     */
-    private String msg;
+    private T foot;
 
     /**
      * 表格数据对象
@@ -43,40 +41,9 @@ public class TableDataInfo implements Serializable {
      * @param list  列表数据
      * @param total 总记录数
      */
-    public TableDataInfo(List<?> list, int total) {
+    public TableDataInfo(List<T> list, long total, T foot) {
         this.rows = list;
         this.total = total;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public void setTotal(long total) {
-        this.total = total;
-    }
-
-    public List<?> getRows() {
-        return rows;
-    }
-
-    public void setRows(List<?> rows) {
-        this.rows = rows;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
+        this.foot = foot;
     }
 }

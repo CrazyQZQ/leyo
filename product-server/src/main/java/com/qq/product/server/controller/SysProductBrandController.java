@@ -47,12 +47,12 @@ public class SysProductBrandController extends BaseController {
      */
     @GetMapping("list")
     @Log(title = "product_brand", funcDesc = "查询品牌列表")
-    public TableDataInfo getProductBrandList(BaseQuery query) {
+    public AjaxResult getProductBrandList(BaseQuery query) {
         startPage();
         List<SysBrand> brands = sysBrandService.list(query);
-        TableDataInfo dataTable = getDataTable(brands);
+        TableDataInfo dataTable = getDataTable(brands, null);
         clearPage();
-        return dataTable;
+        return AjaxResult.success(dataTable);
     }
 
     /**

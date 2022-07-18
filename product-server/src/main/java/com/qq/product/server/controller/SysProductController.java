@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("product")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class SysProductController extends BaseController {
+public class SysProductController extends BaseController<SysProduct> {
     private final SysProductService sysProductService;
     private final EsService esService;
 
@@ -37,12 +37,12 @@ public class SysProductController extends BaseController {
      */
     @GetMapping("list")
     @Log(title = "product", funcDesc = "查询产品列表")
-    public TableDataInfo getProductList(BaseQuery query) {
+    public AjaxResult getProductList(BaseQuery query) {
         startPage();
         List<SysProduct> productList = sysProductService.getProductList(query);
-        TableDataInfo dataTable = getDataTable(productList);
+        TableDataInfo dataTable = getDataTable(productList, null);
         clearPage();
-        return dataTable;
+        return AjaxResult.success(dataTable);
     }
 
     /**

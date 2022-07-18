@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public class BaseController {
+public class BaseController<T> {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -55,13 +55,8 @@ public class BaseController {
      * 响应请求分页数据
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    protected TableDataInfo getDataTable(List<?> list) {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setRows(list);
-        rspData.setMsg("查询成功");
-        rspData.setTotal(new PageInfo(list).getTotal());
-        return rspData;
+    protected TableDataInfo getDataTable(List<T> list, T foot) {
+        return new TableDataInfo(list, new PageInfo(list).getTotal(), foot);
     }
 
     /**
