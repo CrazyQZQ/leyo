@@ -5,6 +5,9 @@ import com.qq.account.service.SysAccountService;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysAccount;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -17,13 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Description:
+ * @Description: 账户管理
  * @Author QinQiang
  * @Date 2022/4/28
  **/
 
 @RequestMapping("account")
 @RestController
+@Api(tags = "账户管理")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AccountController {
 
@@ -31,12 +35,14 @@ public class AccountController {
 
     /**
      * 获取账户信息
+     *
      * @param id
      * @return
      */
+    @ApiOperation("获取账户信息")
     @GetMapping("/getAccountById")
     @Log(title = "account", funcDesc = "获取账户信息")
-    public AjaxResult getAccountById(Long id) {
+    public AjaxResult getAccountById(@ApiParam("账户id") Long id) {
         if (id == null) {
             return AjaxResult.error("账户id不能为空");
         }
@@ -45,10 +51,12 @@ public class AccountController {
 
     /**
      * 添加账户
+     *
      * @param account
      * @param bindingResult
      * @return
      */
+    @ApiOperation("添加账户")
     @PostMapping("/addAccount")
     @Log(title = "account", funcDesc = "添加账户")
     public AjaxResult add(@Valid @RequestBody SysAccount account, BindingResult bindingResult) {
@@ -66,10 +74,12 @@ public class AccountController {
 
     /**
      * 更新账户
+     *
      * @param account
      * @param bindingResult
      * @return
      */
+    @ApiOperation("更新账户")
     @PutMapping("/updateAccount")
     @Log(title = "account", funcDesc = "更新账户")
     public AjaxResult update(@Valid @RequestBody SysAccount account, BindingResult bindingResult) {
@@ -87,24 +97,28 @@ public class AccountController {
 
     /**
      * 删除账户
+     *
      * @param id
      * @return
      */
+    @ApiOperation("删除账户")
     @DeleteMapping("/deleteAccount")
     @Log(title = "account", funcDesc = "删除账户")
-    public AjaxResult delete(Long id) {
+    public AjaxResult delete(@ApiParam("账户id") Long id) {
         return AjaxResult.success(accountService.removeById(id));
     }
 
     /**
      * 账户金额操作
+     *
      * @param id
      * @param amount
      * @return
      */
+    @ApiOperation("账户金额操作")
     @PostMapping("/operateAccountAmount")
     @Log(title = "account", funcDesc = "账户金额操作")
-    public AjaxResult operateAccountAmount(@RequestParam Long id, @RequestParam BigDecimal amount) {
+    public AjaxResult operateAccountAmount(@ApiParam("账户id") @RequestParam Long id, @ApiParam("操作金额") @RequestParam BigDecimal amount) {
         accountService.operateAccountAmount(id, amount);
         return AjaxResult.success();
     }

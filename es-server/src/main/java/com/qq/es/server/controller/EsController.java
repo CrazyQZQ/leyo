@@ -12,6 +12,8 @@ import com.qq.common.es.vo.SearchCommonVO;
 import com.qq.common.es.vo.SearchResultVO;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysSku;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("search")
 @Slf4j
+@Api("ES搜索服务")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class EsController {
     private final EsService esService;
@@ -41,6 +44,12 @@ public class EsController {
         SEARCH_INDEX_CLASS_MAP.put("sku", SysSku.class);
     }
 
+    /**
+     * 搜索列表
+     * @param vo
+     * @return
+     */
+    @ApiOperation("搜索列表")
     @PostMapping("list")
     @Log(title = "es_search", funcDesc = "搜索列表")
     public AjaxResult list(@RequestBody SearchCommonVO vo) {

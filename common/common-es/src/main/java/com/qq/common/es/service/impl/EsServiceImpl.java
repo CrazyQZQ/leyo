@@ -151,10 +151,10 @@ public class EsServiceImpl implements EsService {
         if (CollUtil.isEmpty(queryVos)) {
             throw new ServiceException("查询条件不能为空!");
         }
-        if(StrUtil.isEmpty(searchCommonVO.getSortIndex())){
+        if (StrUtil.isEmpty(searchCommonVO.getSortIndex())) {
             searchCommonVO.setSortIndex("id");
         }
-        if(StrUtil.isEmpty(searchCommonVO.getSortOrder())){
+        if (StrUtil.isEmpty(searchCommonVO.getSortOrder())) {
             searchCommonVO.setSortOrder("Asc");
         }
         // 处理查询条件

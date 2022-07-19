@@ -6,6 +6,7 @@ server:
 spring:
     application:
         name: account-server
+        description: 账户模块
     cloud:
         nacos:
             config:

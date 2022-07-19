@@ -10,6 +10,8 @@ import com.qq.common.redis.service.RedisService;
 import com.qq.common.system.pojo.SysMenu;
 import com.qq.system.domain.MenuVo;
 import com.qq.system.service.SysMenuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Description:
+ * @Description: 菜单管理
  * @Author QinQiang
  * @Date 2022/4/29
  **/
 @RestController
 @RequestMapping("system/sysMenu")
 @Slf4j
+@Api(tags = "菜单管理")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysMenuController {
 
@@ -33,6 +36,7 @@ public class SysMenuController {
     private final RedisService redisService;
 
     @Log(title = "system", funcDesc = "获取菜单列表")
+    @ApiOperation("获取菜单列表")
     @GetMapping("list")
     public AjaxResult selectAll() {
         PageUtils.startPage();
@@ -40,6 +44,7 @@ public class SysMenuController {
     }
 
     @Log(title = "system", funcDesc = "新增菜单")
+    @ApiOperation("新增菜单")
     @PostMapping("add")
     public AjaxResult addMenu(@RequestBody SysMenu sysMenu) {
         sysMenuService.addMenu(sysMenu);
@@ -48,6 +53,7 @@ public class SysMenuController {
     }
 
     @Log(title = "system", funcDesc = "分配菜单角色")
+    @ApiOperation("分配菜单角色")
     @PostMapping("auth")
     public AjaxResult authMenu(@RequestBody MenuVo menuVo) {
         sysMenuService.authMenu(menuVo.getSysMenu().getMenuId(), menuVo.getSysRoleMenus());

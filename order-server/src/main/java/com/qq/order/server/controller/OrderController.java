@@ -10,6 +10,8 @@ import com.qq.common.redis.service.RedisService;
 import com.qq.order.server.pojo.OrderQuery;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.OrderVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("order")
 @Slf4j
+@Api(tags = "订单信息")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderController extends BaseController {
     private final SysOrderService orderService;
@@ -31,9 +34,11 @@ public class OrderController extends BaseController {
 
     /**
      * 查询订单列表
+     *
      * @param query
      * @return
      */
+    @ApiOperation("查询订单列表")
     @GetMapping("list")
     @Log(title = "order", funcDesc = "查询订单列表")
     public AjaxResult list(OrderQuery query) {
@@ -45,9 +50,11 @@ public class OrderController extends BaseController {
 
     /**
      * 保存订单
+     *
      * @param orderVO
      * @return
      */
+    @ApiOperation("保存订单")
     @PostMapping("/saveOrder")
     @Log(title = "order", funcDesc = "保存订单")
     @RepeatCommit
@@ -58,9 +65,11 @@ public class OrderController extends BaseController {
 
     /**
      * 订单详情
+     *
      * @param orderId
      * @return
      */
+    @ApiOperation("订单详情")
     @GetMapping("/detail")
     @Log(title = "order", funcDesc = "订单详情")
     public AjaxResult orderDetailInfo(Long orderId) {
@@ -69,8 +78,10 @@ public class OrderController extends BaseController {
 
     /**
      * 查询热卖商品
+     *
      * @return
      */
+    @ApiOperation("查询热卖商品")
     @GetMapping("/hotSales")
     @Log(title = "order", funcDesc = "查询热卖商品")
     public AjaxResult hotSales() {
@@ -79,9 +90,11 @@ public class OrderController extends BaseController {
 
     /**
      * 查询订单各种状态数量
+     *
      * @param userId
      * @return
      */
+    @ApiOperation("查询订单各种状态数量")
     @GetMapping("/getStatusCount")
     @Log(title = "order", funcDesc = "查询订单各种状态数量")
     public AjaxResult getStatusCount(@RequestParam("userId") Long userId) {

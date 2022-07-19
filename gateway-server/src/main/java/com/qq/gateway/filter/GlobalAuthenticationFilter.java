@@ -11,6 +11,7 @@ import com.qq.common.core.utils.sign.Base64;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.redis.service.RedisService;
 import com.qq.gateway.config.SysParameterConfig;
+import com.qq.gateway.handler.SwaggerProvider;
 import com.qq.gateway.pojo.RequestLogInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
@@ -68,12 +69,23 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
     @Autowired
     private SysParameterConfig sysConfig;
 
+    private static final String HEADER_NAME = "X-Forwarded-Prefix";
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("GlobalAuthenticationFilter filter start: {}", exchange.getRequest().getURI());
-        String requestUrl = exchange.getRequest().getPath().value();
+        ServerHttpRequest request = exchange.getRequest();
+        log.info("GlobalAuthenticationFilter filter start: {}", request.getURI());
+        String requestUrl = request.getPath().value();
         //1、白名单放行，比如授权服务、静态资源.....
         if (StringUtils.matches(requestUrl, sysConfig.getIgnoreUrls())) {
+            // if (StringUtils.endsWithIgnoreCase(requestUrl, SwaggerProvider.API_URI)) {
+            //     String basePath = requestUrl.substring(0, requestUrl.lastIndexOf(SwaggerProvider.API_URI));
+            //     ServerHttpRequest newRequest = request.mutate().header(HEADER_NAME, basePath).build();
+            //     ServerWebExchange newExchange = exchange.mutate().request(newRequest).build();
+            //     return chain.filter(newExchange);
+            // }else {
+            //     return chain.filter(exchange);
+            // }
             return chain.filter(exchange);
         }
 
@@ -112,7 +124,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             //将解析后的token加密放入请求头中，方便下游微服务解析获取用户信息
             String base64 = Base64.encode(jsonObject.toJSONString().getBytes());
             //放入请求头中
-            ServerHttpRequest tokenRequest = exchange.getRequest().mutate().header(TokenConstants.TOKEN_NAME, base64).build();
+            ServerHttpRequest tokenRequest = request.mutate().header(TokenConstants.TOKEN_NAME, base64).build();
 
             // 请求body只能被消费一次，此处打印之后，下游服务无法获取requestBody
 //            ServerHttpResponseDecorator serverHttpResponseDecorator = printLog(exchange);

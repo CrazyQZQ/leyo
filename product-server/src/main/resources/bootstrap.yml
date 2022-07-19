@@ -6,6 +6,7 @@ server:
 spring:
     application:
         name: product-server
+        description: 商品模块
     cloud:
         nacos:
             config:

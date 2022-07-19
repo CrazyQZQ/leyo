@@ -5,6 +5,9 @@ import com.qq.common.core.constant.CacheConstants;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
 import com.qq.system.service.HomeSettingService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @Author QinQiang
  * @Date 2022/5/24
  **/
+@Api(tags = "首页配置管理")
 @RestController
 @RequestMapping("system/home")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -26,6 +30,7 @@ public class HomeSettingController {
      *
      * @return
      */
+    @ApiOperation("获取banners")
     @GetMapping("/banners")
     @Log(title = "system_home", funcDesc = "获取banners")
     public AjaxResult getBanners() {
@@ -38,9 +43,10 @@ public class HomeSettingController {
      * @param files
      * @return
      */
+    @ApiOperation("添加banner")
     @PutMapping("/banners")
     @Log(title = "system_home", funcDesc = "添加banner")
-    public AjaxResult addBanner(MultipartFile[] files) {
+    public AjaxResult addBanner(@ApiParam("banner图片") MultipartFile[] files) {
         homeSettingService.addBanner(files);
         return AjaxResult.success();
     }
@@ -51,9 +57,10 @@ public class HomeSettingController {
      * @param id
      * @return
      */
+    @ApiOperation("删除banner")
     @DeleteMapping("/banners")
     @Log(title = "system_home", funcDesc = "删除banner")
-    public AjaxResult deleteBanner(Long id) {
+    public AjaxResult deleteBanner(@ApiParam("bannerId") Long id) {
         homeSettingService.deleteBanner(id);
         return AjaxResult.success();
     }
@@ -64,9 +71,10 @@ public class HomeSettingController {
      * @param content
      * @return
      */
+    @ApiOperation("发布公告")
     @PutMapping("/announcement")
     @Log(title = "system_home", funcDesc = "发布公告")
-    public AjaxResult createAnnouncement(String content) {
+    public AjaxResult createAnnouncement(@ApiParam("公告内容") String content) {
         homeSettingService.createAnnouncement(content);
         return AjaxResult.success();
     }
@@ -76,6 +84,7 @@ public class HomeSettingController {
      *
      * @return
      */
+    @ApiOperation("获取公告")
     @GetMapping("/announcement")
     @Log(title = "system_home", funcDesc = "获取公告")
     public AjaxResult getAnnouncement() {
@@ -87,6 +96,7 @@ public class HomeSettingController {
      *
      * @return
      */
+    @ApiOperation("获取重复提交token")
     @GetMapping("/repeatCommitToken")
     @Log(title = "system_home", funcDesc = "获取重复提交token")
     public AjaxResult getRepeatCommitToken() {

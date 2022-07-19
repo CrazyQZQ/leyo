@@ -1,6 +1,5 @@
 package com.qq.system.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qq.common.core.constant.AuthConstants;
 import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.log.annotation.Log;
@@ -12,6 +11,8 @@ import com.qq.system.domain.LoginVO;
 import com.qq.system.service.AuthService;
 import com.qq.system.service.SysUserRoleService;
 import com.qq.system.service.SysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
  **/
 @Controller
 @RequestMapping("system")
+@Api(tags = "用户登录")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysLogController {
 
@@ -45,13 +47,15 @@ public class SysLogController {
     private final SysUserService sysUserService;
     private final SysUserRoleService sysUserRoleService;
 
+    @ApiOperation("跳转授权码登录页面")
     @RequestMapping("login")
     @Log(title = "system", funcDesc = "跳转授权码登录页面")
     public String login() {
         return "login";
     }
 
-    @Log(title = "system", funcDesc = "登录")
+    @ApiOperation("登出")
+    @Log(title = "system", funcDesc = "登出")
     @GetMapping("logout")
     @ResponseBody
     public AjaxResult logout() {
@@ -61,6 +65,7 @@ public class SysLogController {
         return AjaxResult.success("退出成功");
     }
 
+    @ApiOperation("登录")
     @Log(title = "system", funcDesc = "登录")
     @PostMapping("client_login")
     @ResponseBody
@@ -83,6 +88,7 @@ public class SysLogController {
         return AjaxResult.success(result);
     }
 
+    @ApiOperation("注册")
     @Log(title = "system", funcDesc = "注册")
     @PostMapping("register")
     @ResponseBody

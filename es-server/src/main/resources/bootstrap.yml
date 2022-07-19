@@ -3,6 +3,7 @@ server:
 spring:
     application:
         name: es-server
+        description: 搜索模块
     cloud:
         nacos:
             config:

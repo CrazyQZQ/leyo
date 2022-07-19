@@ -15,10 +15,14 @@ spring:
                     uri: lb://system-server
                     predicates:
                         - Path=/system/**
+                    filters:
+                        - RewritePath=/system/v3/api-docs, /v3/api-docs
                 -   id: account_server
                     uri: lb://account-server
                     predicates:
                         - Path=/account/**
+                    filters:
+                        - RewritePath=/account/v3/api-docs, /v3/api-docs
                 -   id: oauth2_server
                     uri: lb://oauth2-server
                     predicates:
@@ -27,14 +31,20 @@ spring:
                     uri: lb://product-server
                     predicates:
                         - Path=/product/**
+                    filters:
+                        - RewritePath=/product/v3/api-docs, /v3/api-docs
                 -   id: es_server
                     uri: lb://es-server
                     predicates:
                         - Path=/search/**
+                    filters:
+                        - RewritePath=/search/v3/api-docs, /v3/api-docs
                 -   id: order_server
                     uri: lb://order-server
                     predicates:
                         - Path=/order/**
+                    filters:
+                        - RewritePath=/order/v3/api-docs, /v3/api-docs
         nacos:
             config:
                 contextPath: /nacos
@@ -67,6 +77,13 @@ oauth2:
                     - /system/*.js
                     - /system/*.css
                     - /system/favicon.ico
+                    - /system/v3/api-docs
+                    - /account/v3/api-docs
+                    - /order/v3/api-docs
+                    - /product/v3/api-docs
+                    - /search/v3/api-docs
+                    - /swagger-ui/**
+                    - /swagger-resources/**
 management:
     endpoints:
         web:

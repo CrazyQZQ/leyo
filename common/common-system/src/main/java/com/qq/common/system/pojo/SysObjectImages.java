@@ -9,7 +9,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 产品图片表
+ * 商品图片表
  *
  * @TableName sys_object_images
  */
@@ -23,7 +23,7 @@ public class SysObjectImages implements Serializable {
     private Long id;
 
     /**
-     * 产品id
+     * 商品id
      */
     @TableField(value = "object_id")
     private Long objectId;
@@ -35,7 +35,7 @@ public class SysObjectImages implements Serializable {
     private String imageUrl;
 
     /**
-     * 对象类型，1：品类，2：品牌，3：产品
+     * 对象类型，1：品类，2：品牌，3：商品
      */
     @TableField(value = "object_type")
     private Integer ObjectType;

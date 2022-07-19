@@ -6,6 +6,9 @@ import com.qq.common.system.pojo.SysUser;
 import com.qq.common.system.pojo.SysUserAddress;
 import com.qq.system.service.SysRoleService;
 import com.qq.system.service.SysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("system/sysUser")
 @Slf4j
+@Api(tags = "用户管理")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysUserController {
     /**
@@ -39,9 +43,10 @@ public class SysUserController {
      * @param id 主键
      * @return 单条数据
      */
+    @ApiOperation("通过id查询用户")
     @GetMapping("getById")
     @Log(title = "system", funcDesc = "查询单个用户")
-    public AjaxResult selectOne(@RequestParam("id") Long id) {
+    public AjaxResult selectOne(@ApiParam("用户id") @RequestParam("id") Long id) {
         return AjaxResult.success(sysUserService.queryById(id));
     }
 
@@ -53,8 +58,9 @@ public class SysUserController {
      * @return 查询结果
      */
     @Log(title = "system", funcDesc = "获取用户列表")
+    @ApiOperation("通过id查询用户")
     @GetMapping("list")
-    public AjaxResult selectAll(int pageNum, int pageSize) {
+    public AjaxResult selectAll(@ApiParam("页码") int pageNum, @ApiParam("条数") int pageSize) {
         return AjaxResult.success(sysUserService.queryAllByLimit(pageNum, pageSize));
     }
 
@@ -65,6 +71,7 @@ public class SysUserController {
      * @return
      */
     @Log(title = "system", funcDesc = "修改用户信息")
+    @ApiOperation("修改用户信息")
     @PostMapping("update")
     public AjaxResult update(@RequestBody SysUser user) {
         return AjaxResult.success(sysUserService.update(user));
@@ -77,6 +84,7 @@ public class SysUserController {
      * @return
      */
     @Log(title = "system", funcDesc = "新增用户")
+    @ApiOperation("新增用户")
     @PutMapping("add")
     public AjaxResult add(@RequestBody SysUser user) {
         return AjaxResult.success(sysUserService.insert(user));
@@ -89,8 +97,9 @@ public class SysUserController {
      * @return
      */
     @Log(title = "system", funcDesc = "获取用户角色")
+    @ApiOperation("获取用户角色")
     @GetMapping("getRolesByUser")
-    public AjaxResult getRolesByUser(@RequestParam("userId") Long userId) {
+    public AjaxResult getRolesByUser(@ApiParam("用户id") @RequestParam("userId") Long userId) {
         return AjaxResult.success(sysRoleService.getByUser(userId));
     }
 
@@ -102,8 +111,9 @@ public class SysUserController {
      * @return
      */
     @Log(title = "system", funcDesc = "修改用户头像")
+    @ApiOperation("修改用户头像")
     @PostMapping("modifyAvatar")
-    public AjaxResult modifyAvatar(@RequestParam("userId") Long userId, @RequestParam("file") MultipartFile file) {
+    public AjaxResult modifyAvatar(@ApiParam("用户id") @RequestParam("userId") Long userId, @ApiParam("头像") @RequestParam("file") MultipartFile file) {
         sysUserService.modifyAvatar(userId, file);
         return AjaxResult.success();
     }
@@ -114,6 +124,7 @@ public class SysUserController {
      * @param address
      */
     @Log(title = "system", funcDesc = "新增用户地址")
+    @ApiOperation("新增用户地址")
     @PutMapping("addUserAddress")
     public AjaxResult addUserAddress(@RequestBody SysUserAddress address) {
         sysUserService.addUserAddress(address);
@@ -126,6 +137,7 @@ public class SysUserController {
      * @param address
      */
     @Log(title = "system", funcDesc = "修改用户地址")
+    @ApiOperation("修改用户地址")
     @PostMapping("modifyUserAddress")
     public AjaxResult modifyUserAddress(@RequestBody SysUserAddress address) {
         sysUserService.modifyUserAddress(address);
@@ -138,8 +150,9 @@ public class SysUserController {
      * @param userId
      */
     @Log(title = "system", funcDesc = "查询用户地址")
+    @ApiOperation("查询用户地址")
     @GetMapping("queryUserAddress")
-    public AjaxResult queryUserAddress(@RequestParam("userId") Long userId) {
+    public AjaxResult queryUserAddress(@ApiParam("用户id") @RequestParam("userId") Long userId) {
         return AjaxResult.success(sysUserService.queryUserAddress(userId));
     }
 
@@ -149,8 +162,9 @@ public class SysUserController {
      * @param userId
      */
     @Log(title = "system", funcDesc = "查询用户默认地址")
+    @ApiOperation("查询用户默认地址")
     @GetMapping("userDefaultAddress")
-    public AjaxResult userDefaultAddress(@RequestParam("userId") Long userId) {
+    public AjaxResult userDefaultAddress(@ApiParam("用户id") @RequestParam("userId") Long userId) {
         return AjaxResult.success(sysUserService.queryUserDefaultAddress(userId));
     }
 
@@ -160,8 +174,9 @@ public class SysUserController {
      * @param id
      */
     @Log(title = "system", funcDesc = "根据id查询地址")
+    @ApiOperation("根据id查询地址")
     @GetMapping("queryAddressById")
-    public AjaxResult queryAddressById(@RequestParam("id") Long id) {
+    public AjaxResult queryAddressById(@ApiParam("地址id") @RequestParam("id") Long id) {
         return AjaxResult.success(sysUserService.queryAddressById(id));
     }
 
@@ -171,8 +186,9 @@ public class SysUserController {
      * @param id
      */
     @Log(title = "system", funcDesc = "删除用户地址")
+    @ApiOperation("删除用户地址")
     @DeleteMapping("deleteUserAddress")
-    public AjaxResult deleteUserAddress(Long id) {
+    public AjaxResult deleteUserAddress(@ApiParam("地址id") Long id) {
         sysUserService.deleteUserAddress(id);
         return AjaxResult.success();
     }

@@ -6,6 +6,7 @@ server:
 spring:
     application:
         name: system-server
+        description: 系统模块
     cloud:
         nacos:
             config:

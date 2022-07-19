@@ -1,4 +1,3 @@
-#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-#  com.qq.common.core.handler.GlobalExceptionHandler
-
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.qq.common.core.config.Swagger3Config
   
