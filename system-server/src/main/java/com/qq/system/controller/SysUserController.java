@@ -47,7 +47,8 @@ public class SysUserController {
     @GetMapping("getById")
     @Log(title = "system", funcDesc = "查询单个用户")
     public AjaxResult selectOne(@ApiParam("用户id") @RequestParam("id") Long id) {
-        return AjaxResult.success(sysUserService.queryById(id));
+        AjaxResult success = AjaxResult.success(sysUserService.queryById(id));
+        return success;
     }
 
     /**

@@ -11,6 +11,7 @@ import com.qq.order.server.service.SkuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -46,11 +47,11 @@ public class OrderJobs {
         for (Long skuId : hostSalesSkuIds) {
             ResponseEntity<AjaxResult> entity = restTemplate.getForEntity("http://product-server/product/sku/getById?id=" + skuId, AjaxResult.class);
             AjaxResult ajaxResult = entity.getBody();
-            if (ajaxResult.isSuccess()) {
+            if (ajaxResult.getCode() == HttpStatus.OK.value()) {
                 SysSku sku = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysSku.class, true, null);
                 hostSales.add(sku);
             } else {
-                log.error("更新热销商品(skuId:{})定时任务异常：{}", skuId, ajaxResult.getMessage());
+                log.error("更新热销商品(skuId:{})定时任务异常：{}", skuId, ajaxResult.getMsg());
             }
         }
         redisService.deleteObject(CacheConstants.HOT_SALE_KEY);

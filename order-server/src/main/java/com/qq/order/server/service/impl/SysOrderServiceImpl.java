@@ -23,6 +23,7 @@ import com.qq.order.server.vo.StatusCountVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -89,16 +90,16 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             sysOrderDetailMapper.insert(orderDetail);
             //扣减库存
             AjaxResult ajaxResult = skuService.reduceStock(orderDetail.getSkuId(), orderDetail.getCount());
-            if (!ajaxResult.isSuccess()) {
-                throw new ServiceException(ajaxResult.getMessage());
+            if (ajaxResult.getCode() != HttpStatus.OK.value()) {
+                throw new ServiceException(ajaxResult.getMsg());
             }
             skuIds.add(orderDetail.getSkuId());
         }
         if (accountId != null) {
             // 扣减账户余额
             AjaxResult ajaxResult = accountService.operateAccountAmount(accountId, order.getTotalAmount().negate());
-            if (!ajaxResult.isSuccess()) {
-                throw new ServiceException(ajaxResult.getMessage());
+            if (ajaxResult.getCode() != HttpStatus.OK.value()) {
+                throw new ServiceException(ajaxResult.getMsg());
             }
         }
         // 更新热卖信息
@@ -120,11 +121,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         List<SysOrderDetail> details = sysOrderDetailMapper.selectList(new QueryWrapper<SysOrderDetail>().eq("master_id", orderId));
         for (SysOrderDetail detail : details) {
             AjaxResult ajaxResult = skuService.getSkuById(detail.getSkuId());
-            if (ajaxResult.isSuccess()) {
+            if (ajaxResult.getCode() == HttpStatus.OK.value()) {
                 SysSku sku = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysSku.class, true, null);
                 detail.setSku(sku);
             } else {
-                throw new ServiceException(ajaxResult.getMessage());
+                throw new ServiceException(ajaxResult.getMsg());
             }
         }
         OrderVO orderVO = new OrderVO();
@@ -145,11 +146,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             List<SysOrderDetail> details = order.getOrderDetailList();
             for (SysOrderDetail detail : details) {
                 AjaxResult ajaxResult = skuService.getSkuById(detail.getSkuId());
-                if (ajaxResult.isSuccess()) {
+                if (ajaxResult.getCode() == HttpStatus.OK.value()) {
                     SysSku sku = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysSku.class, true, null);
                     detail.setSku(sku);
                 } else {
-                    throw new ServiceException(ajaxResult.getMessage());
+                    throw new ServiceException(ajaxResult.getMsg());
                 }
             }
         }

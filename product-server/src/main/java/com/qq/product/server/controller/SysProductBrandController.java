@@ -84,7 +84,7 @@ public class SysProductBrandController extends BaseController {
     @ApiOperation("新增品牌")
     @PutMapping("add")
     @Log(title = "product_brand", funcDesc = "新增品牌")
-    public AjaxResult add(SysBrand brand) {
+    public AjaxResult add(@RequestBody SysBrand brand) {
         try {
             sysBrandService.addBrand(brand);
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class SysProductBrandController extends BaseController {
     @ApiOperation("修改品牌")
     @PostMapping("update")
     @Log(title = "product_brand", funcDesc = "修改品牌")
-    public AjaxResult update(SysBrand brand) {
+    public AjaxResult update(@RequestBody SysBrand brand) {
         try {
             sysBrandService.updateBrand(brand);
         } catch (Exception e) {

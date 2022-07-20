@@ -81,7 +81,7 @@ public class SysProductTypeController extends BaseController {
     @ApiOperation("新增商品品类")
     @PutMapping("add")
     @Log(title = "product_type", funcDesc = "新增商品品类")
-    public AjaxResult add(SysProductType productType) {
+    public AjaxResult add(@RequestBody SysProductType productType) {
         try {
             sysProductTypeService.addProductType(productType);
         } catch (Exception e) {

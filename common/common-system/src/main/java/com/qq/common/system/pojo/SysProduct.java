@@ -101,16 +101,8 @@ public class SysProduct implements Serializable {
      * 商品图片
      */
     @TableField(exist = false)
-    @ApiModelProperty(value = "商品图片", hidden = true)
+    @ApiModelProperty("商品图片")
     private List<String> imageUrls;
-
-    /**
-     * 新增时上传的图片
-     */
-    @TableField(exist = false)
-    @JsonIgnore
-    @ApiModelProperty("新增时上传的图片")
-    private MultipartFile[] images;
 
     /**
      * 品牌id

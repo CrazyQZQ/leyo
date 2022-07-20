@@ -12,6 +12,7 @@ import com.qq.order.server.mapper.ShoppingCartItemMapper;
 import com.qq.order.server.service.SkuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,11 +40,11 @@ public class ShoppingCartItemServiceImpl extends ServiceImpl<ShoppingCartItemMap
         List<ShoppingCartItem> cartItems = this.baseMapper.selectList(new QueryWrapper<ShoppingCartItem>().eq("user_id", userId));
         for (ShoppingCartItem cartItem : cartItems) {
             AjaxResult ajaxResult = skuService.getSkuById(cartItem.getSkuId());
-            if (ajaxResult.isSuccess()) {
+            if (ajaxResult.getCode() == HttpStatus.OK.value()) {
                 SysSku sku = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysSku.class, true, null);
                 cartItem.setSku(sku);
             } else {
-                throw new ServiceException(ajaxResult.getMessage());
+                throw new ServiceException(ajaxResult.getMsg());
             }
         }
         return cartItems;

@@ -85,15 +85,8 @@ public class SysProductType implements Serializable {
      * 图片
      */
     @TableField(exist = false)
-    @ApiModelProperty(value = "图片url", hidden = true)
+    @ApiModelProperty("图片url")
     private List<String> imageUrls;
-
-    /**
-     * 上传图片
-     */
-    @TableField(exist = false)
-    @ApiModelProperty("上传图片")
-    private MultipartFile image;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

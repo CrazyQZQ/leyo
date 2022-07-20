@@ -1,35 +1,34 @@
 package com.qq.common.core.web.domain;
 
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
 import com.qq.common.core.constant.HttpStatus;
-import com.qq.common.core.utils.StringUtils;
-
-import java.util.Collections;
-import java.util.HashMap;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
 
 /**
  * 操作消息提醒
  *
  * @author ruoyi
  */
-public class AjaxResult extends HashMap<String, Object> {
-    private static final long serialVersionUID = 1L;
+@ApiModel("通用返回参数")
+@Getter
+public class AjaxResult {
 
     /**
      * 状态码
      */
-    public static final String CODE_TAG = "code";
-
+    @ApiModelProperty("code")
+    private Integer code;
     /**
-     * 返回内容
+     * 返回信息
      */
-    public static final String MSG_TAG = "msg";
-
+    @ApiModelProperty("返回信息")
+    private String msg;
     /**
      * 数据对象
      */
-    public static final String DATA_TAG = "data";
+    @ApiModelProperty("数据对象")
+    private Object data;
 
     /**
      * 初始化一个新创建的 AjaxResult 对象，使其表示一个空消息。
@@ -44,8 +43,8 @@ public class AjaxResult extends HashMap<String, Object> {
      * @param msg  返回内容
      */
     public AjaxResult(int code, String msg) {
-        super.put(CODE_TAG, code);
-        super.put(MSG_TAG, msg);
+        this.code = code;
+        this.msg = msg;
     }
 
     /**
@@ -56,24 +55,9 @@ public class AjaxResult extends HashMap<String, Object> {
      * @param data 数据对象
      */
     public AjaxResult(int code, String msg, Object data) {
-        super.put(CODE_TAG, code);
-        super.put(MSG_TAG, msg);
-        if (StringUtils.isNotNull(data)) {
-            super.put(DATA_TAG, data);
-        }
-    }
-
-    /**
-     * 方便链式调用
-     *
-     * @param key
-     * @param value
-     * @return
-     */
-    @Override
-    public AjaxResult put(String key, Object value) {
-        super.put(key, value);
-        return this;
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
     }
 
     /**
@@ -144,40 +128,5 @@ public class AjaxResult extends HashMap<String, Object> {
      */
     public static AjaxResult error(int code, String msg) {
         return new AjaxResult(code, msg, null);
-    }
-
-    /**
-     * 是否成功
-     *
-     * @return
-     */
-    public boolean isSuccess() {
-        Object code = this.get(CODE_TAG);
-        if (code == null) {
-            return false;
-        }
-        return HttpStatus.SUCCESS == NumberUtil.parseInt(code.toString());
-    }
-
-    /**
-     * 获取数据
-     *
-     * @return
-     */
-    public Object getData() {
-        Object o = this.get(DATA_TAG);
-        if (o == null) {
-            return Collections.EMPTY_MAP;
-        }
-        return o;
-    }
-
-    /**
-     * 获取数据
-     *
-     * @return
-     */
-    public String getMessage() {
-        return StrUtil.toString(this.get(MSG_TAG));
     }
 }

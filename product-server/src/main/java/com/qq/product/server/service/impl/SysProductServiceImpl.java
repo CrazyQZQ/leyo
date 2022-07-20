@@ -58,13 +58,12 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         sysProduct.setCreateBy(OauthUtils.getCurrentUserName());
         sysProduct.setCreateTime(new Date());
         this.baseMapper.insert(sysProduct);
-        MultipartFile[] images = sysProduct.getImages();
-        if (images != null && images.length > 0) {
-            for (MultipartFile image : images) {
-                String upload = minIoService.upload(image);
+        // 保存图片
+        if (CollUtil.isNotEmpty(sysProduct.getImageUrls())) {
+            for (String imageUrl : sysProduct.getImageUrls()) {
                 SysObjectImages sysObjectImages = new SysObjectImages();
                 sysObjectImages.setObjectId(sysProduct.getId());
-                sysObjectImages.setImageUrl(upload);
+                sysObjectImages.setImageUrl(imageUrl);
                 sysObjectImages.setObjectType(3);
                 sysObjectImagesMapper.insert(sysObjectImages);
             }
@@ -128,6 +127,17 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
         int i = this.baseMapper.updateById(product);
         if (i == 0) {
             throw new ServiceException("商品不存在！");
+        }
+        // 保存图片
+        if (CollUtil.isNotEmpty(product.getImageUrls())) {
+            sysObjectImagesMapper.delete(new QueryWrapper<SysObjectImages>().eq("object_id", product.getId()).eq("object_type", 3));
+            for (String imageUrl : product.getImageUrls()) {
+                SysObjectImages sysObjectImages = new SysObjectImages();
+                sysObjectImages.setObjectId(product.getId());
+                sysObjectImages.setImageUrl(imageUrl);
+                sysObjectImages.setObjectType(3);
+                sysObjectImagesMapper.insert(sysObjectImages);
+            }
         }
         List<SysAttribute> attributes = product.getAttributes();
         if (CollUtil.isNotEmpty(attributes)) {

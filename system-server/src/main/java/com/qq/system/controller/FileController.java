@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("system/file")
 @Slf4j
-@Api(tags = "文件管理（测试用）")
+@Api(tags = "文件管理")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class FileController {
     /**

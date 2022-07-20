@@ -72,7 +72,7 @@ public class SysProductController extends BaseController<SysProduct> {
     @ApiOperation("新增商品")
     @PutMapping("add")
     @Log(title = "product", funcDesc = "新增商品")
-    public AjaxResult add(SysProduct product) {
+    public AjaxResult add(@RequestBody SysProduct product) {
         try {
             sysProductService.addProduct(product);
         } catch (IOException e) {
@@ -91,7 +91,7 @@ public class SysProductController extends BaseController<SysProduct> {
     @ApiOperation("修改商品")
     @PostMapping("update")
     @Log(title = "product", funcDesc = "修改商品")
-    public AjaxResult update(SysProduct product) {
+    public AjaxResult update(@RequestBody SysProduct product) {
         try {
             sysProductService.updateProduct(product);
         } catch (IOException e) {

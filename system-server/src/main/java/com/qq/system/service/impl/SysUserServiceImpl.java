@@ -51,6 +51,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser queryById(Long userId) {
         SysUser user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new ServiceException("用户不存在！");
+        }
         List<SysRole> roles = Optional.ofNullable(roleMapper.selectJoinList(SysRole.class, new MPJQueryWrapper<SysRole>()
                 .selectAll(SysRole.class)
                 .leftJoin("sys_user_role sur on t.role_id = sur.role_id")
@@ -71,6 +74,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser queryByUserName(String userName) {
         SysUser user = userMapper.selectOne(new QueryWrapper<SysUser>().eq("user_name", userName));
+        if (user == null) {
+            throw new ServiceException("用户不存在！");
+        }
         List<SysRole> roles = Optional.ofNullable(roleMapper.selectJoinList(SysRole.class, new MPJQueryWrapper<SysRole>()
                 .selectAll(SysRole.class)
                 .leftJoin("sys_user_role sur on t.role_id = sur.role_id")
