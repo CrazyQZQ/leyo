@@ -50,7 +50,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public SysUser queryById(Long userId) {
-        return userMapper.selectById(userId);
+        SysUser user = userMapper.selectById(userId);
+        List<SysRole> roles = Optional.ofNullable(roleMapper.selectJoinList(SysRole.class, new MPJQueryWrapper<SysRole>()
+                .selectAll(SysRole.class)
+                .leftJoin("sys_user_role sur on t.role_id = sur.role_id")
+                .eq("sur.user_id", user.getUserId()))).orElse(new ArrayList<>());
+        List<String> roleList = roles.stream().map(SysRole::getRoleKey).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(roleList)) {
+            user.setAuthorities(ArrayUtil.toArray(roleList, String.class));
+        }
+        return user;
     }
 
     /**

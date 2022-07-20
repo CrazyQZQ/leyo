@@ -48,7 +48,7 @@ public class SysLogController {
     private final SysUserRoleService sysUserRoleService;
 
     @ApiOperation("跳转授权码登录页面")
-    @RequestMapping("login")
+    @GetMapping("login")
     @Log(title = "system", funcDesc = "跳转授权码登录页面")
     public String login() {
         return "login";

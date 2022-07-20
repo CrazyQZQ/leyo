@@ -84,6 +84,9 @@ oauth2:
                     - /search/v3/api-docs
                     - /swagger-ui/**
                     - /swagger-resources/**
+                    - /doc.html
+                    - /webjars/**
+                    - /favicon.ico
 management:
     endpoints:
         web:
