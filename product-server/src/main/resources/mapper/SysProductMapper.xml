@@ -5,19 +5,23 @@
 <mapper namespace="com.qq.product.server.mapper.SysProductMapper">
 
     <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysProduct">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="code" column="code" jdbcType="VARCHAR"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="unit" column="unit" jdbcType="VARCHAR"/>
-            <result property="price" column="price" jdbcType="DECIMAL"/>
-            <result property="stock" column="stock" jdbcType="INTEGER"/>
-            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="brandName" column="brand_name" jdbcType="VARCHAR"/>
-            <!--pageHelp 只有使用子查询才不会导致total错误-->
-            <collection property="imageUrls" ofType="string" select="selectImagesById" column="id" />
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+        <result property="stock" column="stock" jdbcType="INTEGER"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="brandId" column="brand_id" jdbcType="BIGINT"/>
+        <result property="brandName" column="brand_name" jdbcType="VARCHAR"/>
+        <result property="typeId" column="type_id" jdbcType="BIGINT"/>
+        <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+        <!--pageHelp 只有使用子查询才不会导致total错误-->
+        <collection property="imageUrls" ofType="string" select="selectImagesById" column="id" />
+        <collection property="attributes" select="selectAttributesById" column="id" />
     </resultMap>
 
     <resultMap id="InfoResultMap" extends="BaseResultMap" type="com.qq.common.system.pojo.SysProduct">
@@ -37,7 +41,7 @@
     <sql id="Base_Column_List">
         sp.id,sp.code,sp.name,
         sp.unit,sp.price,sp.stock,sp.create_by,
-        sp.create_time,sp.update_by,sp.update_time
+        sp.create_time,sp.update_by,sp.update_time,sp.brand_id,sp.type_id
     </sql>
     <sql id="query_condition">
         <if test="ids != null and ids.size > 0">
@@ -53,8 +57,9 @@
         where sp.id = #{id}
     </select>
     <select id="getProductList" resultMap="BaseResultMap" parameterType="com.qq.common.core.web.page.BaseQuery">
-        select <include refid="Base_Column_List"/>,sb.name brand_name from sys_product sp
+        select <include refid="Base_Column_List"/>,sb.name brand_name,spt.name type_name from sys_product sp
         left join sys_brand sb on sp.brand_id = sb.id
+        left join sys_product_type spt on sp.type_id = spt.id
         where 1=1
         <include refid="query_condition"/>
     </select>

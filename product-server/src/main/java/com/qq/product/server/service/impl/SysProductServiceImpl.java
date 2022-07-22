@@ -54,7 +54,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
      */
     @Override
     @Transactional
-    public void addProduct(SysProduct sysProduct) {
+    public void addProduct(SysProduct sysProduct) throws IOException {
         sysProduct.setCreateBy(OauthUtils.getCurrentUserName());
         sysProduct.setCreateTime(new Date());
         this.baseMapper.insert(sysProduct);
@@ -78,6 +78,8 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
                 productAttributeMapper.insert(sysProductAttribute);
             }
         }
+        esService.addDoc(ProductConstants.PRODUCT_INDEX, sysProduct.getId().toString(),
+                this.baseMapper.selectMaps(new QueryWrapper<SysProduct>().eq("id", sysProduct.getId())).get(0));
     }
 
     /**

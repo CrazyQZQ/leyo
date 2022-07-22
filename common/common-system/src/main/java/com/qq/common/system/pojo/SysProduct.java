@@ -105,9 +105,23 @@ public class SysProduct implements Serializable {
     private List<String> imageUrls;
 
     /**
-     * 品牌id
+     * 品类id
+     */
+    @TableField(value = "type_id")
+    @ApiModelProperty("品类ID")
+    private Long typeId;
+
+    /**
+     * 品类名称
      */
     @TableField(exist = false)
+    @ApiModelProperty(hidden = true)
+    private String typeName;
+
+    /**
+     * 品牌id
+     */
+    @TableField(value = "brand_id")
     @ApiModelProperty("品牌ID")
     private Long brandId;
 

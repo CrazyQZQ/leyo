@@ -55,6 +55,7 @@ public class SysBrandServiceImpl extends ServiceImpl<SysBrandMapper, SysBrand>
             TreeNode<Long> node = new TreeNode<>(brand.getId(), brand.getParentId(), brand.getName(), brand.getOrderNum());
             Map<String, Object> extra = MapUtil.newHashMap();
             extra.put("imageUrls", brand.getImageUrls());
+            extra.put("typeId", brand.getTypeId());
             node.setExtra(extra);
             nodeList.add(node);
         }
