@@ -16,8 +16,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * @author MrBird
- */
+ * @Description:
+ * @Author QinQiang
+ * @Date 2022/4/18
+ **/
 @Slf4j
 @Component
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {

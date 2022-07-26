@@ -1,4 +1,4 @@
-package com.qq.common.log.pojo;
+package com.qq.common.core.pojo.log;
 
 import lombok.Builder;
 import lombok.Data;

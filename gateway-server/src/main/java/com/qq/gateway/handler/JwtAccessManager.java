@@ -5,12 +5,15 @@ import com.qq.common.redis.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.server.PathContainer;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.pattern.PathPattern;
+import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -36,6 +39,8 @@ public class JwtAccessManager implements ReactiveAuthorizationManager<Authorizat
         // 直接在项目启动的时候向Redis中添加了两个资源的权限，
         List<String> authorities = redisService.getCacheList(CacheConstants.MENU_ROLES + uri.getPath());
 
+        // PathPattern pattern = PathPatternParser.defaultInstance.parse("/system/user/{*pathVariable}");
+        // boolean matches = pattern.matches(PathContainer.parsePath("/system/user/1"));
         return mono.filter(Authentication::isAuthenticated)
                 // 这处代码就是取出令牌中的权限集合
                 .flatMapIterable(Authentication::getAuthorities)

@@ -20,10 +20,10 @@ spring:
                 shared-configs:
                     -   dataId: share-datasource.yml
                         group: DEFAULT_GROUP
-                        refresh-enabled: true
+                        refresh: true
                     -   dataId: share-redis.yml
                         group: DEFAULT_GROUP
-                        refresh-enabled: true
+                        refresh: true
                     -   dataId: share-common.yml
                         group: DEFAULT_GROUP
-                        refresh-enabled: true
+                        refresh: true

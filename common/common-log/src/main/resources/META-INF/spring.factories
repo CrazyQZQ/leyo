@@ -2,7 +2,8 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.qq.common.log.aspect.LogAspect,\
   com.qq.common.log.handler.GlobalExceptionHandler,\
   com.qq.common.log.interceptor.FeignRequestInterceptor,\
-  com.qq.common.log.handler.FeignErrorDecoder
+  com.qq.common.log.handler.FeignErrorDecoder,\
+  com.qq.common.log.config.LogConfig
 
 
   

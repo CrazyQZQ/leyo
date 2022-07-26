@@ -2,6 +2,7 @@ package com.qq.product.server.controller;
 
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.es.service.EsService;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysSku;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Description: 商品sku管理
@@ -42,7 +44,11 @@ public class SysSkuController extends BaseController {
     @GetMapping("list")
     @Log(title = "product_sku", funcDesc = "查询商品sku列表")
     public AjaxResult getSkuList(@ApiParam("商品id") @RequestParam(required = false) Long productId) {
-        return AjaxResult.success(skuService.list(productId));
+        startPage();
+        List<SysSku> list = skuService.list(productId);
+        TableDataInfo dataTable = getDataTable(list, null);
+        clearPage();
+        return AjaxResult.success(dataTable);
     }
 
     /**

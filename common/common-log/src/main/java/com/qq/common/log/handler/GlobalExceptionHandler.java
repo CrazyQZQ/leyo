@@ -1,22 +1,19 @@
 package com.qq.common.log.handler;
 
 import com.qq.common.core.constant.CacheConstants;
-import com.qq.common.core.constant.HttpStatus;
-import com.qq.common.core.exception.DemoModeException;
 import com.qq.common.core.exception.InnerAuthException;
 import com.qq.common.core.exception.ServiceException;
-import com.qq.common.core.exception.auth.NotPermissionException;
-import com.qq.common.core.exception.auth.NotRoleException;
+import com.qq.common.core.pojo.log.LogErrorInfo;
 import com.qq.common.core.utils.DateUtils;
 import com.qq.common.core.utils.StringUtils;
 import com.qq.common.core.web.domain.AjaxResult;
-import com.qq.common.log.pojo.LogErrorInfo;
+import com.qq.common.log.config.LogConfig;
 import com.qq.common.redis.service.RedisService;
-import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,31 +34,8 @@ public class GlobalExceptionHandler {
 
     @Autowired
     private RedisService redisService;
-
-    @Value("${log.sync.es:0}")
-    private String syncLog;
-
-    /**
-     * 权限码异常
-     */
-    @ExceptionHandler(NotPermissionException.class)
-    public AjaxResult handleNotPermissionException(NotPermissionException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',权限码校验失败'{}'", requestURI, e.getMessage());
-        saveLog(requestURI, "没有访问权限，请联系管理员授权");
-        return AjaxResult.error(HttpStatus.FORBIDDEN, "没有访问权限，请联系管理员授权");
-    }
-
-    /**
-     * 角色权限异常
-     */
-    @ExceptionHandler(NotRoleException.class)
-    public AjaxResult handleNotRoleException(NotRoleException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',角色权限校验失败'{}'", requestURI, e.getMessage());
-        saveLog(requestURI, "没有访问权限，请联系管理员授权");
-        return AjaxResult.error(HttpStatus.FORBIDDEN, "没有访问权限，请联系管理员授权");
-    }
+    @Autowired
+    private LogConfig  logConfig;
 
     /**
      * 请求方式不支持
@@ -146,10 +120,11 @@ public class GlobalExceptionHandler {
      * @param message
      */
     private void saveLog(String requestURI, String message) {
-        if (!"1".equals(syncLog)) {
+        if (!"1".equals(logConfig.getSyncLog())) {
             return;
         }
-        // 返回参数
+        log.info("开始同步异常日志");
+        // 错误日志
         LogErrorInfo logErrorInfo = LogErrorInfo.builder()
                 .url(requestURI)
                 .message(message)

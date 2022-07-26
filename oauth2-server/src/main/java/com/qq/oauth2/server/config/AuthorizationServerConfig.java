@@ -48,6 +48,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private OAuthServerWebResponseExceptionTranslator oAuthServerWebResponseExceptionTranslator;
 
     /**
      * 客户端配置，id，秘钥等
@@ -110,7 +112,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //认证管理器
         endpoints
                 // 指定异常翻译器
-                .exceptionTranslator(new OAuthServerWebResponseExceptionTranslator())
+                .exceptionTranslator(oAuthServerWebResponseExceptionTranslator)
                 // 配置了授权码模式所需要的服务，AuthorizationCodeServices
                 .authorizationCodeServices(authorizationCodeServices())
                 // 配置了密码模式所需要的AuthenticationManager

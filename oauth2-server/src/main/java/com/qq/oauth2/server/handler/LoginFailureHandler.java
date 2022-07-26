@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author MrBird
- */
+ * @Description:
+ * @Author QinQiang
+ * @Date 2022/4/18
+ **/
 @Component
 public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
