@@ -37,4 +37,9 @@ public class QueryVo {
      */
     @ApiModelProperty("结束条件，queryType=1时有效")
     private Object lte;
+    /**
+     * 格式化方式
+     */
+    @ApiModelProperty("格式化方式")
+    private String format;
 }

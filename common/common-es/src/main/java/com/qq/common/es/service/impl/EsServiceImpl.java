@@ -134,6 +134,32 @@ public class EsServiceImpl implements EsService {
     }
 
     /**
+     * 删除索引数据
+     * @param searchCommonVO
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public DeleteByQueryResponse deleteByQuery(SearchCommonVO searchCommonVO) throws IOException {
+        log.info("deleteByQuery --> searchCommonVO:{}", JSON.toJSONString(searchCommonVO));
+        if (StringUtils.isEmpty(searchCommonVO.getIndexName())) {
+            throw new ServiceException("索引不能为空!");
+        }
+        List<QueryVo> queryVos = searchCommonVO.getQueryVos();
+        if (CollUtil.isEmpty(queryVos)) {
+            throw new ServiceException("查询条件不能为空!");
+        }
+        // 处理查询条件
+        List<Query> queries = processQuery(queryVos);
+        // DeleteByQueryRequest of = DeleteByQueryRequest.of(d -> d.index(searchCommonVO.getIndexName())
+        //         .query(q -> q.range(r -> r.field("@timestamp").lte(JsonData.of("now-30m")).format("epoch_millis"))));
+        DeleteByQueryRequest request = DeleteByQueryRequest.of(d -> d.index(searchCommonVO.getIndexName())
+                .query(q -> q.bool(b -> b.must(queries))));
+        DeleteByQueryResponse deleteByQueryResponse = esClient.deleteByQuery(request);
+        return deleteByQueryResponse;
+    }
+
+    /**
      * 搜索
      *
      * @param searchCommonVO
@@ -215,6 +241,9 @@ public class EsServiceImpl implements EsService {
                     }
                     if (ObjectUtil.isNotEmpty(queryVo.getLte())) {
                         r.lte(JsonData.of(queryVo.getLte()));
+                    }
+                    if (StrUtil.isNotEmpty(queryVo.getFormat())) {
+                        r.format(queryVo.getFormat());
                     }
                     return r;
                 })._toQuery();

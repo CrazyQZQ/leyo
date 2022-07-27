@@ -27,9 +27,9 @@ public class CacheConstants {
     public final static String MENU_ROLES = "menu_roles:";
 
     /**
-     * 日志缓存
+     * 业务日志缓存
      */
-    public final static String LOGS_KEY = "logs";
+    public final static String LOGS_KEY = "business_log";
 
     /**
      * 错误日志缓存

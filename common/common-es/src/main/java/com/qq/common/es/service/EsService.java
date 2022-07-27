@@ -1,5 +1,6 @@
 package com.qq.common.es.service;
 
+import co.elastic.clients.elasticsearch.core.DeleteByQueryResponse;
 import co.elastic.clients.elasticsearch.core.DeleteResponse;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
@@ -75,6 +76,14 @@ public interface EsService {
      * @throws IOException
      */
     DeleteResponse deleteDoc(String indexName, String id) throws IOException;
+
+    /**
+     * 删除索引数据
+     * @param searchCommonVO
+     * @return
+     * @throws IOException
+     */
+    DeleteByQueryResponse deleteByQuery(SearchCommonVO searchCommonVO) throws IOException;
 
     /**
      * 搜索

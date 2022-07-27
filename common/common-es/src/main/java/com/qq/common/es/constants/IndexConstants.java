@@ -7,4 +7,6 @@ package com.qq.common.es.constants;
  **/
 public class IndexConstants {
     public static final String INDEX_SKU = "sku";
+    public static final String INDEX_BUSINESS_LOG = "business_log";
+    public static final String INDEX_ERROR_LOG = "error_logs-*";
 }
