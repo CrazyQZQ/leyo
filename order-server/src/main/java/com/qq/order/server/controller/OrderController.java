@@ -100,4 +100,19 @@ public class OrderController extends BaseController {
     public AjaxResult getStatusCount(@RequestParam("userId") Long userId) {
         return AjaxResult.success(orderService.getStatusCount(userId));
     }
+
+    /**
+     * 修改订单状态
+     *
+     * @param orderId
+     * @param orderStatus
+     * @return
+     */
+    @ApiOperation("修改订单状态")
+    @GetMapping("/getStatusCount")
+    @Log(title = "order", funcDesc = "修改订单状态")
+    public AjaxResult updateOrderStatus(@RequestParam("orderId") Long orderId, @RequestParam("orderStatus") Integer orderStatus) {
+        orderService.updateOrderStatus(orderId, orderStatus);
+        return AjaxResult.success();
+    }
 }

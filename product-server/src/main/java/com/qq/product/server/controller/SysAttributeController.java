@@ -45,7 +45,7 @@ public class SysAttributeController extends BaseController {
      * @return
      */
     @ApiOperation("新增商品属性")
-    @PutMapping("add")
+    @PostMapping("add")
     @Log(title = "product_attribute", funcDesc = "新增商品属性")
     public AjaxResult add(@RequestBody SysAttribute attribute) {
         attributeService.add(attribute);
@@ -59,7 +59,7 @@ public class SysAttributeController extends BaseController {
      * @return
      */
     @ApiOperation("修改商品属性")
-    @PostMapping("update")
+    @PutMapping("update")
     @Log(title = "product_attribute", funcDesc = "修改商品属性")
     public AjaxResult update(@RequestBody SysAttribute attribute) {
         attributeService.update(attribute);

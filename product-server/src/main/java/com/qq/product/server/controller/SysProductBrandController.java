@@ -82,7 +82,7 @@ public class SysProductBrandController extends BaseController {
      * @return
      */
     @ApiOperation("新增品牌")
-    @PutMapping("add")
+    @PostMapping("add")
     @Log(title = "product_brand", funcDesc = "新增品牌")
     public AjaxResult add(@RequestBody SysBrand brand) {
         try {
@@ -101,7 +101,7 @@ public class SysProductBrandController extends BaseController {
      * @return
      */
     @ApiOperation("修改品牌")
-    @PostMapping("update")
+    @PutMapping("update")
     @Log(title = "product_brand", funcDesc = "修改品牌")
     public AjaxResult update(@RequestBody SysBrand brand) {
         try {

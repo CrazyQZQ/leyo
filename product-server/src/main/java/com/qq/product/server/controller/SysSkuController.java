@@ -71,7 +71,7 @@ public class SysSkuController extends BaseController {
      * @return
      */
     @ApiOperation("新增商品sku")
-    @PutMapping("add")
+    @PostMapping("add")
     @Log(title = "product_sku", funcDesc = "新增商品sku")
     public AjaxResult add(@RequestBody SysSku sku) {
         try {
@@ -91,7 +91,7 @@ public class SysSkuController extends BaseController {
      * @return
      */
     @ApiOperation("修改商品sku")
-    @PostMapping("update")
+    @PutMapping("update")
     @Log(title = "product_sku", funcDesc = "修改商品sku")
     public AjaxResult update(@RequestBody SysSku sku) {
         try {
@@ -132,7 +132,7 @@ public class SysSkuController extends BaseController {
      * @return
      */
     @ApiOperation("扣减库存")
-    @PostMapping("reduceStock")
+    @PutMapping("reduceStock")
     @Log(title = "product_sku", funcDesc = "扣减库存")
     public AjaxResult reduceStock(@ApiParam("skuId") @RequestParam Long id, @ApiParam("数量") @RequestParam Integer stock) {
         try {

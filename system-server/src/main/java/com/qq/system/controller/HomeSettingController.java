@@ -44,7 +44,7 @@ public class HomeSettingController {
      * @return
      */
     @ApiOperation("添加banner")
-    @PutMapping("/banners")
+    @PostMapping("/banners")
     @Log(title = "system_home", funcDesc = "添加banner")
     public AjaxResult addBanner(@ApiParam("banner图片") MultipartFile[] files) {
         homeSettingService.addBanner(files);
@@ -72,7 +72,7 @@ public class HomeSettingController {
      * @return
      */
     @ApiOperation("发布公告")
-    @PutMapping("/announcement")
+    @PostMapping("/announcement")
     @Log(title = "system_home", funcDesc = "发布公告")
     public AjaxResult createAnnouncement(@ApiParam("公告内容") String content) {
         homeSettingService.createAnnouncement(content);

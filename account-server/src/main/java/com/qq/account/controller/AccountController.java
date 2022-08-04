@@ -126,7 +126,7 @@ public class AccountController {
      * @return
      */
     @ApiOperation("账户金额操作")
-    @PostMapping("/operateAccountAmount")
+    @PutMapping("/operateAccountAmount")
     @Log(title = "account", funcDesc = "账户金额操作")
     public AjaxResult operateAccountAmount(@ApiParam("账户id") @RequestParam Long id, @ApiParam("操作金额") @RequestParam BigDecimal amount) {
         accountService.operateAccountAmount(id, amount);

@@ -54,7 +54,7 @@ public class SysMenuController {
 
     @Log(title = "system", funcDesc = "分配菜单角色")
     @ApiOperation("分配菜单角色")
-    @PostMapping("auth")
+    @PutMapping("auth")
     public AjaxResult authMenu(@RequestBody MenuVo menuVo) {
         sysMenuService.authMenu(menuVo.getSysMenu().getMenuId(), menuVo.getSysRoleMenus());
         List<String> roles = menuVo.getSysRoleMenus().stream().map(e -> AuthConstants.ROLE_PREFIX + e.getRoleKey()).collect(Collectors.toList());

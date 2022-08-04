@@ -47,7 +47,7 @@ public class ShoppingCartController extends BaseController {
      * @return
      */
     @ApiOperation("添加购物车")
-    @PutMapping("add")
+    @PostMapping("add")
     @Log(title = "order_cart", funcDesc = "添加购物车")
     public AjaxResult addCartItem(@RequestBody ShoppingCartItem shoppingCartItem) {
         shoppingCartItem.setUserId(OauthUtils.getCurrentUserId());
@@ -77,7 +77,7 @@ public class ShoppingCartController extends BaseController {
      * @return
      */
     @ApiOperation("修改购物车商品数量")
-    @PostMapping("update")
+    @PutMapping("update")
     @Log(title = "order_cart", funcDesc = "修改购物车商品数量")
     public AjaxResult updateCartItemNum(@ApiParam("购物车id") @RequestParam Long id, @ApiParam("商品数量") @RequestParam Integer num) {
         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();

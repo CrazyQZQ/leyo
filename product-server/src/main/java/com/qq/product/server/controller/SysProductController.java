@@ -70,7 +70,7 @@ public class SysProductController extends BaseController<SysProduct> {
      * @return
      */
     @ApiOperation("新增商品")
-    @PutMapping("add")
+    @PostMapping("add")
     @Log(title = "product", funcDesc = "新增商品")
     public AjaxResult add(@RequestBody SysProduct product) {
         try {
@@ -89,7 +89,7 @@ public class SysProductController extends BaseController<SysProduct> {
      * @return
      */
     @ApiOperation("修改商品")
-    @PostMapping("update")
+    @PutMapping("update")
     @Log(title = "product", funcDesc = "修改商品")
     public AjaxResult update(@RequestBody SysProduct product) {
         try {

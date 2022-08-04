@@ -36,7 +36,7 @@ public class FileController {
      * @return
      */
     @ApiOperation("上传文件")
-    @PostMapping("upload")
+    @PutMapping("upload")
     public AjaxResult upload(@ApiParam("文件") @RequestParam("file") MultipartFile file) {
         return AjaxResult.success(minIoService.upload(file));
     }
@@ -61,7 +61,7 @@ public class FileController {
      * @return
      */
     @ApiOperation("删除文件")
-    @PostMapping("delete")
+    @PutMapping("delete")
     public AjaxResult delete(@ApiParam("对象名") @RequestBody List<String> objectNames) {
         minIoService.deleteFile(objectNames);
         return AjaxResult.success();

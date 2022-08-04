@@ -73,7 +73,7 @@ public class SysUserController {
      */
     @Log(title = "system", funcDesc = "修改用户信息")
     @ApiOperation("修改用户信息")
-    @PostMapping("update")
+    @PutMapping("update")
     public AjaxResult update(@RequestBody SysUser user) {
         return AjaxResult.success(sysUserService.update(user));
     }
@@ -86,7 +86,7 @@ public class SysUserController {
      */
     @Log(title = "system", funcDesc = "新增用户")
     @ApiOperation("新增用户")
-    @PutMapping("add")
+    @PostMapping("add")
     public AjaxResult add(@RequestBody SysUser user) {
         return AjaxResult.success(sysUserService.insert(user));
     }
@@ -113,7 +113,7 @@ public class SysUserController {
      */
     @Log(title = "system", funcDesc = "修改用户头像")
     @ApiOperation("修改用户头像")
-    @PostMapping("modifyAvatar")
+    @PutMapping("modifyAvatar")
     public AjaxResult modifyAvatar(@ApiParam("用户id") @RequestParam("userId") Long userId, @ApiParam("头像") @RequestParam("file") MultipartFile file) {
         sysUserService.modifyAvatar(userId, file);
         return AjaxResult.success();
@@ -126,7 +126,7 @@ public class SysUserController {
      */
     @Log(title = "system", funcDesc = "新增用户地址")
     @ApiOperation("新增用户地址")
-    @PutMapping("addUserAddress")
+    @PostMapping("addUserAddress")
     public AjaxResult addUserAddress(@RequestBody SysUserAddress address) {
         sysUserService.addUserAddress(address);
         return AjaxResult.success();
@@ -139,7 +139,7 @@ public class SysUserController {
      */
     @Log(title = "system", funcDesc = "修改用户地址")
     @ApiOperation("修改用户地址")
-    @PostMapping("modifyUserAddress")
+    @PutMapping("modifyUserAddress")
     public AjaxResult modifyUserAddress(@RequestBody SysUserAddress address) {
         sysUserService.modifyUserAddress(address);
         return AjaxResult.success();
