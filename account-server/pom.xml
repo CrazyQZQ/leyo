@@ -9,7 +9,7 @@
     <description>账户服务</description>
     <parent>
         <groupId>com.qq</groupId>
-        <artifactId>cloud-demo</artifactId>
+        <artifactId>leyo</artifactId>
         <version>0.0.1</version>
     </parent>
 
