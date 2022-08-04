@@ -156,7 +156,7 @@ public class SysSkuServiceImpl extends ServiceImpl<SysSkuMapper, SysSku>
      *
      * @param sku
      */
-    private void setAttributes(SysSku sku) {
+    public void setAttributes(SysSku sku) {
         if (StrUtil.isNotEmpty(sku.getSpec())) {
             List<Map> specs = JSON.parseArray(sku.getSpec(), Map.class);
             if (CollUtil.isNotEmpty(specs)) {

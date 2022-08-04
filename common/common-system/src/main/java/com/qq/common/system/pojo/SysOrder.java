@@ -58,11 +58,18 @@ public class SysOrder implements Serializable {
     private Integer totalCount;
 
     /**
-     * 状态 0：待付款，1：代发货，2：待收货，3：待评价，4：退款/售后
+     * 状态 0：已删除，1：正常
      */
     @TableField(value = "status")
     @ApiModelProperty(value = "状态", hidden = true)
     private Integer status;
+
+    /**
+     * 状态 0：待付款，1：代发货，2：待收货，3：待评价，4：退款/售后
+     */
+    @TableField(value = "order_status")
+    @ApiModelProperty(value = "订单状态", hidden = true)
+    private Integer orderStatus;
 
     /**
      * 收货地址id

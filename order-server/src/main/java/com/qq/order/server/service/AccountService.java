@@ -4,6 +4,7 @@ import com.qq.common.core.web.domain.AjaxResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
@@ -23,7 +24,7 @@ public interface AccountService {
      * @param amount
      * @return
      */
-    @PostMapping("/account/operateAccountAmount")
+    @PutMapping("/account/operateAccountAmount")
     AjaxResult operateAccountAmount(@RequestParam("id") Long id, @RequestParam("amount") BigDecimal amount);
 
 }

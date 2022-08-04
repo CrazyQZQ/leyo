@@ -62,4 +62,11 @@ public interface SysSkuService extends IService<SysSku> {
      * @throws IOException
      */
     void updateSkuInEs(List<Long> skuIds) throws IOException;
+
+    /**
+     * 设置sku属性
+     *
+     * @param sku
+     */
+    void setAttributes(SysSku sku);
 }

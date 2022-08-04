@@ -42,4 +42,11 @@ public interface SysOrderService extends IService<SysOrder> {
      * @return
      */
     List<StatusCountVO> getStatusCount(Long userId);
+
+    /**
+     * 修改订单状态
+     * @param orderId
+     * @param orderStatus
+     */
+    void updateOrderStatus(Long orderId, Integer orderStatus);
 }

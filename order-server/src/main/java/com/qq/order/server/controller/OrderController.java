@@ -1,5 +1,6 @@
 package com.qq.order.server.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.qq.common.core.annotation.RepeatCommit;
 import com.qq.common.core.constant.CacheConstants;
 import com.qq.common.core.web.controller.BaseController;
@@ -7,11 +8,13 @@ import com.qq.common.core.web.domain.AjaxResult;
 import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.redis.service.RedisService;
+import com.qq.common.system.pojo.SysOrder;
 import com.qq.order.server.pojo.OrderQuery;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.OrderVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +75,7 @@ public class OrderController extends BaseController {
     @ApiOperation("订单详情")
     @GetMapping("/detail")
     @Log(title = "order", funcDesc = "订单详情")
-    public AjaxResult orderDetailInfo(Long orderId) {
+    public AjaxResult orderDetailInfo(@ApiParam("用户id") @RequestParam Long orderId) {
         return AjaxResult.success(orderService.getOrderInfo(orderId));
     }
 
@@ -97,7 +100,7 @@ public class OrderController extends BaseController {
     @ApiOperation("查询订单各种状态数量")
     @GetMapping("/getStatusCount")
     @Log(title = "order", funcDesc = "查询订单各种状态数量")
-    public AjaxResult getStatusCount(@RequestParam("userId") Long userId) {
+    public AjaxResult getStatusCount(@ApiParam("用户id") @RequestParam("userId") Long userId) {
         return AjaxResult.success(orderService.getStatusCount(userId));
     }
 
@@ -109,10 +112,25 @@ public class OrderController extends BaseController {
      * @return
      */
     @ApiOperation("修改订单状态")
-    @GetMapping("/getStatusCount")
+    @GetMapping("/updateOrderStatus")
     @Log(title = "order", funcDesc = "修改订单状态")
-    public AjaxResult updateOrderStatus(@RequestParam("orderId") Long orderId, @RequestParam("orderStatus") Integer orderStatus) {
+    public AjaxResult updateOrderStatus(@ApiParam("订单id") @RequestParam("orderId") Long orderId,
+                                        @ApiParam("订单状态") @RequestParam("orderStatus") Integer orderStatus) {
         orderService.updateOrderStatus(orderId, orderStatus);
         return AjaxResult.success();
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("删除订单")
+    @GetMapping("/delete")
+    @Log(title = "order", funcDesc = "删除订单")
+    public AjaxResult updateOrderStatus(@ApiParam("订单id") @RequestParam("orderId") Long orderId) {
+        boolean update = orderService.update(new UpdateWrapper<SysOrder>().set("status", 0).eq("id", orderId));
+        return update ? AjaxResult.success() : AjaxResult.error("删除失败，订单不存在！");
     }
 }

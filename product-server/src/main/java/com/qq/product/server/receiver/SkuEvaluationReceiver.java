@@ -1,9 +1,8 @@
 package com.qq.product.server.receiver;
 
 import com.alibaba.fastjson.JSON;
-import com.qq.common.system.pojo.SysOrderDetail;
-import com.qq.common.system.pojo.SysProduct;
-import com.qq.product.server.service.SysSkuService;
+import com.qq.common.system.pojo.SysSkuEvaluation;
+import com.qq.product.server.service.SysSkuEvaluationService;
 import com.rabbitmq.client.Channel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,17 +16,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @Description: 热卖商品消费者
+ * @Description: 商品评价消费者
  * @Author QinQiang
- * @Date 2022/6/16
+ * @Date 2022/8/4
  **/
 @Service
 @Slf4j
-@RabbitListener(queues = "hotSale")
+@RabbitListener(queues = "skuEvaluation")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class HotSaleReceiver {
+public class SkuEvaluationReceiver {
 
-    private final SysSkuService skuService;
+    private final SysSkuEvaluationService skuEvaluationService;
 
     /**
      * 消费String类型
@@ -38,7 +37,7 @@ public class HotSaleReceiver {
      */
     @RabbitHandler
     public void handlerMsg(Message message, Channel channel, String msg) {
-        log.info("hotSale消费者接受消息,内容：{}", msg);
+        log.info("skuEvaluation消费者接受消息,内容：{}", msg);
         try {
             // 手动ack
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
@@ -48,20 +47,20 @@ public class HotSaleReceiver {
     }
 
     /**
-     * 消费List<Long>类型
+     * 消费List<SysSkuEvaluation>类型
      *
      * @param message
      * @param channel
-     * @param skuIds
+     * @param list
      */
     @RabbitHandler
-    public void handlerMsg(Message message, Channel channel, List<Long> skuIds) {
-        log.info("hotSale消费者接受消息,skuIds：{}", JSON.toJSONString(skuIds));
+    public void handlerMsg(Message message, Channel channel, List<SysSkuEvaluation> list) {
+        log.info("skuEvaluation消费者接受消息,list：{}", JSON.toJSONString(list));
         try {
-            skuService.updateSkuInEs(skuIds);
+            skuEvaluationService.saveBatch(list);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {
-            log.info("修改es热卖数据失败：", e);
+            log.info("新增用户待评价商品数据失败：", e);
         }
     }
 }

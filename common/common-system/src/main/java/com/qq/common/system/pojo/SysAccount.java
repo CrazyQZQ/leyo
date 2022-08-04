@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,10 +31,19 @@ public class SysAccount implements Serializable {
     private Long accountId;
 
     /**
+     * 用户id
+     */
+    @TableField(value = "user_id")
+    @ApiModelProperty("用户id")
+    @NotNull(message = "用户id不能为空！")
+    private Long userId;
+
+    /**
      * 账户编码
      */
     @TableField(value = "account_code")
     @ApiModelProperty("账户编码")
+    @NotNull(message = "账户编码不能为空！")
     private Long accountCode;
 
     /**
@@ -41,13 +51,14 @@ public class SysAccount implements Serializable {
      */
     @TableField(value = "account_name")
     @ApiModelProperty("账号名称")
+    @NotNull(message = "账号名称不能为空！")
     private String accountName;
 
     /**
      * 部门名称
      */
     @TableField(value = "amount")
-    @ApiModelProperty("部门名称")
+    @ApiModelProperty("余额")
     private BigDecimal amount;
 
     /**

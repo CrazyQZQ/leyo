@@ -2,12 +2,13 @@ package com.qq.common.es.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldSort;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
+import co.elastic.clients.elasticsearch._types.aggregations.*;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
@@ -22,13 +23,16 @@ import com.qq.common.core.utils.StringUtils;
 import com.qq.common.es.service.EsService;
 import com.qq.common.es.vo.QueryVo;
 import com.qq.common.es.vo.SearchCommonVO;
+import com.qq.common.es.vo.SearchCommonVO.AggVO;
 import com.qq.common.es.vo.SearchResultVO;
+import com.qq.common.es.vo.SearchResultVO.AggregationVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -135,6 +139,7 @@ public class EsServiceImpl implements EsService {
 
     /**
      * 删除索引数据
+     *
      * @param searchCommonVO
      * @return
      * @throws IOException
@@ -174,41 +179,43 @@ public class EsServiceImpl implements EsService {
             throw new ServiceException("索引不能为空!");
         }
         List<QueryVo> queryVos = searchCommonVO.getQueryVos();
-        if (CollUtil.isEmpty(queryVos)) {
-            throw new ServiceException("查询条件不能为空!");
-        }
-        if (StrUtil.isEmpty(searchCommonVO.getSortIndex())) {
-            searchCommonVO.setSortIndex("id");
-        }
-        if (StrUtil.isEmpty(searchCommonVO.getSortOrder())) {
-            searchCommonVO.setSortOrder("Asc");
-        }
         // 处理查询条件
         List<Query> queries = processQuery(queryVos);
         try {
-            SearchRequest req = SearchRequest.of(sr -> sr
-                    .trackTotalHits(h -> h
-                            .enabled(Boolean.TRUE)
-                    )
-                    .size(searchCommonVO.getRows())
-                    .from(searchCommonVO.getRows() * (searchCommonVO.getPage() - 1))
-                    .index(searchCommonVO.getIndexName())
-                    .sort(s -> s.field(FieldSort.of(fs -> fs.field(searchCommonVO.getSortIndex()).order(SortOrder.valueOf(searchCommonVO.getSortOrder())))))
-                    .query(q -> q.bool(b -> b.must(queries)))
-                    .highlight(h -> {
-                        if (searchCommonVO.isHighlight() && searchCommonVO.getHighlightField().length > 0) {
-                            for (int idx = 0; idx < searchCommonVO.getHighlightField().length; ++idx) {
-                                final String field = searchCommonVO.getHighlightField()[idx];
-                                h.fields(field, HighlightField.of(hf -> hf
-                                        .preTags("<font style='font-weight:600;background-color: #e75213;color: yellow;'>")
-                                        .postTags("</font>"))).fragmentSize(1024);
-                            }
-                        } else {
-                            h.fields(Collections.emptyMap()).fragmentSize(1024);
+            Map<String, Aggregation> stringAggregationMap = searchCommonVO.getAggregation().booleanValue() && ObjectUtil.isNotEmpty(searchCommonVO.getAgg()) ?
+                    parseAggregation(searchCommonVO.getAgg()) : Collections.emptyMap();
+            SearchRequest req = SearchRequest.of(sr -> {
+                        sr.index(searchCommonVO.getIndexName())
+                                .trackTotalHits(h -> h.enabled(Boolean.TRUE))
+                                .size(searchCommonVO.getRows());
+                        // 分页参数
+                        if (searchCommonVO.getRows() != null && searchCommonVO.getPage() != null && searchCommonVO.getRows() > 0 && searchCommonVO.getPage() > 0) {
+                            sr.from(searchCommonVO.getRows() * (searchCommonVO.getPage() - 1));
                         }
-                        return h;
-                    })
-                    .aggregations(parseAggregation(searchCommonVO))
+                        // 排序
+                        if (StrUtil.isNotEmpty(searchCommonVO.getSortIndex()) && StrUtil.isNotEmpty(searchCommonVO.getSortOrder())) {
+                            sr.sort(s -> s.field(FieldSort.of(fs -> fs.field(searchCommonVO.getSortIndex()).order(SortOrder.valueOf(searchCommonVO.getSortOrder())))));
+                        }
+                        // 查询条件
+                        if (CollUtil.isNotEmpty(queries)) {
+                            sr.query(q -> q.bool(b -> b.must(queries)));
+                        }
+                        // 高亮
+                        if (searchCommonVO.getHighlight().booleanValue() && searchCommonVO.getHighlightField().length > 0) {
+                            sr.highlight(h -> {
+                                for (int idx = 0; idx < searchCommonVO.getHighlightField().length; ++idx) {
+                                    final String field = searchCommonVO.getHighlightField()[idx];
+                                    h.fields(field, HighlightField.of(hf -> hf
+                                            .preTags("<font style='font-weight:600;background-color: #e75213;color: yellow;'>")
+                                            .postTags("</font>"))).fragmentSize(1024);
+                                }
+                                return h;
+                            });
+                        }
+                        // 聚合
+                        sr.aggregations(stringAggregationMap);
+                        return sr;
+                    }
             );
             SearchResponse<E> searchResponse = esClient.search(req, clazz);
             return parseResponse(searchResponse);
@@ -224,6 +231,9 @@ public class EsServiceImpl implements EsService {
      * @param queryVos
      */
     private List<Query> processQuery(List<QueryVo> queryVos) {
+        if(CollUtil.isEmpty(queryVos)){
+            return Collections.emptyList();
+        }
         List<Query> queries = new ArrayList<>();
         for (QueryVo queryVo : queryVos) {
             if ("0".equals(queryVo.getQueryType())) {
@@ -254,13 +264,85 @@ public class EsServiceImpl implements EsService {
     }
 
     /**
-     * 聚合
+     * 处理聚合参数
      *
-     * @param searchCommonVO
+     * @param agg
      * @return
      */
-    private Map<String, Aggregation> parseAggregation(SearchCommonVO searchCommonVO) {
-        return new HashMap<>();
+    private Map<String, Aggregation> parseAggregation(AggVO agg) {
+        Map<String, Aggregation> aggregationMap = new HashMap<>();
+        String aggType = agg.getType();
+        String aggField = agg.getField();
+        Integer aggSize = agg.getSize();
+        Double aggInterval = agg.getInterval();
+        Aggregation aggregation = null;
+        Map<String, Aggregation> childAggregationMap = null;
+        if (ObjectUtil.isNotEmpty(agg.getChildAgg())) {
+            childAggregationMap = parseAggregation(agg.getChildAgg());
+        }
+        switch (aggType) {
+            case "terms":
+                Map<String, Aggregation> finalTermsChildAggregationMap = childAggregationMap;
+                aggregation = Aggregation.of(a -> {
+                    Aggregation.Builder.ContainerBuilder terms = a.terms(t -> t.field(aggField).size(aggSize));
+                    if (MapUtil.isNotEmpty(finalTermsChildAggregationMap)) {
+                        terms.aggregations(finalTermsChildAggregationMap);
+                    }
+                    return terms;
+                });
+                break;
+            case "time":
+                Map<String, Aggregation> finalTimeChildAggregationMap = childAggregationMap;
+                aggregation = Aggregation.of(a -> {
+                    Aggregation.Builder.ContainerBuilder dateHistogram = a.dateHistogram(d -> d.field(aggField).calendarInterval(CalendarInterval.Day));
+                    if (MapUtil.isNotEmpty(finalTimeChildAggregationMap)) {
+                        dateHistogram.aggregations(finalTimeChildAggregationMap);
+                    }
+                    return dateHistogram;
+                });
+                break;
+            case "histogram":
+                Map<String, Aggregation> finalHistogramChildAggregationMap = childAggregationMap;
+                aggregation = Aggregation.of(a -> {
+                    Aggregation.Builder.ContainerBuilder histogram = a.histogram(d -> d.field(aggField).interval(aggInterval));
+                    if (MapUtil.isNotEmpty(finalHistogramChildAggregationMap)) {
+                        histogram.aggregations(finalHistogramChildAggregationMap);
+                    }
+                    return histogram;
+                });
+                break;
+            default:
+                break;
+        }
+        if (ObjectUtil.isEmpty(aggregation)) {
+            throw new ServiceException("聚合类型错误！");
+        }
+        String measureField = agg.getMeasureField();
+        String measureFun = agg.getMeasureFun();
+        Aggregation measureAggregation = null;
+        if (StrUtil.isNotEmpty(measureField) && StrUtil.isNotEmpty(measureFun)) {
+            switch (measureFun) {
+                case "max":
+                    measureAggregation = Aggregation.of(a -> a.max(b -> b.field(measureField)));
+                    break;
+                case "avg":
+                    measureAggregation = Aggregation.of(a -> a.avg(b -> b.field(measureField)));
+                    break;
+                case "min":
+                    measureAggregation = Aggregation.of(a -> a.min(b -> b.field(measureField)));
+                    break;
+                case "sum":
+                    measureAggregation = Aggregation.of(a -> a.sum(b -> b.field(measureField)));
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (ObjectUtil.isNotEmpty(measureAggregation)) {
+            aggregationMap.put(String.format("%s_%s", measureField, measureFun), measureAggregation);
+        }
+        aggregationMap.put(String.format("%s_%s_%d", aggField, aggType, aggSize), aggregation);
+        return aggregationMap;
     }
 
     /**
@@ -287,6 +369,89 @@ public class EsServiceImpl implements EsService {
         SearchResultVO<E> searchResultVO = new SearchResultVO<>();
         searchResultVO.setList(list);
         searchResultVO.setTotal(res.hits().total().value());
+        Map<String, Aggregate> aggregateMap = res.aggregations();
+        if (MapUtil.isNotEmpty(aggregateMap)) {
+            searchResultVO.setAggregation(true);
+            searchResultVO.setAggregationMap(parseAggregationResponse(aggregateMap));
+        }
         return searchResultVO;
+    }
+
+    /**
+     * 解析聚合返回值
+     * todo 其他类型解析
+     * @param aggregations
+     * @return
+     */
+    private Map<String, List<AggregationVO>> parseAggregationResponse(Map<String, Aggregate> aggregations) {
+        if (MapUtil.isEmpty(aggregations)) {
+            return null;
+        }
+        Map<String, List<AggregationVO>> aggregationMap = new HashMap<>();
+        for (Map.Entry<String, Aggregate> entry : aggregations.entrySet()) {
+            final Aggregate aggregate = entry.getValue();
+            List<AggregationVO> aggregationVOList = new ArrayList<>();
+            if (aggregate.isSterms()) {
+                final StringTermsAggregate stringTermsAggregate = aggregate.sterms();
+                stringTermsAggregate.buckets().array().forEach(b -> {
+                    AggregationVO aggregationVO = new AggregationVO();
+                    Map<String, Aggregate> childAggregate = b.aggregations();
+                    if(MapUtil.isNotEmpty(childAggregate)){
+                        Map<String, List<AggregationVO>> childAggMap = parseAggregationResponse(childAggregate);
+                        aggregationVO.setChildAggMap(childAggMap);
+                    }
+                    aggregationVO.setKey(b.key());
+                    aggregationVO.setDocCount(b.docCount());
+                    aggregationVOList.add(aggregationVO);
+                });
+            } else if (aggregate.isDateHistogram()) {
+                final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                final DateHistogramAggregate dateHistogramAggregate = aggregate.dateHistogram();
+                dateHistogramAggregate.buckets().array().forEach(b -> {
+                    AggregationVO aggregationVO = new AggregationVO();
+                    Map<String, Aggregate> childAggregate = b.aggregations();
+                    if(MapUtil.isNotEmpty(childAggregate)){
+                        Map<String, List<AggregationVO>> childAggMap = parseAggregationResponse(childAggregate);
+                        aggregationVO.setChildAggMap(childAggMap);
+                    }
+                    aggregationVO.setKey(sdf.format(b.key().toEpochMilli()));
+                    aggregationVO.setDocCount(b.docCount());
+                    aggregationVOList.add(aggregationVO);
+                });
+            } else if (aggregate.isHistogram()) {
+                final HistogramAggregate histogramAggregate = aggregate.histogram();
+                histogramAggregate.buckets().array().forEach(b -> {
+                    AggregationVO aggregationVO = new AggregationVO();
+                    Map<String, Aggregate> childAggregate = b.aggregations();
+                    if(MapUtil.isNotEmpty(childAggregate)){
+                        Map<String, List<AggregationVO>> childAggMap = parseAggregationResponse(childAggregate);
+                        aggregationVO.setChildAggMap(childAggMap);
+                    }
+                    aggregationVO.setKey(StrUtil.toString(b.key()));
+                    aggregationVO.setDocCount(b.docCount());
+                    aggregationVOList.add(aggregationVO);
+                });
+            } else if (aggregate.isMax()) {
+                MaxAggregate max = aggregate.max();
+                double value = max.value();
+                AggregationVO aggregationVO = new AggregationVO();
+                aggregationVO.setMeasureValue(value);
+                aggregationVOList.add(aggregationVO);
+            } else if (aggregate.isMin()) {
+                MinAggregate min = aggregate.min();
+                double value = min.value();
+                AggregationVO aggregationVO = new AggregationVO();
+                aggregationVO.setMeasureValue(value);
+                aggregationVOList.add(aggregationVO);
+            } else if (aggregate.isAvg()) {
+                AvgAggregate avg = aggregate.avg();
+                double value = avg.value();
+                AggregationVO aggregationVO = new AggregationVO();
+                aggregationVO.setMeasureValue(value);
+                aggregationVOList.add(aggregationVO);
+            }
+            aggregationMap.put(entry.getKey(), aggregationVOList);
+        }
+        return aggregationMap;
     }
 }

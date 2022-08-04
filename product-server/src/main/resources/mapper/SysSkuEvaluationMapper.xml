@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qq.product.server.mapper.SysSkuEvaluationMapper">
+
+    <resultMap id="BaseResultMap" type="com.qq.common.system.pojo.SysSkuEvaluation">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="evaluateStatus" column="evaluate_status" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+            <result property="orderDetailId" column="order_detail_id" jdbcType="BIGINT"/>
+            <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
+            <result property="descriptionMatches" column="description_matches" jdbcType="INTEGER"/>
+            <result property="logisticsServices" column="Logistics_services" jdbcType="INTEGER"/>
+            <result property="serviceAttitude" column="service_attitude" jdbcType="INTEGER"/>
+            <result property="comment" column="comment" jdbcType="VARCHAR"/>
+            <association property="user" select="selectUserByUserId" column="{userId=user_id}"/>
+            <association property="sku" select="com.qq.product.server.mapper.SysSkuMapper.getById" column="{id=sku_id}"/>
+    </resultMap>
+
+    <resultMap id="UserResultMap" type="com.qq.common.system.pojo.SysUser">
+        <id property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,status,evaluate_status,
+        user_id,order_id,order_detail_id,
+        sku_id,description_matches,Logistics_services,
+        service_attitude,comment
+    </sql>
+    <select id="list" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from sys_sku_evaluation
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="orderDetailId != null">
+                and order_detail_id = #{orderDetailId}
+            </if>
+            <if test="skuId != null">
+                and sku_id = #{skuId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUserByUserId" resultMap="UserResultMap">
+        select user_id,user_name,nick_name,avatar
+        from sys_user
+        where user_id=#{userId}
+    </select>
+</mapper>

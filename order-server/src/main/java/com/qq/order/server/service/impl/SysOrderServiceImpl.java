@@ -2,11 +2,12 @@ package com.qq.order.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.domain.AjaxResult;
-import com.qq.common.rabbit.config.HotSaleTopicConfig;
+import com.qq.common.rabbit.config.ProductTopicConfig;
 import com.qq.common.rabbit.handler.PushHandler;
 import com.qq.common.rabbit.pojo.PushData;
 import com.qq.common.system.pojo.*;
@@ -15,7 +16,6 @@ import com.qq.order.server.mapper.SysOrderDetailMapper;
 import com.qq.order.server.mapper.SysOrderMapper;
 import com.qq.order.server.pojo.OrderQuery;
 import com.qq.order.server.service.AccountService;
-import com.qq.order.server.service.ProductService;
 import com.qq.order.server.service.SkuService;
 import com.qq.order.server.service.SysOrderService;
 import com.qq.order.server.vo.OrderVO;
@@ -70,9 +70,11 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         }
         Long accountId = orderVO.getAccountId();
         if (accountId == null) {
-            order.setStatus(0);
+            // 未支付
+            order.setOrderStatus(0);
         } else {
-            order.setStatus(1);
+            // 已支付
+            order.setOrderStatus(1);
         }
         String currentUserName = OauthUtils.getCurrentUserName();
         Date now = new Date();
@@ -168,17 +170,62 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
     }
 
     /**
+     * 修改订单状态
+     * @param orderId
+     * @param orderStatus
+     */
+    @Override
+    public void updateOrderStatus(Long orderId, Integer orderStatus) {
+        SysOrder order = this.baseMapper.selectById(orderId);
+        if(ObjectUtil.isEmpty(order)){
+            throw new ServiceException("订单不存在！");
+        }
+        SysOrder updateOrder = new SysOrder();
+        updateOrder.setId(orderId);
+        updateOrder.setOrderStatus(orderStatus);
+        this.baseMapper.updateById(updateOrder);
+        // 生成待评价记录
+        if(3 == orderStatus){
+            List<SysOrderDetail> details = sysOrderDetailMapper.selectList(new QueryWrapper<SysOrderDetail>().eq("master_id", orderId));
+            List<SysSkuEvaluation> list = new ArrayList<>(details.size());
+            for (SysOrderDetail detail:details){
+                SysSkuEvaluation skuEvaluation = new SysSkuEvaluation();
+                skuEvaluation.setOrderId(orderId);
+                skuEvaluation.setOrderDetailId(detail.getId());
+                skuEvaluation.setSkuId(detail.getSkuId());
+                skuEvaluation.setUserId(order.getUserId());
+                list.add(skuEvaluation);
+            }
+            createOrderEvaluation(list);
+        }
+    }
+
+    /**
      * 更新热卖信息
      *
      * @param skuIds
      */
     private void updateHotSale(List<Long> skuIds) {
         PushData<List<Long>> pushData = new PushData<>();
-        pushData.setTopicName(HotSaleTopicConfig.TOPIC_NAME);
-        pushData.setRoutingKey(HotSaleTopicConfig.ROUTING_KEY);
+        pushData.setTopicName(ProductTopicConfig.TOPIC_NAME);
+        pushData.setRoutingKey(ProductTopicConfig.HOT_SALE_ROUTING_KEY);
         pushData.setData(skuIds);
         pushHandler.pushData(pushData);
     }
+
+    /**
+     * 生成待评价记录
+     *
+     * @param list
+     */
+    private void createOrderEvaluation(List<SysSkuEvaluation> list){
+        PushData<List<SysSkuEvaluation>> pushData = new PushData<>();
+        pushData.setTopicName(ProductTopicConfig.TOPIC_NAME);
+        pushData.setRoutingKey(ProductTopicConfig.SKU_EVALUATION_ROUTING_KEY);
+        pushData.setData(list);
+        pushHandler.pushData(pushData);
+    }
+
 }
 
 

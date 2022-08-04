@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -31,6 +32,6 @@ public interface SkuService {
      * @param stock
      * @return
      */
-    @PostMapping("/product/sku/reduceStock")
+    @PutMapping("/product/sku/reduceStock")
     AjaxResult reduceStock(@RequestParam("id") Long id, @RequestParam("stock") Integer stock);
 }
