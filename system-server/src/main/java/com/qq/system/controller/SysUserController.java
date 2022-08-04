@@ -52,14 +52,14 @@ public class SysUserController {
     }
 
     /**
-     * 新增数据
+     * 获取用户列表
      *
      * @param pageNum
      * @param pageSize
      * @return 查询结果
      */
     @Log(title = "system", funcDesc = "获取用户列表")
-    @ApiOperation("通过id查询用户")
+    @ApiOperation("获取用户列表")
     @GetMapping("list")
     public AjaxResult selectAll(@ApiParam("页码") int pageNum, @ApiParam("条数") int pageSize) {
         return AjaxResult.success(sysUserService.queryAllByLimit(pageNum, pageSize));

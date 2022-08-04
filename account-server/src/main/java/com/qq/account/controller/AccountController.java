@@ -34,19 +34,29 @@ public class AccountController {
     private final SysAccountService accountService;
 
     /**
-     * 获取账户信息
+     * 账户id获取账户信息
      *
      * @param id
      * @return
      */
-    @ApiOperation("获取账户信息")
+    @ApiOperation("账户id获取账户信息")
     @GetMapping("/getAccountById")
-    @Log(title = "account", funcDesc = "获取账户信息")
-    public AjaxResult getAccountById(@ApiParam("账户id") Long id) {
-        if (id == null) {
-            return AjaxResult.error("账户id不能为空");
-        }
+    @Log(title = "account", funcDesc = "账户id获取账户信息")
+    public AjaxResult getAccountById(@ApiParam("账户id") @RequestParam Long id) {
         return AjaxResult.success(accountService.getById(id));
+    }
+
+    /**
+     * 用户id获取账户信息
+     *
+     * @param userId
+     * @return
+     */
+    @ApiOperation("用户id获取账户信息")
+    @GetMapping("/getAccountByUserId")
+    @Log(title = "account", funcDesc = "用户id获取账户信息")
+    public AjaxResult getAccountByUserId(@ApiParam("用户id") @RequestParam Long userId) {
+        return AjaxResult.success(accountService.getOne(new QueryWrapper<SysAccount>().eq("user_id", userId)));
     }
 
     /**
@@ -65,7 +75,7 @@ public class AccountController {
             String errorMsg = allErrors.stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(","));
             return AjaxResult.error(errorMsg);
         }
-        int count = accountService.count(new QueryWrapper<SysAccount>().eq("account_name", account.getAccountId()));
+        int count = accountService.count(new QueryWrapper<SysAccount>().eq("account_name", account.getAccountName()));
         if (count > 0) {
             return AjaxResult.error("账户已存在");
         }
