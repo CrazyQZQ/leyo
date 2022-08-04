@@ -89,7 +89,7 @@ public class SysSkuEvaluationController extends BaseController<SysSkuEvaluation>
      * @return
      */
     @ApiOperation("删除商品评价")
-    @PutMapping("delete")
+    @DeleteMapping("delete")
     @Log(title = "product_evaluation", funcDesc = "删除商品评价")
     public AjaxResult delete(@RequestParam Integer id) {
         boolean update = skuEvaluationService.update(new UpdateWrapper<SysSkuEvaluation>().set("status", 0).eq("id", id));
