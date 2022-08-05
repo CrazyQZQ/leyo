@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.qq.common.system.vo.SkuAttributeVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,6 +12,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,6 +79,34 @@ public class SysSku implements Serializable {
     @TableField(value = "image_url")
     @ApiModelProperty(value = "图片", hidden = true)
     private String imageUrl;
+
+    /**
+     * 创建人
+     */
+    @TableField(value = "create_by")
+    @ApiModelProperty(value = "创建人", hidden = true)
+    private String createBy;
+
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time")
+    @ApiModelProperty(value = "创建时间", hidden = true)
+    private Date createTime;
+
+    /**
+     * 更新者
+     */
+    @TableField(value = "update_by")
+    @ApiModelProperty(value = "更新者", hidden = true)
+    private String updateBy;
+
+    /**
+     * 更新时间
+     */
+    @TableField(value = "update_time")
+    @ApiModelProperty(value = "更新时间", hidden = true)
+    private Date updateTime;
 
     /**
      * 商品名称

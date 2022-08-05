@@ -6,6 +6,7 @@ import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.es.service.EsService;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysSku;
+import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.constants.ProductConstants;
 import com.qq.product.server.service.SysSkuService;
 import io.swagger.annotations.Api;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,6 +77,8 @@ public class SysSkuController extends BaseController {
     @Log(title = "product_sku", funcDesc = "新增商品sku")
     public AjaxResult add(@RequestBody SysSku sku) {
         try {
+            sku.setCreateBy(OauthUtils.getCurrentUserName());
+            sku.setCreateTime(new Date());
             skuService.save(sku);
             esService.addDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), skuService.getSkuById(sku.getId()));
         } catch (Exception e) {
@@ -95,6 +99,8 @@ public class SysSkuController extends BaseController {
     @Log(title = "product_sku", funcDesc = "修改商品sku")
     public AjaxResult update(@RequestBody SysSku sku) {
         try {
+            sku.setUpdateBy(OauthUtils.getCurrentUserName());
+            sku.setUpdateTime(new Date());
             skuService.updateById(sku);
             esService.updateDoc(ProductConstants.SKU_INDEX, sku.getId().toString(), skuService.getSkuById(sku.getId()));
         } catch (Exception e) {
