@@ -34,4 +34,10 @@ public class OrderVO {
      */
     @ApiModelProperty("账户id")
     private Long accountId;
+
+    /**
+     * 购物车id
+     */
+    @ApiModelProperty("购物车id，购物车页面下单，选中的商品")
+    private List<Long> cartIds;
 }

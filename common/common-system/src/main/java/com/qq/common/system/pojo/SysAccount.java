@@ -44,7 +44,7 @@ public class SysAccount implements Serializable {
     @TableField(value = "account_code")
     @ApiModelProperty("账户编码")
     @NotNull(message = "账户编码不能为空！")
-    private Long accountCode;
+    private String accountCode;
 
     /**
      * 账号名称

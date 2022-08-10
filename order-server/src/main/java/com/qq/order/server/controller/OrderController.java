@@ -75,7 +75,7 @@ public class OrderController extends BaseController {
     @ApiOperation("订单详情")
     @GetMapping("/detail")
     @Log(title = "order", funcDesc = "订单详情")
-    public AjaxResult orderDetailInfo(@ApiParam("用户id") @RequestParam Long orderId) {
+    public AjaxResult orderDetailInfo(@ApiParam("订单id") @RequestParam Long orderId) {
         return AjaxResult.success(orderService.getOrderInfo(orderId));
     }
 

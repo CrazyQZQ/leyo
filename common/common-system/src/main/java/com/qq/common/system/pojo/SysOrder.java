@@ -120,8 +120,12 @@ public class SysOrder implements Serializable {
     private String addressName;
 
     @TableField(exist = false)
-    @ApiModelProperty("商品数据")
+    @ApiModelProperty(value = "商品数据", hidden = true)
     private List<SysOrderDetail> orderDetailList;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "收货地址", hidden = true)
+    private SysUserAddress address;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -1,6 +1,7 @@
 package com.qq.order.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,9 +16,7 @@ import com.qq.common.system.utils.OauthUtils;
 import com.qq.order.server.mapper.SysOrderDetailMapper;
 import com.qq.order.server.mapper.SysOrderMapper;
 import com.qq.order.server.pojo.OrderQuery;
-import com.qq.order.server.service.AccountService;
-import com.qq.order.server.service.SkuService;
-import com.qq.order.server.service.SysOrderService;
+import com.qq.order.server.service.*;
 import com.qq.order.server.vo.OrderVO;
 import com.qq.order.server.vo.StatusCountVO;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +45,9 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
 
     private final SysOrderDetailMapper sysOrderDetailMapper;
     private final AccountService accountService;
+    private final ShoppingCartItemService shoppingCartItemService;
     private final SkuService skuService;
+    private final UserFeignService userService;
     private final PushHandler pushHandler;
 
     /**
@@ -104,6 +105,10 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
                 throw new ServiceException(ajaxResult.getMsg());
             }
         }
+        // 删除选中的购物车商品
+        if(CollUtil.isNotEmpty(orderVO.getCartIds())){
+            shoppingCartItemService.removeByIds(orderVO.getCartIds());
+        }
         // 更新热卖信息
         updateHotSale(skuIds);
         return order.getId();
@@ -115,7 +120,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
      * @return
      */
     @Override
-    public OrderVO getOrderInfo(Long orderId) {
+    public SysOrder getOrderInfo(Long orderId) {
         if (orderId == null) {
             throw new ServiceException("订单ID不能为空");
         }
@@ -130,10 +135,14 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
                 throw new ServiceException(ajaxResult.getMsg());
             }
         }
-        OrderVO orderVO = new OrderVO();
-        orderVO.setOrder(order);
-        orderVO.setOrderDetailList(details);
-        return orderVO;
+        AjaxResult ajaxResult = userService.queryAddressById(order.getUserAddressId());
+        if (ajaxResult.getCode() != HttpStatus.OK.value()) {
+            throw new ServiceException(ajaxResult.getMsg());
+        }
+        order.setOrderDetailList(details);
+        SysUserAddress sysUserAddress = BeanUtil.mapToBean((Map<String, Object>) ajaxResult.getData(), SysUserAddress.class, true, null);
+        order.setAddress(sysUserAddress);
+        return order;
     }
 
     /**

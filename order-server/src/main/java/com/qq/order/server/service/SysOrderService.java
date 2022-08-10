@@ -27,7 +27,7 @@ public interface SysOrderService extends IService<SysOrder> {
      * @param orderId
      * @return
      */
-    OrderVO getOrderInfo(Long orderId);
+    SysOrder getOrderInfo(Long orderId);
 
     /**
      * 查询订单列表
