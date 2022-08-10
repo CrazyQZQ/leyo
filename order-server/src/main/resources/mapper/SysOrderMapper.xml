@@ -10,6 +10,7 @@
             <result property="totalAmount" column="total_amount" jdbcType="DECIMAL"/>
             <result property="totalCount" column="total_count" jdbcType="INTEGER"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
@@ -29,7 +30,7 @@
 
     <sql id="Base_Column_List">
         so.id,so.number,so.total_amount,
-        so.total_count,so.status,so.create_by,
+        so.total_count,so.status,so.order_status,so.create_by,
         so.create_time,so.update_by,so.update_time,
         so.remark
     </sql>
@@ -37,8 +38,8 @@
         select <include refid="Base_Column_List" />,sys_user_address.full_address address_name from sys_order so
         left join sys_user_address on sys_user_address.id = so.user_address_id
         <where>
-            <if test="status != null">
-                AND so.status = #{status}
+            <if test="orderStatus != null">
+                AND so.order_status = #{orderStatus}
             </if>
             <if test="userId != null">
                 AND so.user_id = #{userId}
@@ -49,6 +50,6 @@
         select id detail_id,sku_id, count,amount,remark detail_remark from sys_order_detail where master_id = #{id}
     </select>
     <select id="getStatusCount" resultType="com.qq.order.server.vo.StatusCountVO">
-        select count(*) count,status from sys_order where user_id = #{userId} group by status
+        select count(*) count,order_status as "orderStatus" from sys_order where user_id = #{userId} group by order_status
     </select>
 </mapper>

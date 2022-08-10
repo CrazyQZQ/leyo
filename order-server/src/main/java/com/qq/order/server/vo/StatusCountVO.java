@@ -12,7 +12,7 @@ public class StatusCountVO {
     /**
      * 状态
      */
-    private Integer status;
+    private Integer orderStatus;
     /**
      * 数量
      */

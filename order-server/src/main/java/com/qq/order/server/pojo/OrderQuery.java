@@ -14,7 +14,7 @@ import lombok.Data;
 @ApiModel("订单查询条件")
 public class OrderQuery extends BaseQuery {
     @ApiModelProperty("订单状态")
-    private Integer status;
+    private Integer orderStatus;
     @ApiModelProperty("用户ID")
     private Long userId;
 }
