@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  **/
 @Slf4j
 @Service
-@ServerEndpoint(value = "/system/websocket/endpoint/{userId}", subprotocols = {"protocol"} )
+@ServerEndpoint("/system/websocket/endpoint/{userId}")
 public class WsService {
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;

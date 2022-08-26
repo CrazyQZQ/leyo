@@ -18,6 +18,10 @@ spring:
                     filters:
                         - RewritePath=/system/v3/api-docs, /v3/api-docs
                         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+                -   id: system_server_websocket
+                    uri: lb:ws://system-server
+                    predicates:
+                        - Path=/system/websocket/endpoint/**
                 -   id: account_server
                     uri: lb://account-server
                     predicates:
