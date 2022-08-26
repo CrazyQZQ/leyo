@@ -1,11 +1,14 @@
 
 package com.qq.system.config;
 
-// @EnableDiscoveryClient
-// @Configuration
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
+
+@Configuration
 public class BaseConfig {
-    // @Bean
-    // public LogAspect logAspect() {
-    //     return new LogAspect();
-    // }
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
 }

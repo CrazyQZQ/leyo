@@ -22,6 +22,10 @@ public class CorsFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
+        String upgrade = request.getHeaders().getUpgrade();
+        if("websocket".equals(upgrade)){
+            return chain.filter(exchange);
+        }
         if (CorsUtils.isCorsRequest(request)) {
             HttpHeaders requestHeaders = request.getHeaders();
             ServerHttpResponse response = exchange.getResponse();
