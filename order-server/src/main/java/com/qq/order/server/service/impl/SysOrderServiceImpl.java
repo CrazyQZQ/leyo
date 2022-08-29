@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
@@ -48,6 +49,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
     private final ShoppingCartItemService shoppingCartItemService;
     private final SkuService skuService;
     private final UserFeignService userService;
+    private final MessageFeignService messageFeignService;
     private final PushHandler pushHandler;
 
     /**
@@ -184,6 +186,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
      * @param orderStatus
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatus(Long orderId, Integer orderStatus) {
         SysOrder order = this.baseMapper.selectById(orderId);
         if(ObjectUtil.isEmpty(order)){
@@ -193,8 +196,13 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
         updateOrder.setId(orderId);
         updateOrder.setOrderStatus(orderStatus);
         this.baseMapper.updateById(updateOrder);
-        // 生成待评价记录
-        if(3 == orderStatus){
+
+        String msgBody = null;
+        // 状态 0：待付款，1：代发货，2：待收货，3：待评价，4：退款/售后
+        if(2 == orderStatus){
+            msgBody = String.format("您的订单：%s 已发货", order.getNumber());
+        }else  if(3 == orderStatus){
+            // 生成待评价记录
             List<SysOrderDetail> details = sysOrderDetailMapper.selectList(new QueryWrapper<SysOrderDetail>().eq("master_id", orderId));
             List<SysSkuEvaluation> list = new ArrayList<>(details.size());
             for (SysOrderDetail detail:details){
@@ -206,7 +214,22 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
                 list.add(skuEvaluation);
             }
             createOrderEvaluation(list);
+            msgBody = String.format("您的订单：%s 已送达请及时签收", order.getNumber());
+        }else if(4 == orderStatus){
+            msgBody = String.format("您的订单：%s 售后申请已处理", order.getNumber());
         }
+        // 推送订单消息
+        if(StrUtil.isNotEmpty(msgBody)){
+            SysMessage message = new SysMessage();
+            message.setUserId(order.getUserId());
+            message.setAction("business");
+            message.setType("0");
+            message.setNotificationType("primary");
+            message.setBody(msgBody);
+            message.setRedirectUrl("/orderDetail");
+            messageFeignService.sendOneMessage(message);
+        }
+
     }
 
     /**
