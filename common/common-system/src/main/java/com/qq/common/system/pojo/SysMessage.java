@@ -83,6 +83,13 @@ public class SysMessage implements Serializable {
     private String readStatus;
 
     /**
+     * 消息来源 0：服务端，1：客户端
+     */
+    @TableField(value = "source")
+    @ApiModelProperty(value = "消息来源 0：服务端，1：客户端",hidden = true)
+    private Integer source;
+
+    /**
      * 创建者
      */
     @TableField(value = "create_by")

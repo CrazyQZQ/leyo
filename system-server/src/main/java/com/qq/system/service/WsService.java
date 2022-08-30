@@ -1,19 +1,21 @@
 package com.qq.system.service;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.qq.common.core.exception.ServiceException;
+import com.qq.common.core.utils.SpringUtils;
 import com.qq.common.system.mapper.SysMessageMapper;
 import com.qq.common.system.pojo.SysMessage;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,8 +33,7 @@ public class WsService {
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
 
-    @Autowired
-    private SysMessageMapper messageMapper;
+    private SysMessageMapper messageMapper = SpringUtils.getBean(SysMessageMapper.class);
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
     //虽然@Component默认是单例模式的，但springboot还是会为每个websocket连接初始化一个bean，所以可以用一个静态set保存起来。
@@ -51,10 +52,7 @@ public class WsService {
             webSockets.add(this);
             sessionPool.put(userId, session);
             // 推送一下历史推送失败的消息
-            // List<SysMessage> pushFailList = messageMapper
-            //         .selectList(new LambdaQueryWrapper<SysMessage>().eq(SysMessage::getUserId, userId).eq(SysMessage::getPushStatus, "0"));
-            // log.info("用户历史推送失败的消息条数：{}", pushFailList.size());
-            // sendMoreMessage(pushFailList);
+            pushHistoryFailMsg(Long.valueOf(userId));
             log.info("【websocket】创建新的连接，总数为：" + webSockets.size());
         } catch (Exception e) {
             log.error("【websocket消息】创建新连接失败，userId：{}", userId, e);
@@ -96,8 +94,16 @@ public class WsService {
                     response.setUserId(receivedMessage.getUserId());
                     response.setAction("pong");
                     response.setBody(message);
-                    response.setType("primary");
+                    response.setType("0");
+                    response.setNotificationType("primary");
                     sendOneMessage(response);
+                } else {
+                    receivedMessage.setSource(1);
+                    receivedMessage.setPushStatus("1");
+                    receivedMessage.setReadStatus("1");
+                    receivedMessage.setCreateTime(new Date());
+                    receivedMessage.setCreateBy("admin");
+                    messageMapper.insert(receivedMessage);
                 }
             } else {
                 log.warn("【websocket收到消息】用户（id：{}）连接已关闭:", receivedMessage.getUserId());
@@ -143,6 +149,9 @@ public class WsService {
      * @param message
      */
     public void sendOneMessage(SysMessage message) {
+        // id不为空表示推送历史消息，更新一下推送状态
+        boolean forUpdate = ObjectUtil.isNotEmpty(message.getId());
+        message.setSource(0);
         Session session = null;
         for (Map.Entry<String, Session> entry : sessionPool.entrySet()) {
             if (entry.getKey().equals(StrUtil.toString(message.getUserId()))) {
@@ -159,10 +168,24 @@ public class WsService {
                 log.error("发送单条消息失败：", e);
                 message.setPushStatus("0");
             }
-            messageMapper.insert(message);
+            if (!"pong".equals(message.getAction())) {
+                if (forUpdate && !"0".equals(message.getPushStatus())) {
+                    message.setUpdateTime(new Date());
+                    message.setUpdateBy("admin");
+                    messageMapper.updateById(message);
+                } else {
+                    message.setCreateTime(new Date());
+                    message.setCreateBy("admin");
+                    messageMapper.insert(message);
+                }
+            }
         } else {
             message.setPushStatus("0");
-            messageMapper.insert(message);
+            if (!"pong".equals(message.getAction()) && !forUpdate) {
+                message.setCreateTime(new Date());
+                message.setCreateBy("admin");
+                messageMapper.insert(message);
+            }
             throw new ServiceException("用户未连接！");
         }
     }
@@ -175,6 +198,27 @@ public class WsService {
     public void sendMoreMessage(List<SysMessage> messages) {
         for (SysMessage message : messages) {
             sendOneMessage(message);
+        }
+    }
+
+    /**
+     * 推送历史失败消息
+     *
+     * @param userId
+     */
+    private void pushHistoryFailMsg(Long userId) {
+        try {
+            List<SysMessage> pushFailList = messageMapper
+                    .selectList(new LambdaQueryWrapper<SysMessage>()
+                            .eq(SysMessage::getUserId, userId)
+                            .eq(SysMessage::getPushStatus, "0")
+                            .eq(SysMessage::getSource, 0));
+            log.info("用户历史推送失败的消息条数：{}", pushFailList.size());
+            if (CollUtil.isNotEmpty(pushFailList)) {
+                sendMoreMessage(pushFailList);
+            }
+        } catch (Exception e) {
+            log.error("用户历史推送失败的消息条数出现异常", e);
         }
     }
 }
