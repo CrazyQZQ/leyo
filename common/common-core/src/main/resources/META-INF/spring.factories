@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.qq.common.core.config.Swagger3Config
+  com.qq.common.core.config.Swagger3Config,\
+  com.qq.common.core.utils.SpringUtils
   
