@@ -25,4 +25,6 @@ public class BaseQuery {
     private String keyword;
     @ApiModelProperty("父级ID")
     private Long parentId;
+    @ApiModelProperty("用户ID")
+    private Long userId;
 }
