@@ -1,7 +1,11 @@
 package com.qq.product.server.service;
 
+import com.qq.common.core.web.page.BaseQuery;
+import com.qq.common.system.pojo.SysProduct;
 import com.qq.common.system.pojo.SysProductCollection;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -10,4 +14,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface SysProductCollectionService extends IService<SysProductCollection> {
 
+    /**
+     * 查询收藏商品
+     *
+     * @param query
+     * @return
+     */
+    List<SysProduct> listProductCollections(BaseQuery query);
+
+    /**
+     * 收藏商品
+     * @param productCollection
+     */
+    void collect(SysProductCollection productCollection);
 }
