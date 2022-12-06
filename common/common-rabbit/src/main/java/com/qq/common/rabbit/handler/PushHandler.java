@@ -41,11 +41,24 @@ public class PushHandler {
             TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
                 @Override
                 public void afterCommit() {
-                    rabbitTemplate.convertAndSend(data.getTopicName(), data.getRoutingKey(), data.getData());
+                    send(data);
                 }
             });
         } else {
-            rabbitTemplate.convertAndSend(data.getTopicName(), data.getRoutingKey(), data.getData());
+            send(data);
         }
+    }
+
+    /**
+     * 发送消息
+     * @param data
+     */
+    private void send(PushData data) {
+        rabbitTemplate.convertAndSend(data.getTopicName(), data.getRoutingKey(), data.getData(), message -> {
+            if(!StringUtils.isEmpty(data.getDelayTime())) {
+                message.getMessageProperties().setExpiration(data.getDelayTime());
+            }
+            return message;
+        });
     }
 }

@@ -22,6 +22,10 @@ public class PushData<T> {
      */
     private String businessType;
     /**
+     * 过期时间
+     */
+    private String delayTime;
+    /**
      * 数据体
      */
     T data;

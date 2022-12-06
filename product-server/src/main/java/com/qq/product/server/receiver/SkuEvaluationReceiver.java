@@ -1,6 +1,7 @@
 package com.qq.product.server.receiver;
 
 import com.alibaba.fastjson.JSON;
+import com.qq.common.rabbit.config.ProductTopicConfig;
 import com.qq.common.system.pojo.SysSkuEvaluation;
 import com.qq.product.server.service.SysSkuEvaluationService;
 import com.rabbitmq.client.Channel;
@@ -22,7 +23,7 @@ import java.util.List;
  **/
 @Service
 @Slf4j
-@RabbitListener(queues = "skuEvaluation")
+@RabbitListener(queues = ProductTopicConfig.SKU_EVALUATION_ROUTING_KEY)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SkuEvaluationReceiver {
 

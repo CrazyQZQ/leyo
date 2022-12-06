@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qq.common.core.exception.ServiceException;
 import com.qq.common.core.web.domain.AjaxResult;
+import com.qq.common.rabbit.config.OrderDelayQueueRabbitConfig;
 import com.qq.common.rabbit.config.ProductTopicConfig;
 import com.qq.common.rabbit.handler.PushHandler;
 import com.qq.common.rabbit.pojo.PushData;
@@ -214,6 +215,7 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
                 list.add(skuEvaluation);
             }
             createOrderEvaluation(list);
+            closeOrder(orderId);
             msgBody = String.format("您的订单：%s 已送达请及时签收", order.getNumber());
         }else if(4 == orderStatus){
             msgBody = String.format("您的订单：%s 售后申请已处理", order.getNumber());
@@ -230,6 +232,19 @@ public class SysOrderServiceImpl extends ServiceImpl<SysOrderMapper, SysOrder>
             messageFeignService.sendOneMessage(message);
         }
 
+    }
+
+    /**
+     * 关闭订单
+     * @param orderId
+     */
+    private void closeOrder(Long orderId) {
+        PushData<Long> pushData = new PushData<>();
+        pushData.setTopicName(OrderDelayQueueRabbitConfig.ORDER_EXCHANGE);
+        pushData.setRoutingKey(OrderDelayQueueRabbitConfig.ORDER_ROUTING_KEY);
+        pushData.setData(orderId);
+        pushData.setDelayTime(OrderDelayQueueRabbitConfig.ORDER_CLOSE_EXPIRATION);
+        pushHandler.pushData(pushData);
     }
 
     /**

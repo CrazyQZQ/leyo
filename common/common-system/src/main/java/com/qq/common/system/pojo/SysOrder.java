@@ -65,7 +65,7 @@ public class SysOrder implements Serializable {
     private Integer status;
 
     /**
-     * 状态 0：待付款，1：代发货，2：待收货，3：待评价，4：退款/售后
+     * 状态 0：待付款，1：代发货，2：待收货，3：待评价，4：退款/售后，5：关闭
      */
     @TableField(value = "order_status")
     @ApiModelProperty(value = "订单状态", hidden = true)

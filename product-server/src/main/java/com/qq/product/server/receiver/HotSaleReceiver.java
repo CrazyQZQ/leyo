@@ -1,6 +1,7 @@
 package com.qq.product.server.receiver;
 
 import com.alibaba.fastjson.JSON;
+import com.qq.common.rabbit.config.ProductTopicConfig;
 import com.qq.common.system.pojo.SysOrderDetail;
 import com.qq.common.system.pojo.SysProduct;
 import com.qq.product.server.service.SysSkuService;
@@ -23,7 +24,7 @@ import java.util.List;
  **/
 @Service
 @Slf4j
-@RabbitListener(queues = "hotSale")
+@RabbitListener(queues = ProductTopicConfig.HOT_SALE_ROUTING_KEY)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class HotSaleReceiver {
 

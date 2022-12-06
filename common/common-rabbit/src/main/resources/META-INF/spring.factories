@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.qq.common.rabbit.config.ProductTopicConfig,\
-  com.qq.common.rabbit.handler.PushHandler
+  com.qq.common.rabbit.handler.PushHandler,\
+  com.qq.common.rabbit.config.OrderDelayQueueRabbitConfig
