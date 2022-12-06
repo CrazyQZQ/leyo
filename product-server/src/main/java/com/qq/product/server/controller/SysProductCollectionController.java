@@ -1,7 +1,5 @@
 package com.qq.product.server.controller;
 
-import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.qq.common.core.web.controller.BaseController;
 import com.qq.common.core.web.domain.AjaxResult;
@@ -10,7 +8,6 @@ import com.qq.common.core.web.page.TableDataInfo;
 import com.qq.common.log.annotation.Log;
 import com.qq.common.system.pojo.SysProduct;
 import com.qq.common.system.pojo.SysProductCollection;
-import com.qq.common.system.utils.OauthUtils;
 import com.qq.product.server.service.SysProductCollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Description: 商品收藏
