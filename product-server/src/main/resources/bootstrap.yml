@@ -31,3 +31,9 @@ spring:
                         group: DEFAULT_GROUP
                         refresh: true
                 enabled: true
+easy-es:
+    enable: true # 是否开启EE自动配置
+    address : 124.221.239.207:9200 # es连接地址+端口 格式必须为ip:port,如果是集群则可用逗号隔开
+    schema: http # 默认为http
+    username: elastic #如果无账号密码则可不配置此行
+    password: qq123456 #如果无账号密码则可不配置此行

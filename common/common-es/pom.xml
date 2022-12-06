@@ -44,6 +44,11 @@
             <artifactId>common-system</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>cn.easy-es</groupId>
+            <artifactId>easy-es-boot-starter</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>

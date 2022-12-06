@@ -1,5 +1,6 @@
 package com.qq.es.server;
 
+import cn.easyes.starter.register.EsMapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -11,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableFeignClients
 @EnableDiscoveryClient
 @EnableScheduling
+@EsMapperScan("com.qq.es.server.mapper")
 public class EsServerApplication {
 
     public static void main(String[] args) {
