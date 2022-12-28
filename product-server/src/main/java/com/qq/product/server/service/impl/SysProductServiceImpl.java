@@ -20,10 +20,10 @@ import com.qq.product.server.mapper.SysProductAttributeMapper;
 import com.qq.product.server.mapper.SysProductMapper;
 import com.qq.product.server.service.SysProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Date;
@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
  * @description 针对表【sys_product(商品表)】的数据库操作Service实现
  * @createDate 2022-05-06 16:44:17
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProduct>
@@ -110,6 +111,7 @@ public class SysProductServiceImpl extends ServiceImpl<SysProductMapper, SysProd
      */
     @Override
     public List<SysProduct> getProductList(BaseQuery query) {
+        log.info("分页查询商品列表，参数：{}", JSON.toJSON(query));
         return this.baseMapper.getProductList(query);
     }
 
