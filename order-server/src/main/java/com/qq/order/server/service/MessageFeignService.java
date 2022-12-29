@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Description: 消息推送
@@ -23,5 +24,6 @@ public interface MessageFeignService {
      * @param message
      */
     @PostMapping("/system/message/send/one")
+    @ResponseBody
     AjaxResult sendOneMessage(@RequestBody SysMessage message);
 }
