@@ -23,7 +23,7 @@ public interface MessageFeignService {
      *
      * @param message
      */
-    @PostMapping("/system/message/send/one")
     @ResponseBody
+    @PostMapping(value = "/system/message/send/one", consumes = "application/json")
     AjaxResult sendOneMessage(@RequestBody SysMessage message);
 }
